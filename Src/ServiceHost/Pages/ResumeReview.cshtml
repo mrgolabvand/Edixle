@@ -1,0 +1,135 @@
+﻿@page
+@model ServiceHost.Pages.ResumeReviewModel
+@{
+    ViewData["Title"] = "رزومه";
+
+}
+@section Css
+    {
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css" />
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/filepond/dist/filepond.min.css" />
+}
+    @section Script
+    {
+    <script src="~/MainTheme/vendor/filepond-plugin-file-validate-type/dist/filepond-plugin-file-validate-type.min.js"></script>
+    <script src="~/MainTheme/vendor/filepond-plugin-file-validate-size/dist/filepond-plugin-file-validate-size.min.js"></script>
+    <script src="~/MainTheme/vendor/filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.js"></script>
+    <script src="~/MainTheme/vendor/filepond-plugin-image-crop/dist/filepond-plugin-image-crop.min.js"></script>
+    <script src="~/MainTheme/vendor/filepond-plugin-image-resize/dist/filepond-plugin-image-resize.min.js"></script>
+    <script src="~/MainTheme/vendor/filepond-plugin-image-transform/dist/filepond-plugin-image-transform.min.js"></script>
+    <script src="~/MainTheme/vendor/filepond/dist/filepond.min.js"></script>
+}
+    <div class="container mt-5 mb-md-4 py-5">
+        <!-- Breadcrumb-->
+        <nav class="mb-3 mb-md-4 pt-md-3" aria-label="Breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+                <li class="breadcrumb-item active" aria-current="page">رزومه ساز</li>
+            </ol>
+        </nav>
+        <div class="row justify-content-center pt-4 pb-sm-2">
+            <div class="col-lg-11 col-xl-10">
+                <!-- Steps-->
+                <div class="bg-light rounded-3 py-4 px-md-4 mb-3">
+                    <div class="steps pt-4 pb-1">
+                        <div class="step active">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">1</span></div>
+                            <div class="step-label">اطلاعات فردی</div>
+                        </div>
+                        <div class="step active">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">2</span></div>
+                            <div class="step-label">نمونه کار ها</div>
+                        </div>
+                        <div class="step active">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">3</span></div>
+                            <div class="step-label">سوابق شغلی</div>
+                        </div>
+                        <div class="step active">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">4</span></div>
+                            <div class="step-label">مهارت های حرفه ای</div>
+                        </div>
+                        <div class="step active">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">5</span></div>
+                            <div class="step-label">مشاهده رزومه</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 5: Review-->
+                <form method="post" enctype="multipart/form-data">
+                    <div class="bg-light rounded-3 pt-4 pb-0 px-4 p-md-5 mb-3">
+                        <!-- Resume preview-->
+                        <div class="card shadow-sm p-md-2 mx-n4 mx-md-0">
+                            <div class="card-body p-4">
+                                <div class="d-sm-flex justify-content-between align-items-start pb-4">
+                                    <div class="flex-shrink-0 order-sm-2 mb-4" style="width: 20rem; height: 10rem;">
+                                        @*<input class="file-uploader bg-secondary" type="file"
+                                    data-label-idle="&lt;i class=&quot;d-inline-block fi-camera-plus fs-2 text-muted mb-2&quot;&gt;&lt;/i&gt;&lt;br&gt;&lt;span class=&quot;fw-bold&quot;&gt;تغییر تصویر&lt;/span&gt;"
+                                    data-style-panel-layout="compact" data-image-preview-height="160" data-image-crop-aspect-ratio="1:1"
+                                    data-image-resize-target-width="200" data-image-resize-target-height="200">*@
+                                        <label asp-for="Picture">عکس پروفایل</label>
+                                        <input asp-for="Picture" type="file" accept=".jpg, .png, .jpeg" class="form-control" style="display: inline" />
+
+                                    </div>
+                                    <div class="order-sm-1">
+                                        <h3 class="h4 mb-sm-4 font-vazir">@Model.PersonalPage.FullName</h3>
+                                        <h4 class="h5">اطلاعات کلی</h4>
+                                        <ul class="list-unstyled text-nav">
+                                            <li><span class='text-muted'> حقوق درخواستی: </span> @Model.PersonalPage.MinPay تومان - @Model.PersonalPage.MaxPay تومان</li>
+                                            <li><span class='text-muted'>زمان پرداخت: </span>@Model.PersonalPage.PayDate</li>
+                                        </ul><a class="d-inline-block text-decoration-none py-1" asp-page="./EditPersonalInformation"><i class="fi-edit mt-n1 me-2"></i>ویرایش</a>
+                                    </div>
+                                </div>
+                                <div class="border-top py-4">
+                                    <h4 class="h5">اطلاعات فردی</h4>
+                                    <ul class="list-unstyled text-nav">
+                                        <li><span class='text-muted'>نام و نام خانوادگی: </span> @Model.PersonalPage.FullName</li>
+                                        <li><span class='text-muted'> سن: </span> @Model.PersonalPage.Age</li>
+                                    </ul><a class="d-inline-block text-decoration-none py-1" asp-page="./EditPersonalInformation"><i class="fi-edit mt-n1 me-2"></i>ویرایش</a>
+                                </div>
+                                <div class="border-top py-4">
+                                    <h4 class="h5">سوابق شغلی</h4>
+
+                                    @foreach (var job in Model.JobHistories)
+                                {
+                                    <div class="pt-2 mt-3">
+                                        <h5 class="h6 mb-2">@job.JobTitle</h5>
+                                        <ul class="list-unstyled fs-sm mb-2">
+                                            <li>@job.EmployerName</li>
+                                        </ul>
+                                        <p class="line-h18">@job.Description</p>
+                                        <div class="d-flex">
+                                            <a class="d-inline-block text-decoration-none py-1 ps-3 border-end" asp-page="./EditJobHistory" asp-route-id="@job.Id"><i class="fi-edit mt-n1 me-2"></i>ویرایش</a>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                            <div class="border-top pt-4">
+                                <h4 class="h5">مهارت های شغلی</h4>
+                                @foreach (var skill in Model.Skills)
+                                {
+                                    <div class="pt-2 mt-3">
+                                        <h5 class="h6 mb-2">@skill.Name</h5>
+                                        <ul class="list-unstyled fs-sm mb-2">
+                                            <li>@skill.Value %</li>
+                                        </ul>
+                                        <div class="d-flex">
+                                            <a class="d-inline-block text-decoration-none py-1 ps-3 border-end" asp-page="./EditSkill" asp-route-id="@skill.Id"><i class="fi-edit mt-n1 me-2"></i>ویرایش</a>
+                                        </div>
+                                    </div>
+                                }
+                                <a class="d-inline-block fw-bold text-decoration-none py-1" asp-page="./AddSkill"><i class="fi-plus fs-sm me-2"></i>افزودن مهارت</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation-->
+                <div class="d-flex flex-column flex-sm-row bg-light rounded-3 p-4 px-md-5">
+                    <a class="btn btn-outline-primary btn-lg rounded-pill mb-3 mb-sm-0" asp-page="./AddSkill"><i class="fi-chevron-left fs-sm me-2"></i>مرحله قبل</a>
+                    <button class="btn btn-primary btn-lg rounded-pill me-sm-auto" type="submit">ذخیره رزومه</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>

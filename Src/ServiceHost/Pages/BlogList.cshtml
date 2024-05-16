@@ -1,0 +1,100 @@
+﻿@page "{id?}"
+@model ServiceHost.Pages.BlogListModel
+@{
+    ViewData["Title"] = "مقاله ها";
+}
+
+<div class="container pt-5 pb-lg-4 my-5">
+    <!-- Breadcrumb-->
+    <nav class="mb-3 pb-md-1 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb breadcrumb-light m-0">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">اخبار و مقالات</li>
+        </ol>
+    </nav>
+    <!-- Page title-->
+    <h1 class="text-light mb-4 h4 font-vazir">اخبار و مقالات</h1>
+
+    @if (Model.ArticleCategoryQueryModel != null)
+    {
+        <!-- Article Category-->
+        <article class="row pb-2 pb-md-1 mb-4 mb-md-5">
+            <div class="col-md-7 col-lg-8 mb-lg-0 mb-3 mb-md-0">
+                <a class="d-block position-relative" asp-page="./BlogList" asp-route-id="@Model.ArticleCategoryQueryModel.Slug">
+                    <span class="badge bg-info position-absolute top-0 start-0 m-3 fs-sm">گروه</span><img class="rounded-3" src="~/UploadedFiles/@Model.ArticleCategoryQueryModel.Picture" alt="@Model.ArticleCategoryQueryModel.PictureAlt" title="@Model.ArticleCategoryQueryModel.PictureTitle">
+                </a>
+            </div>
+            <div class="col-md-5 col-lg-4">
+                <h2 class="h6 text-light pt-1 font-nonBold"><a class="nav-link" asp-page="./BlogList" asp-route-id="@Model.ArticleCategoryQueryModel.Slug">@Model.ArticleCategoryQueryModel.Name</a></h2>
+                <p class="d-md-none d-xl-block text-light opacity-70 mb-4 line-h18">
+                    @Model.ArticleCategoryQueryModel.Description
+                </p>
+            </div>
+        </article>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gx-3 gx-md-4 gy-md-5 gy-4 mb-lg-5 mb-4 blog-list">
+            @foreach (var item in Model.ArticleCategoryQueryModel.Articles)
+            {
+                <!-- Latest articles (3 columns)-->
+                <article class="col pb-2 pb-md-1">
+                    <a class="d-block position-relative mb-3" asp-page="./BlogDetails" asp-route-id="@item.Slug">
+                        <img class="d-block rounded-3" src="~/UploadedFiles/@item.Picture" alt="@item.PictureAlt" title="@item.PictureTitle">
+                    </a><a class="fs-sm text-uppercase text-decoration-none" asp-page="./BlogList" asp-route-id="@item.CategorySlug">@item.CategoryName</a>
+                    <h3 class="fs-base text-light pt-1"><a class="nav-link" asp-page="./BlogDetails" asp-route-id="@item.Slug">@item.Title</a></h3>
+                </article>
+
+            }
+        </div>
+
+    }
+    else
+    {
+        if (Model.ArticlesQueryModel.Any())
+        {
+            <div class="row row-cols-1 row-cols-md-2 gy-md-5 gy-4 mb-lg-5 mb-4">
+                @foreach (var item in Model.ArticlesQueryModel.Take(2))
+                {
+                    <article class="col pb-2 pb-md-1">
+                        <a class="d-block position-relative mb-3" asp-page="./BlogDetails" asp-route-id="@item.Slug">
+                            <span class="badge bg-info position-absolute top-0 start-0 m-3 fs-sm">جدید</span>
+                            <img class="d-block rounded-3" src="~/UploadedFiles/@item.Picture" alt="@item.PictureAlt" title="@item.PictureTitle">
+                        </a>
+                        <a class="fs-sm text-uppercase text-decoration-none" asp-page="./BlogList" asp-route-id="@item.CategorySlug">
+                            @item.CategoryName
+                        </a>
+                        <h3 class="h6 font-nonBold text-light mb-2 pt-1">
+                            <a class="nav-link" asp-page="./BlogDetails" asp-route-id="@item.Slug">
+                                @item.Title
+                            </a>
+                        </h3>
+                        <p class="text-light opacity-70 mb-3 line-h18">
+                            @item.ShortDescription
+                        </p>
+                    </article>
+                }
+
+            </div>
+
+            <!-- Latest articles (3 columns)-->
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 gx-3 gx-md-4 gy-md-5 gy-4 mb-lg-5 mb-4 blog-list">
+                @foreach (var item in Model.ArticlesQueryModel.Skip(2))
+                {
+                    <article class="col pb-2 pb-md-1">
+                        <a class="d-block position-relative mb-3" asp-page="./BlogDetails" asp-route-id="@item.Slug">
+                            <img class="d-block rounded-3" src="~/UploadedFiles/@item.Picture" alt="@item.PictureAlt" title="@item.PictureTitle">
+                        </a>
+                        <a class="fs-sm text-uppercase text-decoration-none"  asp-page="./BlogList" asp-route-id="@item.CategorySlug">@item.CategoryName</a>
+                        <h3 class="fs-base text-light pt-1"><a class="nav-link" asp-page="./BlogDetails" asp-route-id="@item.Slug">@item.Title</a></h3>
+                    </article>
+
+                }
+            </div>
+        }
+        else
+        {
+            <div class="text-center">
+                <h4>پیدا نشد</h4>
+            </div>
+        }
+    }
+
+</div>

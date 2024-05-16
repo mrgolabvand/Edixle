@@ -1,0 +1,54 @@
+﻿@using _0_Framework.Application
+@model EdixleQuery.Contracts.PersonalPage.PersonalPageQueryModel
+@inject IAuthHelper authHelper;
+
+@if (Model != null)
+{
+
+    <i class="bi bi-list mobile-nav-toggle d-xl-none" dir="rtl"></i>
+
+    <header id="header">
+        <div class="d-flex flex-column">
+
+            <div class="profile">
+                <img src="~/UploadedFiles/@Model.Picture" alt="@Model.PictureAlt" title="@Model.PictureTitle" class="img-fluid rounded-circle">
+                <h1 class="text-light"><a asp-page="./Index">@Model.FullName</a></h1>
+                <div class="social-links mt-3 text-center">
+              @*      @if (!string.IsNullOrWhiteSpace(Model.Twitter))
+                    {
+                        <a href="@Model.Twitter" class="twitter"><i class="bx bxl-twitter"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Telegram))
+                    {
+                        <a href="@Model.Telegram" class="telegram"><i class="bx bxl-telegram"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Instagram))
+                    {
+                        <a href="@Model.Instagram" class="instagram"><i class="bx bxl-instagram"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.Linkedin))
+                    {
+                        <a href="@Model.Linkedin" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                    }*@
+                </div>
+            </div>
+
+            <nav id="navbar" class="nav-menu navbar">
+                <ul>
+                    <li><a asp-page="./Index" class="nav-link scrollto "><i class="bx bx-minus-back"></i> <span>سایت</span></a></li>
+                    <li><a asp-page="./PersonalPage" class="nav-link scrollto active"><i class="bx bx-home"></i> <span>صفحه اصلی</span></a></li>
+                    @if (!string.IsNullOrWhiteSpace(Model.About))
+                    {
+                        <li><a href="#about" class="nav-link scrollto"><i class="bx bx-user"></i> <span>درباره</span></a></li>
+                    }
+                  @*  @if (!string.IsNullOrWhiteSpace(Model.))
+                    {
+                        <li><a href="#resume" class="nav-link scrollto"><i class="bx bx-file-blank"></i> <span>رزومه</span></a></li>
+                    }*@
+                    <li><a href="#portfolio" class="nav-link scrollto"><i class="bx bx-book-content"></i> <span>نمونه کار ها</span></a></li>
+                    <li><a asp-page="./PersonalPageSettings" class="nav-link scrollto"><i class="bx bx-server"></i> <span>تنظیمات</span></a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+}

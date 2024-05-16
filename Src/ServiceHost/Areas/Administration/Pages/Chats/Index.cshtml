@@ -1,0 +1,119 @@
+﻿@page
+@using CommentManagement.Infrastructure.Configuration.Permissions
+@using _0_Framework.Application
+@model ServiceHost.Areas.Administration.Pages.Chats.IndexModel
+@{
+}
+
+@{
+    ViewData["title"] = "مدیریت چت های کاری";
+}
+
+
+
+<div class="row" id="ProductCategoriesDiv">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">لیست چت های کاری</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <table id="datatable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>عنوان</th>
+                                    <th>ایدی و شماره کارت کارفرما</th>
+                                    <th>ایدی  و شماره کارت ادیتور</th>
+                                    <th>درخواست داوری</th>
+                                    <th>پرداخت شده</th>
+                                    <th>هزینه</th>
+                                    <th>نتیجه داوری</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var chatRoom in Model.ChatRooms)
+                                {
+                                    <tr>
+                                        <td>@chatRoom.Id</td>
+                                        <td>@chatRoom.Title</td>
+                                        <td>@chatRoom.ReceiverId : @chatRoom.ReceiverCard</td>
+                                        <td>@chatRoom.SenderId : @chatRoom.SenderCard</td>
+                                        <td>
+                                            <div class="text-center">
+                                                @if (chatRoom.IsAskedForJudgment)
+                                                {
+                                                    <i class="fa fa-check text-success"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-stop text-danger"></i>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="text-center">
+                                                @if (chatRoom.IsPayed)
+                                                {
+                                                    <i class="fa fa-check text-success"></i>
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa fa-stop text-danger"></i>
+                                                }
+                                            </div>
+                                        </td>
+                                        <td>@chatRoom.Price.ToMoney()</td>
+                                        <td>
+                                            <div class="text-center">
+
+                                                @if (chatRoom.IsAskedForJudgment)
+                                                {
+                                                    @if (chatRoom.AdminJudgmentIsAcceptProject && !chatRoom.AdminJudgmentIsRejectProject)
+                                                    {
+                                                        <span class="text-success">به نفع ادیتور</span>
+                                                    }
+                                                    @if (!chatRoom.AdminJudgmentIsAcceptProject && chatRoom.AdminJudgmentIsRejectProject)
+                                                    {
+                                                        <span class="text-danger">به نفع کارفرما</span>
+                                                    }
+                                                    @if (!chatRoom.AdminJudgmentIsAcceptProject && !chatRoom.AdminJudgmentIsRejectProject)
+                                                    {
+                                                        <span class="text-warning">در انتظار</span>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-dark">_</span>
+                                                }
+                                            </div>
+
+                                        </td>
+                                        <td>
+                                            <a asp-area="Administration" asp-page="/Chats/BusinessChat" asp-route-id="@chatRoom.Id" asp-route-editorId="@chatRoom.SenderId" class="btn btn-success">نمایش</a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/adminTheme/assets/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminTheme/assets/datatables/dataTables.bootstrap.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#datatable').dataTable();
+        });
+    </script>
+}

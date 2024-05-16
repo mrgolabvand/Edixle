@@ -1,0 +1,106 @@
+﻿@page
+@model ServiceHost.Pages.AddPersonalInformationModel
+@{
+    ViewData["Title"] = "اطلاعات فردی";
+}
+
+
+<div class="container mt-5 mb-md-4 py-5">
+    <!-- Breadcrumb-->
+    <nav class="mb-3 mb-md-4 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+
+            <li class="breadcrumb-item active" aria-current="page">رزومه ساز</li>
+        </ol>
+    </nav>
+    <form method="post">
+        <!-- Page content-->
+        <div class="row justify-content-center pb-sm-2">
+            <div class="col-lg-11 col-xl-10">
+                <!-- Page title-->
+                <div class="text-center pb-4 mb-3">
+                    <h1 class="h4 mb-4 font-vazir">ایجاد رزومه آنلاین</h1>
+                </div>
+                <!-- Steps-->
+                <div class="bg-light rounded-3 py-4 px-md-4 mb-3">
+                    <div class="steps pt-4 pb-1">
+                        <div class="step active">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">1</span></div>
+                            <div class="step-label">اطلاعات فردی</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">2</span></div>
+                            <div class="step-label">نمونه کار ها</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">3</span></div>
+                            <div class="step-label">سوابق شغلی</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">4</span></div>
+                            <div class="step-label">مهارت های حرفه ای</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">5</span></div>
+                            <div class="step-label">مشاهده رزومه</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Step 1: Basic Info-->
+                <div class="bg-light rounded-3 p-4 p-md-5 mb-3">
+                    <h2 class="h5 font-vazir mb-4"><i class="fi-info-circle text-primary fs-5 mt-n1 me-2"></i>اطلاعات فردی</h2>
+                    <div class="row">
+                        @if (Model.Message != null)
+                        {
+                            <div class="col-sm-12 mb-4">
+                                <span class='text-danger'>@Model.Message</span>
+                            </div>
+                        }
+                        
+                        <div class="col-sm-12 mb-4">
+                            <label class="form-label" for="pr-fn"> نام <span class='text-danger'>*</span></label>
+                            <input asp-for="PersonalPage.FullName" class="form-control form-control-lg" type="text" placeholder="نام خود را وارد کنید" required>
+                        </div>
+                        <div class="col-sm-6 mb-4">
+                            <label class="form-label" for="pr-birth-date">سن <span class='text-danger'>*</span></label>
+                            <div class="input-group input-group-lg">
+                                <input asp-for="PersonalPage.Age" class="form-control date-picker rounded ps-5" type="number" placeholder="سن خود را وارد کنید" data-datepicker-options="{&quot;altInput&quot;: true, &quot;altFormat&quot;: &quot;F j, Y&quot;, &quot;dateFormat&quot;: &quot;Y-m-d&quot;}"><i class="fi-calendar text-muted position-absolute top-50 end-0 translate-middle-y me-3"></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 mb-4">
+                            <label class="form-label" for="pr-phone">درباره</label>
+                            <textarea asp-for="PersonalPage.About" class="form-control form-control-lg" rows="4" type="text" placeholder="درباره خودتان توضیح دهید." ></textarea>
+                        </div>
+                    </div>
+                    <div class="border-top pt-4">
+                        <div class="row gx-2 gx-lg-3 gx-xl-4">
+                            <label class="form-label fw-bold pb-1 mb-2">شماره کارت بانکی<span class='text-danger'>*</span></label>
+                            <div class="col-12 mb-3">
+                                <input asp-for="PersonalPage.Card" required class="form-control form-control-lg" type="number" placeholder="شماره کارت بانکی">
+                            </div>
+                            <label class="form-label fw-bold pb-1 mb-2">حداقل و حداکثر حقوق درخواستی<span class='text-danger'>*</span></label>
+                            <div class="col-md-9 mb-3 mb-md-0">
+                                <div class="d-flex align-items-center">
+                                    <input asp-for="PersonalPage.MinPay" class="form-control form-control-lg" type="number" step="100" min="300" max="1000000000" placeholder="حداقل حقوق به تومان (مثال: 100000)">
+                                    <div class="mx-2">&mdash;</div>
+                                    <input asp-for="PersonalPage.MaxPay" class="form-control form-control-lg" type="number" step="100" min="500" max="1000000000" placeholder="حداکثر حقوق به تومان (مثال: 800000)">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select asp-for="PersonalPage.PayDate" class="form-select form-select-lg">
+                                    <option value="ماهیانه">ماهیانه</option>
+                                    <option value="ساعتی">ساعتی</option>
+                                    <option value="هفتگی">هفتگی</option>
+                                    <option value="سالیانه">سالیانه</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Navigation-->
+                <div class="d-flex flex-column flex-sm-row bg-light rounded-3 p-4 px-md-5"><button type="submit" class="btn btn-primary btn-lg rounded-pill ms-sm-auto">مرحله بعد<i class="fi-chevron-right fs-sm ms-2"></i></button></div>
+            </div>
+        </div>
+    </form>
+</div>

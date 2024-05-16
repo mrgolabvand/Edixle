@@ -1,0 +1,161 @@
+﻿@page
+@model ServiceHost.Pages.EditorProfileWalletModel
+@{
+    ViewData["Title"] = "کیف پول";
+
+}
+
+<div class="position-absolute top-0 start-0 w-100 bg-dark" style="height: 398px;"></div>
+<div class="modal fade" id="modalAboutEditorWallet" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">کیف پول</h4>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body fs-sm">
+                <p>
+                    پول پروژه هایی که با موفقیت انجام میدی به کیف پولت اضافه میشه که
+                    با کلیک روی دکمه 'دریافت پول' مقداری که توی کیف پولت هست از طرف نمونه به حساب بانکی که شمارشو توی 
+                    اطلاعات شخصیت وارد کردی، واریز میشه
+                </p>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-sm" type="button" data-bs-dismiss="modal">فهمیدم</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container content-overlay mt-5 mb-md-4 py-5">
+
+
+
+    <!-- Breadcrumb-->
+    <nav class="mb-3 mb-md-4 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb breadcrumb-light">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">تنظیمات پروفایل من</li>
+        </ol>
+    </nav>
+    <!-- Page card like wrapper-->
+    <div class="bg-light shadow-sm rounded-3 p-4 p-md-5 mb-2">
+        <!-- Account header-->
+        <div class="d-flex align-items-start justify-content-between pb-4 mb-2">
+            <div class="d-flex align-items-start">
+                <div class="position-relative flex-shrink-0">
+                    <img class="rounded-circle" src="~/UploadedFiles/@Model.PersonalPageViewModel.Picture" width="100">
+                    <a class="btn btn-icon btn-light btn-xs rounded-circle shadow-sm position-absolute start-0 bottom-0" asp-page="./ResumeReview" data-bs-toggle="tooltip" title="تغییر تصویر"><i class="fi-pencil fs-xs"></i></a>
+                </div>
+                <div class="pe-3 pe-sm-4">
+                    <h3 class="h5">@Model.PersonalPageViewModel.FullName</h3>
+                    <ul class="list-unstyled fs-sm mb-0">
+                        <li class="d-flex text-nav text-break"><i class="fi-mail opacity-60 mt-1 me-2"></i><span>@Model.AccountQueryModel.Email</span></li>
+                    </ul>
+                </div>
+            </div><a class="nav-link p-0 d-none d-md-block" asp-page="./Login" asp-page-handler="Logout"><i class="fi-logout mt-n1 me-2"></i>خروج</a>
+        </div>
+        <!-- Account menu--><a class="btn btn-outline-primary btn-lg rounded-pill w-100 d-md-none" href="#account-nav" data-bs-toggle="collapse"><i class="fi-align-justify me-2"></i>منو پروفایل من</a>
+        <div class="collapse d-md-block" id="account-nav">
+            <ul class="nav nav-pills flex-column flex-md-row pt-3 pt-md-0 pb-md-4 border-bottom-md">
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./EditorProfile" aria-current="page"><i class="fi-settings mt-n1 me-2 fs-base"></i>تنظیمات پروفایل من</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./AddPortfolio"><i class="fi-cloud-upload mt-n1 me-2 fs-base"></i>نمونه کار های من</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./AddJobHistory"><i class="fi-user-check mt-n1 me-2 fs-base"></i>سابقه کاری</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./AddSkill"><i class="fi-education mt-n1 me-2 fs-base"></i>مهارت ها</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./EditorProfileProjectOffers"><i class="fi-send mt-n1 me-2 fs-base"></i>درخواست ها</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./EditorProfileJobOffers"><i class="fi-cup mt-n1 me-2 fs-base"></i>پیشنهاد های کاری</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./BusinessChat"><i class="fi-chat-right mt-n1 me-2 fs-base"></i>پیام های کاری</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./EditorProfilePlans"><i class="fi-gift mt-n1 me-2 fs-base"></i>پلن ها</a></li>
+                <li class="nav-item mb-md-0 mt-2"><a class="nav-link active" asp-page="./EditorProfileWallet"><i class="fi-wallet mt-n1 me-2 fs-base"></i>کیف پول</a></li>
+                <li class="nav-item d-md-none"><a class="nav-link" asp-page="./Login" asp-page-handler="Logout"><i class="fi-logout mt-n1 me-2 fs-base"></i>خروج</a></li>
+            </ul>
+        </div>
+
+        <!-- Page title-->
+        <div class="d-flex align-items-center  justify-content-between py-4 mt-3 mb-2">
+            <h1 class="h4 mb-0 font-vazir">کیف پول</h1>
+        </div>
+        <!-- Grid-->
+        <div class="row g-2 g-md-4">
+
+            <div class="col-12">
+                <div class=" icon-box card card-body border-0 shadow-lg card-hover text-center">
+                    <div class="icon-box-media bg-faded-primary text-primary rounded-circle mb-3 mx-auto">
+                        <i class="fi-wallet"></i>
+                    </div>
+                    <h3 class="icon-box-title fs-base mb-2">موجودی : <span class="text-accent">@Model.Wallet.CurrentCredit.ToString("N0")</span> تومان </h3>
+                    <h3 class="icon-box-title fs-base mb-2">کارمزد نمونه (10 درصد) : <span class="text-accent">@(((Model.Wallet.CurrentCredit * 10) / 100).ToString("N0"))</span> تومان </h3>
+                    <h3 class="icon-box-title fs-base mb-0">وجه قابل دریافت : <span class="text-accent">@((Model.Wallet.CurrentCredit - ((Model.Wallet.CurrentCredit * 10) / 100)).ToString("N0"))</span> تومان </h3>
+                    @if (Model.Wallet.IsAskedForSettlement)
+                    {
+                        <a class="btn btn-dark mt-3 mb-1"><i class="fi-check"></i> موجودی تا حداکثر 24 ساعت آینده به حساب شما واریز میگردد. </a>
+                    }
+                    @if (!@Model.Wallet.IsAskedForSettlement && Model.Wallet.CurrentCredit > 0)
+                    {
+                        <a class="btn btn-accent bg-gradient mt-3 mb-1" asp-page-handler="AskForSettlement"><i class="fi-arrow-down"></i> دریافت پول </a>
+                    }
+                    @if (!@Model.Wallet.IsAskedForSettlement && Model.Wallet.CurrentCredit <= 0)
+                    {
+                        <a class="btn btn-dark text-white mt-3 mb-1"><i class="fi-info-circle"></i> موجودی کافی نیست </a>
+                    }
+                    <button type="button" class="btn btn-outline-info text-dark" data-bs-toggle="modal" data-bs-target="#modalAboutEditorWallet"><i class="fi-info-circle text-info"></i> کار کیف پول چیه؟ </button>
+
+                </div>
+            </div>
+
+        </div>
+        <hr class="mt-5"/>
+        <!-- Page title-->
+        <div class="d-flex align-items-center  justify-content-between py-4 mt-3 mb-2">
+            <h1 class="h4 mb-0 font-vazir">تراکنش ها</h1>
+        </div>
+        <div class="col-12">
+            <div class="table-responsive mb-3">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>نام کاربری دریافت کننده</th>
+                        <th>مبلغ</th>
+                        <th>توضیحات</th>
+                        <th>نوع</th>
+                        <th>نتیجه عملیات</th>
+                        <th>تاریخ</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (Model.Wallet.Transactions == null || Model.Wallet.Transactions.Count == 0)
+                    {
+                        <tr>
+                            <td>خالی</td>
+                            <td>خالی</td>
+                            <td>خالی</td>
+                            <td>خالی</td>
+                            <td>خالی</td>
+                            <td>خالی</td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var transaction in Model.Wallet.Transactions)
+                        {
+                            <tr>
+                                <td>@transaction.ReceiverAccountName</td>
+                                <td>@transaction.Amount.ToString("N0")</td>
+                                <td>@transaction.Description</td>
+                                <td>
+                                    <span class="text-@(transaction.IsDeposit ? "success" : "danger")">@(transaction.IsDeposit ? "دریافت" : "برداشت")</span>
+                                </td>
+                                <td>
+                                    <span class="text-@(transaction.IsSuccess ? "success" : "danger")">@(transaction.IsSuccess ? "موفق" : "ناموفق")</span>
+                                </td>
+                                <td>@transaction.CreationDate</td>
+                            </tr>
+                        }
+                    }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

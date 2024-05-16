@@ -1,0 +1,133 @@
+﻿@page "{id}"
+@model ServiceHost.Pages.ProjectDetailsModel
+@{
+    ViewData["Title"] = "پروژه";
+
+}
+
+<div class="container mt-5 mb-md-4 py-5">
+    <!-- Breadcrumb-->
+    <nav class="mb-3 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb breadcrumb-light">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">جزئیات پروژه</li>
+        </ol>
+    </nav>
+    <!-- Title + Sharing-->
+    <div class="d-sm-flex align-items-end align-items-md-center justify-content-between position-relative mb-4" style="z-index: 1025;">
+        <div class="me-3">
+            <h1 class="h5 text-light mb-md-0 fw-500 font-nonBold">@Model.Project.Title</h1>
+            <div class="d-md-none">
+                <div class="d-flex align-items-center mb-3">
+                    <div class="h3 mb-0 text-light">@Model.Project.Budget تومان</div>
+                </div>
+                <div class="d-flex flex-wrap align-items-center text-light mb-2">
+                    <div class="text-nowrap border-end border-light ps-3 ms-3"><i class="fi-info-circle fs-lg opacity-70 me-2"></i><span class="align-middle">@(Model.Project.IsOpened ? "باز" : "بسته")</span></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <!-- Specs-->
+            <div class="py-3 mb-3">
+                <h2 class="h5 text-light mb-4 fw-500 font-nonBold">مشخصات</h2>
+                <div class="row text-light">
+                    <div class="col-sm-6 col-md-12 col-lg-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">تاریخ انتشار:<span class="opacity-70 me-1">@Model.Project.CreationDate</span></li>
+                            <li class="mb-2">وضعیت:<span class="opacity-70 me-1">@(Model.Project.IsOpened ? "باز" : "بسته")</span></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-6 col-md-12 col-lg-6">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">تاریخ پایان:<span class="opacity-70 me-1">@Model.Project.ExpireDate</span></li>
+                            <li class="mb-2">بودجه:<span class="opacity-70 me-1">@Model.Project.Budget تومان</span><i class='fi-alert-circle fs-sm text-primary ms-2' data-bs-toggle='tooltip' title='حداکثر بودجه'></i></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!-- Description-->
+            <div class="pb-4 mb-3">
+                <h2 class="h5 fw-500 font-nonBold text-light pt-4 mt-3">توضیحات </h2>
+                <p class="text-light opacity-70 mb-1 line-h18">@Model.Project.Description</p>
+            </div>
+            <!-- Post meta-->
+            <div class="d-flex flex-wrap border-top border-light fs-sm text-light pt-4 pb-5 pb-md-2">
+                <div class="ps-3"><span class="opacity-70">انتشار: @Model.Project.CreationDate</span></div>
+            </div>
+        </div>
+        <!-- Sidebar-->
+        <div class="col-md-5 pt-5 pt-md-0" style="margin-top: -6rem;">
+            <div class="sticky-top pt-5">
+                <div class="d-none d-md-block pt-5">
+                    <div class="h4 fw-500 text-light font-nonBold">@Model.Project.Budget تومان</div>
+                    <div class="d-flex align-items-center text-light pb-4 mb-2">
+                        <div class="text-nowrap me-3 ps-3"><i class="fi-info-circle fs-sm opacity-70 me-2"></i><span class="align-middle">@(Model.Project.IsOpened ? "باز" : "بسته")</span></div>
+                    </div>
+                </div>
+                <div class="card card-light card-body mb-4">
+                    <div class="text-light mb-2">کارفرما</div><a class="d-flex align-items-center text-decoration-none mb-3">
+                        <img class="rounded-circle" src="~/UploadedFiles/@Model.Project.EmployerPicture" width="48">
+                        <div class="pe-2">
+                            <h5 class="text-light mb-0 fw-500 font-nonBold">@Model.Project.EmployerName</h5>
+                        </div>
+                    </a><a class="text-light" asp-page="./SearchProjects">مشاهده سایر پروژه های دیگر</a>
+
+                    <div class="pt-4 mt-2">
+                        <br><a class="btn btn-primary btn-lg" href="#send-mail" data-bs-toggle="collapse"><i class="fi-chat-left me-2"></i>ثبت پیشنهاد برای پروژه</a>
+                        <div class="collapse" id="send-mail">
+                            @if (Model.IsEditor)
+                            {
+
+                                @if (Model.EditorPlan.IsPlanActive)
+                                {
+                                    <div class="mt-3 mb-2 text-center border-bottom border-top border-warning">
+                                        <span class="d-block mt-3 mb-1">پیشنهاد های ویژه شما : <span class="text-warning">@Model.EditorPlan.VipProjectOfferCount</span></span>
+                                        <a asp-page="./ShowOtherOffers" asp-route-projectId="@Model.Project.Id" class="btn btn-warning text-dark bg-warning rounded-pill mb-3">نمایش سایر پیشنهاد ها</a>
+                                    </div>
+                                }
+                                @if (Model.Project.IsOpened)
+                                {
+                                    <form method="post" class="pt-4">
+                                        <div class="align-items-center text-light mb-3">
+                                            <div><i class="fi-alert-circle fs-sm text-primary ms-2"></i><span class="align-middle">کارمزد نمونه: 10 درصد</span></div>
+                                            <div><i class="fi-alert-circle fs-sm text-danger ms-2"></i><a class="align-middle" target="_blank" href="http://example.com/BlogDetails/31548760361421024774">حتما قبل از ارسال پیشنهاد این مقاله رو بخون!</a></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <input asp-for="ProjectOffer.Title" class="form-control form-control-light" type="text" placeholder="عنوان پیشنهاد شما" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <input asp-for="ProjectOffer.Price" class="form-control form-control-light" type="number" placeholder="قیمت پیشنهادی" required />
+                                        </div>
+                                        <div class="mb-3">
+                                            <textarea asp-for="ProjectOffer.Description" class="form-control form-control-light" rows="5" placeholder="توضیحات شما..." required></textarea>
+                                        </div>
+                                        <input type="hidden" asp-for="ProjectOffer.ProjectId" value="@Model.Project.Id" />
+                                        <input type="hidden" asp-for="EmployerPageId" value="@Model.Project.EmployerPageId" />
+                                        <button class="btn btn-outline-primary" type="submit">ارسال</button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <div class="mt-3 mb-2 text-center border-bottom border-top border-warning">
+                                        <span>پروژه بسته شده است.</span>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="mt-3 mb-2 text-center border-bottom border-top border-warning">
+                                    <span>فقط ادیتور ها میتوانند پیشنهاد ارسال کنند.</span>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

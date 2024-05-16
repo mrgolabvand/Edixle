@@ -1,0 +1,151 @@
+﻿@page "{id}"
+@model ServiceHost.Pages.EditorPageSendEmploymentOfferModel
+@{
+    Layout = "Shared/_EditorPageLayout";
+    ViewData["Title"] = "ادیتور";
+    ViewData["MetaDescription"] = Model.PersonalPage.FullName;
+    ViewData["Keywords"] = Model.PersonalPage.FullName;
+}
+
+@if (Model.PersonalPage != null)
+{
+    <div class="row sticky-parent">
+
+        <aside class="col-12 col-md-12 col-xl-3">
+            <div class="sidebar box-outer sticky-column">
+
+                <div class="sidebar__base-info">
+                    <figure class="avatar-box">
+                        <img src="~/UploadedFiles/@Model.PersonalPage.Picture" alt="@Model.PersonalPage.PictureAlt" title="@Model.PersonalPage.PictureTitle">
+                    </figure>
+                    <div class="text-xl-center">
+                        <h3 class="title title--h3 sidebar__name">@Model.PersonalPage.FullName</h3>
+                        <div class="badge"> @Model.PersonalPage.ReviewsTotalRate از 10</div>
+                    </div>
+                    <button class="btn btn--small btn--icon-right sidebar__btn js-btn-toggle"><span>نمایش اطلاعات بیشتر</span><i  class="fi-arrow-down" style="color: #ffd36a;"></i></button>
+                </div>
+                <div class="sidebar__additional-info js-show">
+                    <div class="separation"></div>
+                    <ul class="details-info">
+
+                        <li class="details-info__item">
+                            <span class="box box--s2 icon-box"><i style="color: #ffd36a;" class="fi-briefcase"></i></span>
+                            <div class="contacts-block__info">
+                                <span class="overhead">وضعیت کار</span>
+                                <a class="text-overflow" title="@(Model.PersonalPage.IsBusy ? "مشغول" : "آزاد")">@(Model.PersonalPage.IsBusy ? "مشغول" : "آزاد")</a>
+                            </div>
+                        </li>
+                        @if (!string.IsNullOrWhiteSpace(Model.PersonalPage.MinPay) && !string.IsNullOrWhiteSpace(Model.PersonalPage.MaxPay))
+                        {
+                            <li class="details-info__item">
+                                <span class="box box--s2 icon-box"><i style="color: #ffd36a;" class="fi-accounting"></i></span>
+                                <div class="contacts-block__info">
+                                    <span class="overhead">حقوق درخواستی (تومان)</span>
+                                    <span class="" title="@Model.PersonalPage.MinPay - @Model.PersonalPage.MaxPay">@Model.PersonalPage.MinPay - @Model.PersonalPage.MaxPay</span>
+                                </div>
+                            </li>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(Model.PersonalPage.PayDate))
+                        {
+
+                            <li class="details-info__item">
+                                <span class="box box--s2 icon-box"><i style="color: #ffd36a;" class="fi-calendar"></i></span>
+                                <div class="contacts-block__info">
+                                    <span class="overhead">زمان پرداخت حقوق</span>
+                                    <span class="text-overflow" title="@Model.PersonalPage.PayDate">@Model.PersonalPage.PayDate</span>
+                                </div>
+                            </li>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(Model.PersonalPage.Age))
+                        {
+                            <li class="details-info__item">
+                                <span class="box box--s2 icon-box"><i style="color: #ffd36a;" class="fi-user"></i></span>
+                                <div class="contacts-block__info">
+                                    <span class="overhead">سن</span>
+                                    <span class="text-overflow" title="@Model.PersonalPage.Age">@Model.PersonalPage.Age</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                    <div class="separation d-xl-none"></div>
+                    @*
+                <div class="social">
+                <a class="social__link" href="https://www.facebook.com/"><i class="feathericon-facebook"></i></a>
+                <a class="social__link" href="https://www.behance.com/"><i class="feathericon-twitter"></i></a>
+                <a class="social__link" href="https://www.linkedin.com/"><i class="feathericon-instagram"></i></a>
+                </div>*@
+                </div>
+            </div>
+        </aside>
+
+        <div class="col-12 col-md-12 col-xl-9">
+            <div class="box-outer">
+
+                <div class="nav-container">
+                    <ul class="nav">
+                        <li class="nav__item"><a asp-page="./EditorPage" asp-route-id="@Model.PersonalPage.Slug">درباره من</a></li>
+                        <li class="nav__item"><a asp-page="./EditorPagePortfolios" asp-route-id="@Model.PersonalPage.Slug">نمونه کار ها</a></li>
+                        <li class="nav__item"><a asp-page="./EditorPageChoiceOffer" asp-route-id="@Model.PersonalPage.Slug">ارسال پیشنهاد</a></li>
+                        <li class="nav__item"><a asp-page="./Index">example.com</a></li>
+                    </ul>
+                </div>
+
+
+                <div class="pb-0 pb-sm-2">
+                    <h1 class="title title--h1 title__separate">ارسال پیشنهاد استخدام</h1>
+                    <h1 class="title title--h3 ">هزینه استخدام از نمونه 20,000 تومان میباشد.</h1>
+                    <h4 class="title title--h4 title__separate">با ارسال پیشنهاد استخدام میتونید به صورت بلند مدت با ادیتور همکاری کنید و راه های ارتباطی دیگه ای بجز نمونه داشته باشید.
+                        پیشنهاد استخدام تنها پیشنهادیه که میشه بعد از قبول شدن پیشنهاد، لینک، ایدی، شماره و ... رو در چت ارسال کرد.
+                    </h4>
+                </div>
+                @if (Model.IsEmployer)
+                {
+
+                    <form method="post" class="contact-form" data-toggle="validator">
+                        <div class="row">
+                            <div class="form-group col-12 col-md-12">
+                                <input type="text" class="input form-control" asp-for="JobOffer.Title" placeholder="عنوان پیشنهاد استخدام" required="required" autocomplete="on" oninvalid="setCustomValidity('لطفا عنوان پیشنهاد را وارد کنید.')" onkeyup="setCustomValidity('')">
+                                <div class="help-block with-errors"></div>
+                            </div>
+                            <div class="form-group col-12 col-md-12">
+                                <textarea class="textarea form-control" asp-for="JobOffer.Description" placeholder="توضیحات درمورد شرایط کار، حقوق و ..." rows="4" required="required" oninvalid="setCustomValidity('لطفا پیام خود را وارد کنید.')" onkeyup="setCustomValidity('')"></textarea>
+                                <div class="help-block with-errors"></div>
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="JobOffer.EditorPageId" value="@Model.PersonalPage.Id" />
+                        <div class="row">
+                            <div class="col-12 col-md-6 order-2 order-md-1 text-center text-md-start">
+                                <div id="validator-contact" class="hidden"></div>
+                            </div>
+                            <div class="col-12 col-md-6 order-1 order-md-2 text-end">
+                                <button type="submit" class="btn"><i style="color: #ffd36a;" class="fi-send"></i> ارسال </button>
+                            </div>
+                        </div>
+                    </form>
+                }
+                else if (Model.IsEditor)
+                {
+                    <div class="mt-5 mb-5 text-center">
+                        <span class="h5">فقط کارفرما ها می توانند از این بخش استفاده کنند.</span>
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-5 mb-5 text-center">
+                        <span class="h5">می توانید ابتدا به عنوان کارفرما <a asp-page="./Register">ثبت نام کنید</a>  و سپس پیشنهاد خود را ارسال کنید.</span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="text-center">
+            <h2>صفحه در دسترس نمی باشد!</h2>
+        </div>
+    </div>
+}

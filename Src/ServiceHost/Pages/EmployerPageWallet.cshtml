@@ -1,0 +1,158 @@
+﻿@page
+@using _0_Framework.Application
+@using System.Globalization
+@model ServiceHost.Pages.EmployerPageWalletModel
+@{
+    ViewData["Title"] = "پروژه ها";
+}
+
+<div class="container pt-5 pb-lg-4 mt-5 mb-sm-2">
+
+    <div class="modal fade" id="modalAboutEmployerWallet" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-scrollable" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">کیف پول</h4>
+                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body fs-sm">
+                    <p>
+                        با استفاده از کیف پول میتونی بعد از تعریف پروژه و ارسال شدن پیشنهاد ادیتور ها برای پروژت، همزمان با چندین ادیتور چت کنی و در اخر یکیشون رو انتخاب کنی.
+                    </p>
+                    <p>
+                        در اخر هم که ویدیو رو از ادیتور گرفتی روی "تایید پروژه" کلیک میکنی تا پول به کیف پول ادیتور انتقال پیدا کنه.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary btn-sm" type="button" data-bs-dismiss="modal">فهمیدم</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breadcrumb-->
+    <nav class="mb-4 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb breadcrumb-light">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+            <li class="breadcrumb-item"><a asp-page="./EmployerPage">اکانت من</a></li>
+            <li class="breadcrumb-item active" aria-current="page">اطلاعات فردی</li>
+        </ol>
+    </nav>
+    <!-- Page content-->
+    <div class="row">
+        <!-- Sidebar-->
+        <aside class="col-lg-4 col-md-5 pe-xl-4 mb-5">
+            <!-- Account nav-->
+            <div class="card card-body card-light border-0 shadow-sm pb-1 me-lg-1">
+                <div class="d-flex d-md-block d-lg-flex align-items-start pt-lg-2 mb-4">
+                    <img class="rounded-circle" src="~/UploadedFiles/@Model.EmployerPageViewModel.Picture" width="48">
+                    <div class="pt-md-2 pt-lg-0 pe-3 pe-md-0 pe-lg-3">
+                        <h2 class="fs-lg text-light mb-0 fw-500">@Model.EmployerPageViewModel.FullName</h2>
+                        <ul class="list-unstyled fs-sm mt-3 mb-0">
+                            <li><a class="nav-link-light fw-normal"><i class="fi-folder opacity-60 me-2"></i>@Model.EmployerPageViewModel.CreationDate</a></li>
+                        </ul>
+                    </div>
+                </div><a class="btn btn-primary btn-lg w-100 mb-3" asp-page="./AddProject"><i class="fi-plus me-2"></i>ثبت پروژه</a>
+                <a class="btn btn-outline-light d-block d-md-none w-100 mb-3" href="#account-nav" data-bs-toggle="collapse"><i class="fi-align-justify me-2"></i>منو</a>
+                <div class="collapse d-md-block mt-3" id="account-nav">
+                    <div class="card-nav">
+                        <a class="card-nav-link" asp-page="./EmployerPage" asp-page-handler="Validate"><i class="fi-user me-2"></i>اطلاعات فردی</a>
+                        <a class="card-nav-link" asp-page="./EmployerPageProjects"><i class="fi-video me-2"></i>پروژه ها</a>
+                        <a class="card-nav-link" asp-page="./BusinessChat"><i class="fi-chat-right me-2"></i> پیام های کاری</a>
+                        <a class="card-nav-link" asp-page="./EmployerPageJobOffers"><i class="fi-alarm me-2"></i>پیشنهاد های ارسال شده</a>
+                        <a class="card-nav-link active" asp-page="./EmployerPageWallet"><i class="fi-wallet me-2"></i>کیف پول</a>
+                        <a class="card-nav-link" asp-page="./Login" asp-page-handler="Logout"><i class="fi-logout me-2"></i>خروج</a>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Content-->
+        <div class="col-lg-8 col-md-7 mb-5">
+            <!-- Grid-->
+            <div class="row g-2 g-md-4">
+
+                <div class="col-12 pb-3 border-light border-bottom text-center">
+                    <div class="icon-box card card-light card-body border-0 shadow-lg card-hover text-center">
+                        <div class="icon-box-media bg-faded-info text-accent rounded-circle mb-3 mx-auto">
+                            <i class="fi-wallet"></i>
+                        </div>
+                        <h3 class="icon-box-title fs-base text-light mb-2">موجودی : <span class="text-accent">@Model.Wallet.CurrentCredit.ToString("N0")</span> تومان</h3>
+                        @if (@Model.Wallet.IsAskedForSettlement)
+                        {
+                            <a class="btn btn-dark text-white mt-3 mb-1"><i class="fi-check"></i> موجودی تا حداکثر 24 ساعت آینده به حساب شما واریز میگردد. </a>
+                        }
+                        @if (!@Model.Wallet.IsAskedForSettlement && Model.Wallet.CurrentCredit > 0)
+                        {
+                            <a class="btn btn-accent bg-gradient mt-3 mb-1" asp-page-handler="AskForSettlement"><i class="fi-arrow-down"></i> دریافت پول </a>
+                        }
+                        @if (!@Model.Wallet.IsAskedForSettlement && Model.Wallet.CurrentCredit <= 0)
+                        {
+                            <a class="btn btn-dark text-white mt-3 mb-1"><i class="fi-info-circle"></i> موجودی کافی نیست </a>
+                        }
+                        <button type="button" class="btn btn-outline-info text-light" data-bs-toggle="modal" data-bs-target="#modalAboutEmployerWallet"><i class="fi-info-circle text-info"></i> استفاده از کیف پول به چه دردی میخوره؟ </button>
+                    </div>
+                    <form class="row" method="post" asp-page-handler="Pay">
+                        <button class="btn btn-accent bg-gradient mt-3 mb-1 col-lg-3" type="submit"><i class="fi-plus-square"></i> پرداخت</button>
+                        <div class="col-lg-9">
+                            <div>
+                                <input asp-for="Transaction.Amount" class="form-control form-control-light mt-3" type="number" placeholder="مبلغ دلخواه خود را به تومان جهت افزایش موجودی کیف پول وارد کنید.">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="col-12">
+                    <div class="table-responsive mb-3">
+                        <table class="table table-dark table-striped">
+                            <thead>
+                            <tr>
+                                <th>نام کاربری دریافت کننده</th>
+                                <th>مبلغ</th>
+                                <th>توضیحات</th>
+                                <th>نوع</th>
+                                <th>نتیجه عملیات</th>
+                                <th>تاریخ</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @if (Model.Wallet.Transactions == null || Model.Wallet.Transactions.Count == 0)
+                            {
+                                <tr>
+                                    <td>خالی</td>
+                                    <td>خالی</td>
+                                    <td>خالی</td>
+                                    <td>خالی</td>
+                                    <td>خالی</td>
+                                    <td>خالی</td>
+                                </tr>
+                            }
+                            else
+                            {
+                                @foreach (var transaction in Model.Wallet.Transactions)
+                                {
+                                    <tr>
+                                        <td>@transaction.ReceiverAccountName</td>
+                                        <td>@transaction.Amount.ToString("N0")</td>
+                                        <td>@transaction.Description</td>
+                                        <td>
+                                            <span class="text-@(transaction.IsDeposit ? "success" : "danger")">@(transaction.IsDeposit ? "دریافت" : "برداشت")</span>
+                                        </td>
+                                        <td>
+                                            <span class="text-@(transaction.IsSuccess ? "success" : "danger")">@(transaction.IsSuccess ? "موفق" : "ناموفق")</span>
+                                        </td>
+                                        <td>@transaction.CreationDate</td>
+                                    </tr>
+                                }
+                            }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

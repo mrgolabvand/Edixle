@@ -1,0 +1,32 @@
+﻿@page
+@model ServiceHost.Areas.Administration.Pages.PersonalPages.PersonalPagePreviewModel
+@{
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h4>نام</h4>
+            <h5>@Model.PersonalPage.FullName</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h4>سن</h4>
+            <h5>@Model.PersonalPage.Age</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h4>درباره</h4>
+            <h5>@Model.PersonalPage.About</h5>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h4>اسلاگ</h4>
+            <h5>@Model.PersonalPage.Slug</h5>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,158 @@
+﻿@page "{id}"
+@using System.Text.Encodings.Web
+@using System.Text.Unicode
+@using System.Web
+@using _0_Framework.Application
+@inject IAuthHelper _authHelper
+@model ServiceHost.Pages.BlogDetailsModel
+@{
+    ViewData["Title"] = "مقاله";
+    ViewData["MetaDescription"] = Model.Article.MetaDescription;
+    ViewData["Keywords"] = Model.Article.Keywords;
+}
+
+<!-- Page content-->
+<div class="container pt-5 pb-lg-4 my-5">
+    <!-- Breadcrumb-->
+    <nav class="mb-3 pb-md-1 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb breadcrumb-light m-0">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+            <li class="breadcrumb-item"><a asp-page="./BlogList" asp-route-id="@Model.Article.CategorySlug">@Model.Article.CategoryName</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Article.Title</li>
+        </ol>
+    </nav>
+    <!-- Page title-->
+    <h1 class="h4 font-vazir text-light pb-3">@Model.Article.Title</h1>
+    <img class="rounded-3" src="~/UploadedFiles/@Model.Article.Picture" alt="@Model.Article.PictureAlt" title="@Model.Article.PictureTitle">
+    <div class="row mt-4 pt-3">
+        <!-- Post content-->
+        <div class="col-lg-8">
+            <!-- Post meta-->
+            <div class="d-flex flex-wrap border-bottom border-light pb-3 mb-4">
+                <a class="text-uppercase text-decoration-none border-end border-light ps-3 mb-2" href="#">مطلب</a>
+                <div class="d-flex align-items-center text-light border-end border-light ps-3 ms-3 mb-2"><i class="fi-calendar-alt opacity-70 me-2"></i><span>@Model.Article.PublishDate</span></div>
+                <a class="d-flex align-items-center text-light text-decoration-none ms-3 mb-2" href="#comments" data-scroll><i class="fi-chat-circle opacity-70 me-2"></i><span>@Model.Article.Comments.Count() نظر</span></a>
+            </div>
+            <p class="fs-lg font-vazir text-light mb-4">@Model.Article.ShortDescription</p>
+            <div class="text-light">
+                @Html.Raw(Model.Article.Description)
+            </div>
+
+            <!-- Comments-->
+            <div class="mb-4 mb-md-5" id="comments">
+                <h3 class="text-light mb-4 pb-2 font-vazir h5">@Model.Article.Comments.Count() نظر ثبت شده</h3>
+                @foreach (var comment in Model.Article.Comments)
+                {
+                    <div class="border-bottom border-light pb-4 mb-4">
+
+                        @if (comment.ParentId == 0)
+                        {
+                            <!-- Comment-->
+                            <p class="text-light opacity-70">@comment.Message</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center pe-2">
+                                    <div class="pe-2">
+                                        <h6 class="text-light fs-base mb-0 fw-500">@comment.Name</h6>
+                                        <span class="text-light opacity-50 fs-sm">@comment.CommentDate</span>
+                                    </div>
+                                </div>
+                                <a class="btn btn-link btn-light btn-sm" href="#commentArea" onclick='document.getElementById("childComment").value = @comment.Id'><i class="fi-reply fs-lg me-2"></i><span class="fw-normal">پاسخ</span></a>
+                            </div>
+
+
+                            @foreach (var childComment in Model.Article.Comments.Where(v => v.ParentId == comment.Id))
+                            {
+                                <!-- Reply to comment-->
+                                <div id="comment-@childComment.ParentName" class="border-start border-4 border-light pe-4 me-4 mt-4">
+                                    <p class="text-light opacity-70">@childComment.Message</p>
+                                    <div class="d-flex align-items-center pe-2">
+                                        <div class="pe-2">
+                                            <h6 class="text-light fs-base mb-0 fw-500">
+                                                @childComment.Name
+                                                @*<span class="badge bg-info rounded-pill fs-xs ms-2">نویسنده</span>*@
+                                            </h6><span class="text-light opacity-50 fs-sm">@childComment.CommentDate</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                }
+
+            </div>
+            <!-- Comment form-->
+            <h3 class="text-light mb-4 pb-sm-2 h5 font-vazir">ثبت نظر</h3>
+            <form asp-page-handler="Comment" class="needs-validation row gy-md-4 gy-3 pb-sm-2" novalidate>
+                <div class="col-sm-6" id="commentArea">
+                    <label class="form-label text-light" for="comment-name">نام </label>
+                    <input asp-for="AddComment.Name" class="form-control form-control-light form-control-lg" type="text" id="comment-name" placeholder="نام شما" required>
+                    <div class="invalid-feedback">نام خود را وارد کنید</div>
+                </div>
+                <div class="col-sm-6">
+                    <label class="form-label text-light" for="comment-email">پست الکترونیکی</label>
+                    <input asp-for="AddComment.Email" class="form-control form-control-light form-control-lg" type="email" id="comment-email" placeholder="ایمیل شما" required>
+                    <div class="invalid-feedback">یک ایمیل معتبر وارد کنید</div>
+                </div>
+                <div class="col-12">
+                    <label class="form-label text-light" for="comment-text">نظرات</label>
+                    <textarea asp-for="AddComment.Message" class="form-control form-control-light form-control-lg" id="comment-text" rows="4" placeholder="نظر شما" required></textarea>
+                    <div class="invalid-feedback">لطفا نظر خود را بنویسید</div>
+                </div>
+                <input type="hidden" asp-for="AddComment.OwnerRecordId" value="@Model.Article.Id" />
+                <input type="hidden" asp-for="AddComment.ParentId" id="childComment"/>
+                @if (_authHelper.IsAuthenticated())
+                {
+                    <div class="col-12 py-2">
+                        <button class="btn btn-lg btn-primary" type="submit">ثبت</button>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 py-2">
+                        <a class="btn btn-lg btn-primary" asp-page="./Login">وارد اکانت خود شوید</a>
+                    </div>
+                }
+
+            </form>
+        </div>
+        <!-- Sidebar-->
+        <aside class="col-lg-4">
+            <div class="offcanvas offcanvas-end offcanvas-collapse bg-dark" id="blog-sidebar">
+                <div class="offcanvas-header bg-transparent border-bottom border-light">
+                    <h2 class="h5 text-light mb-0">سایدبار</h2>
+                    <button class="btn-close btn-close-white" type="button" data-bs-dismiss="offcanvas"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <!-- Recent posts widget-->
+                    <div class="card card-flush bg-transparent border-light mb-4">
+                        <div class="card-body blog-list">
+                            <h3 class="h5 text-light pt-3 pt-lg-0">آخرین مقالات</h3>
+                            @foreach (var article in Model.LatestArticles)
+                            {
+                                <div class="d-flex align-items-start border-bottom border-light pb-3 mb-3">
+                                    <a class="flex-shrink-0" href="#"><img class="rounded-3" src="~/UploadedFiles/@article.Picture" width="80" alt="@article.PictureAlt" title="@article.PictureTitle"></a>
+                                    <div class="pe-3">
+                                        <a class="fs-sm text-uppercase text-primary text-decoration-none" asp-page="./BlogList" asp-route-id="@article.CategorySlug">@article.CategoryName</a>
+                                        <h4 class="fs-base text-light pt-1 mb-2"><a class="nav-link" href="#">@article.Title</a></h4>
+                                        <div class="d-flex fs-xs text-light opacity-70">
+
+                                            <span class="me-2 pe-1">
+                                                <i class="fi-calendar-alt opacity-70 mt-n1 ms-1 align-middle"></i>@article.PublishDate
+                                            </span>
+                                            @*  <span>
+                                        <i class="fi-chat-circle opacity-70 mt-n1 ms-1 align-middle"></i>@article.Comments.Count() نظر
+                                        </span>*@
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>

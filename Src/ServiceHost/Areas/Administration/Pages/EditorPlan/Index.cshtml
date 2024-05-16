@@ -1,0 +1,69 @@
+﻿@page
+@model ServiceHost.Areas.Administration.Pages.EditorPlan.IndexModel
+@{
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="page-title pull-right">@ViewData["title"]</h4>
+            <p class="pull-left">
+                <a class="btn btn-success btn-lg" asp-page="./Create">ایجاد پلن جدید</a>
+            </p>
+        </div>
+    </div>
+
+
+    <div class="row" id="ProductCategoriesDiv">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">لیست پلن های ادیتور (@Model.EditorPlans.Count)</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <table id="datatable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>عنوان</th>
+                                        <th>قیمت</th>
+                                        <th>تاریخ ایجاد</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model.EditorPlans)
+                                    {
+
+                                        <tr>
+                                            <td>@item.Id</td>
+                                            <td>@item.Title</td>
+                                            <td>@item.Price</td>
+                                            <td>@item.CreationDate</td>
+                                            <td>
+                                                <a class="btn btn-warning waves-effect waves-light m-b-5"
+                                                   asp-page="./Edit" asp-route-id="@item.Id">
+                                                    <i class="fa fa-edit"></i> ویرایش
+                                                </a>
+                                                @if (item.IsRemoved)
+                                                {
+                                                    <a asp-page-handler="Restore" asp-route-id="@item.Id" class="btn btn-danger">غیر فعال</a>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-page-handler="Remove" asp-route-id="@item.Id" class="btn btn-success">فعال</a>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

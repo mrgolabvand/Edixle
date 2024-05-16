@@ -1,0 +1,28 @@
+﻿@model List<EdixleQuery.Contracts.TextSlider.TextSliderQueryModel>
+
+<section id="hero" class="d-flex justify-cntent-center align-items-center">
+    <div id="heroCarousel" class="container carousel carousel-fade" data-bs-ride="carousel" data-bs-interval="5000">
+
+
+        @foreach (var slider in Model)
+        {
+            <div class="carousel-item @(slider == Model.First() ? "active" : "")">
+                <div class="carousel-container" dir="rtl">
+                    <h2 class="animate__animated animate__fadeInDown">@slider.Title</h2>
+                    <p class="animate__animated animate__fadeInUp">@slider.Description</p>
+                    <a href="@slider.Link" class="btn-get-started animate__animated animate__fadeInUp">بیشتر</a>
+                </div>
+            </div>
+        }
+
+        <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
+        </a>
+
+        <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+            <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
+        </a>
+
+
+    </div>
+</section>

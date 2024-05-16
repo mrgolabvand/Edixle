@@ -1,0 +1,458 @@
+﻿@page "{id}"
+@using _0_Framework.Application
+@model ServiceHost.Pages.PortfolioDetailsModel
+@{
+    ViewData["Title"] = "نمونه کار";
+    ViewData["MetaDescription"] = Model.Portfolio.MetaDescription;
+    ViewData["Keywords"] = Model.Portfolio.Keywords;
+}
+@inject IAuthHelper _authHelper;
+
+
+@section Css
+    {
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/lightgallery.js/dist/css/lightgallery.min.css" />
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/nouislider/dist/nouislider.min.css" />
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/flatpickr/dist/flatpickr.min.css" />
+
+    @*<link href="https://vjs.zencdn.net/7.19.2/video-js.css" rel="stylesheet" />*@
+    }
+
+    @section Script
+    {
+    <script src="~/MainTheme/vendor/lightgallery.js/dist/js/lightgallery.min.js"></script>
+    <script src="~/MainTheme/vendor/lg-fullscreen.js/dist/lg-fullscreen.min.js"></script>
+    <script src="~/MainTheme/vendor/lg-zoom.js/dist/lg-zoom.min.js"></script>
+    <script src="~/MainTheme/vendor/lg-thumbnail.js/dist/lg-thumbnail.min.js"></script>
+    <script src="~/MainTheme/vendor/lg-video.js/dist/lg-video.min.js"></script>
+    <script src="~/MainTheme/vendor/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="~/MainTheme/vendor/nouislider/dist/nouislider.min.js"></script>
+
+    @*<script src="https://vjs.zencdn.net/7.19.2/video.min.js"></script>*@
+    }
+
+
+    <!-- Page content-->
+    <!-- Page header-->
+    <section class="container pt-5 mt-5 bg-dark text-light">
+        <!-- Breadcrumb-->
+        <nav class="mb-3 pt-md-3" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+                <li class="breadcrumb-item"><a asp-page="./EditorPage" asp-route-id="@Model.PersonalPage.Slug">@Model.Portfolio.AccountName</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Portfolio.Name</li>
+            </ol>
+        </nav>
+
+    </section>
+    <!-- Gallery-->
+    <section class="container overflow-auto mb-5 bg-dark text-light" data-simplebar>
+        <div class="row g-2 g-md-3 gallery" data-thumbnails="true">
+           
+            <div class="col-lg-7  gallery" lg-uid="lg1">
+                @*<a class="gallery-item video-item rounded-2" href="http://dl.example.com/UploadedFiles/@Model.Portfolio.Video" data-sub-html="<h6 class=&quot;fs-sm text-light&quot;>عنوان ویدئو</h6>">
+            <img src="~/UploadedFiles/@Model.Portfolio.Picture" alt="Gallery thumbnail">
+            <span class="gallery-item-caption ">@Model.Portfolio.Name</span>
+            </a>*@
+                <video style="width: 100%; max-height: 550px" controls autoplay poster="http://dl.example.com/UploadedFiles/@Model.Portfolio.Picture" class="rounded-3"
+                       src="~/UploadedFiles/@Model.Portfolio.Video"></video>
+
+
+                @* <video
+            id="my-video"
+            class="video-js"
+            controls
+            preload="auto"
+            width="640"
+            height="264"
+            poster="http://dl.example.com/UploadedFiles/@Model.Portfolio.Picture"
+            data-setup="{}"
+            >
+            <source src="~/UploadedFiles/@Model.Portfolio.Video" type="video/mp4" />
+            <source src="MY_VIDEO.webm" type="video/webm" />
+            <p class="vjs-no-js">
+            To view this video please enable JavaScript, and consider upgrading to a
+            web browser that
+            <a href="https://videojs.com/html5-video-support/" target="_blank"
+            >supports HTML5 video</a
+            >
+            </p>
+            </video>*@
+
+            </div>
+               <!-- Sidebar-->
+            <aside class="col-lg-5">
+                <!-- Place card-->
+                <div class="card mb-2 p-2 shadow-sm bg-dark text-light">
+                    <div class="card-body  border-bottom">
+                        <!-- Place info-->
+                        <div class="d-flex align-items-start mb-3 pb-2 ">
+                            <img src="~/UploadedFiles/@Model.Portfolio.PagePicture" class="rounded-pill" width="60" alt="Thumbnail">
+                            <div class="pe-2 me-1">
+                                <h3 class="h5 mb-2 text-light"> @Model.Portfolio.AccountName</h3>
+                                <ul class="list-unstyled d-flex flex-wrap fs-sm">
+                                    <li class="me-2 mb-1 pe-1"><i class="fi-star-filled mt-n1 ms-1 text-warning align-middle opacity-70"></i><b>@Model.PersonalPage.ReviewsTotalRate از 10 </b>(@Model.PersonalPage.Reviews.Count())</li>
+                                    <li class="me-2 mb-1 pe-1"><i class="fi-user mt-n1 ms-1 align-middle opacity-70"></i>@(Model.PersonalPage.IsBusy ? "مشغول به کار" : "آزاد")</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- Place pricing-->
+                        <div class="mb-2 pb-2">
+                            <div class="row row-cols-1">
+                                <div class="col mb-3">
+                                    <h4 class="h5 mb-0 text-light"><span class="fs-5">@Model.PersonalPage.MinPay-@Model.PersonalPage.MaxPay تومان</span><span class="fs-base fw-normal text-info"> / @Model.PersonalPage.PayDate</span></h4>
+                                </div>
+                                <div class="col">
+                                    <a class="btn btn-accent bg-gradient btn-lg rounded-pill w-sm-auto w-100" asp-page="./EditorPage" asp-route-id="@Model.PersonalPage.Slug" style="margin-left: 20px;">اطلاعات بیشتر<i class="fi-chevron-right fs-sm ms-2"></i></a>
+                                    <a class="btn btn-accent bg-gradient btn-lg rounded-pill w-sm-auto w-100" asp-page="./EditorPageSendOffer" asp-route-id="@Model.PersonalPage.Slug">پیشنهاد همکاری<i class="fi-user-check fs-sm ms-2"></i></a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="mb-md-0 mb-4 mt-2 pb-md-0 pb-2">
+                        <h2 class="h5 text-light">درباره ویدیو</h2>
+                        <ul class="list-unstyled">
+                            <li><i class="fi-star-filled mt-n1 ms-1 text-warning align-middle"></i><b>@Model.Portfolio.ReviewsTotalRate از 10 </b><span class="text-muted">(@Model.Portfolio.Reviews.Count() نظر ثبت شده)</span></li>
+                        </ul>
+                        <div class="mb-4 pb-md-3">
+                            <p class="mb-1 line-h18">@Model.Portfolio.Description</p>
+                        </div>
+                        <!-- Amenities-->
+                        <div class="mb-4 pb-md-3">
+                            <h2 class="h5 text-light">گروه ها</h2>
+                            <ul class="list-unstyled row row-cols-lg-3 row-cols-md-2 row-cols-1 gy-1 mb-1 text-nowrap">
+                                @foreach (var category in Model.Portfolio.PortfolioCategories)
+                                {
+                                    <li class="col">
+                                        <img src="~/UploadedFiles/@category.Picture" alt="@category.PictureAlt"
+                                             title="@category.PictureTitle" class="mt-n1 me-2 fs-lg align-middle"
+                                             style="width: 30px; height: 30px" />
+                                        @category.Name
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </section>
+    <!-- Page content-->
+    <section class="container pb-5 mb-md-4 bg-dark text-light">
+        <div class="row">
+          
+
+            <!-- Left column-->
+        @*    <div class="col-md-12 mb-md-0 mb-4 pb-md-0 pb-2">
+                <h2 class="h5 text-light">درباره ویدیو</h2>
+                <ul class="list-unstyled">
+                    <li><i class="fi-star-filled mt-n1 ms-1 text-warning align-middle"></i><b>@Model.Portfolio.ReviewsTotalRate از 10 </b><span class="text-muted">(@Model.Portfolio.Reviews.Count() نظر ثبت شده)</span></li>
+                </ul>
+                <div class="mb-4 pb-md-3">
+                    <p class="mb-1 line-h18">@Model.Portfolio.Description</p>
+                </div>
+                <!-- Amenities-->
+                <div class="mb-4 pb-md-3">
+                    <h2 class="h5 text-light">گروه ها</h2>
+                    <ul class="list-unstyled row row-cols-lg-3 row-cols-md-2 row-cols-1 gy-1 mb-1 text-nowrap">
+                        @foreach (var category in Model.Portfolio.PortfolioCategories)
+                    {
+                        <li class="col">
+                            <img src="~/UploadedFiles/@category.Picture" alt="@category.PictureAlt"
+                             title="@category.PictureTitle" class="mt-n1 me-2 fs-lg align-middle"
+                             style="width: 30px; height: 30px" />
+                            @category.Name
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>*@
+
+        <hr class="my-4">
+
+
+        <aside class="col-md-5">
+            <!-- Place card-->
+            <div class="card mb-4 p-2 shadow-sm bg-dark text-light">
+                <div class="card-body">
+                    <form asp-page-handler="Review">
+
+                        <!-- Place contacts-->
+                        <div class="mb-3 pb-3 ">
+                            <h4 class="h5 mb-3 text-center text-light">نظر شما</h4>
+                            <div class="tab-pane m-n3 p-3 bg-dark fade show active" id="result5" role="tabpanel">
+                                <div class="form-group form-group-light mb-3">
+                                    <button class="btn btn-primary rounded-start-0 ms-auto" style="width: 100px !important; font-size: 60%" type="button">کیفیت ادیت ویدیو</button>
+                                    <div class="range-slider" data-start-min="5" data-min="0" data-max="10" data-step="1">
+                                        <div class="range-slider-ui"></div>
+                                        <input asp-for="AddReview.EditVideoQuality" class="form-control range-slider-value-min" type="hidden">
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-light mb-3">
+                                    <button class="btn btn-primary rounded-start-0 ms-auto" style="width: 100px !important;font-size: 70% " type="button">افکت های ویدیو</button>
+                                    <div class="range-slider" data-start-min="5" data-min="0" data-max="10" data-step="1">
+                                        <div class="range-slider-ui"></div>
+                                        <input asp-for="AddReview.UseProperVideoEffects" class="form-control range-slider-value-min" type="hidden">
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-light mb-3">
+                                    <button class="btn btn-primary rounded-start-0 ms-auto" style="width: 100px !important; font-size: 70%" type="button">کیفیت ادیت صدا</button>
+                                    <div class="range-slider" data-start-min="5" data-min="0" data-max="10" data-step="1">
+                                        <div class="range-slider-ui"></div>
+                                        <input asp-for="AddReview.EditSoundQuality" class="form-control range-slider-value-min" type="hidden">
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-light mb-3">
+                                    <button class="btn btn-primary rounded-start-0 ms-auto" style="width: 100px !important; font-size: 70%" type="button"> افکت های صدا</button>
+                                    <div class="range-slider" data-start-min="5" data-min="0" data-max="10" data-step="1">
+                                        <div class="range-slider-ui"></div>
+                                        <input asp-for="AddReview.UseProperSoundEffects" class="form-control range-slider-value-min" type="hidden">
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-light mb-3">
+                                    <button class="btn btn-primary rounded-start-0 ms-auto" style="width: 100px !important; font-size: 70%" type="button">فونت و رنگ</button>
+                                    <div class="range-slider" data-start-min="5" data-min="0" data-max="10" data-step="1">
+                                        <div class="range-slider-ui"></div>
+                                        <input asp-for="AddReview.UseProperFontAndColors" class="form-control range-slider-value-min" type="hidden">
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-light mb-3">
+                                    <button class="btn btn-primary rounded-start-0 ms-auto" style="width: 100px !important; font-size: 70%" type="button">خلاقیت</button>
+                                    <div class="range-slider" data-start-min="5" data-min="0" data-max="10" data-step="1">
+                                        <div class="range-slider-ui"></div>
+                                        <input asp-for="AddReview.UseProperMemes" class="form-control range-slider-value-min" type="hidden">
+                                    </div>
+                                </div>
+                                <div class="form-group form-group-light mb-3">
+                                    <textarea asp-for="AddReview.Message" class="form-control" required rows="4" type="text" placeholder="نظر خود را بنویسید "></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="AddReview.OwnerRecordId" value="@Model.Portfolio.Id" />
+                       @if (_authHelper.IsAuthenticated())
+                       {
+                           <div class="mb-3 pb-4 ">
+                               <div class="row row-cols-1">
+                                   <div class="col"><button class="btn btn-primary btn-lg rounded-pill w-sm-auto w-100" type="submit">ثبت نظر<i class="fi-chevron-right fs-sm ms-2"></i></button></div>
+                               </div>
+                           </div>
+                       }
+                       else
+                       {
+                           <div class="mb-3 pb-4 ">
+                               <div class="row row-cols-1">
+                                   <div class="col"><a class="btn btn-primary btn-lg rounded-pill w-sm-auto w-100" asp-page="./Login" >وارد اکانت خود شوید/ثبت نام کنید<i class="fi-chevron-right fs-sm ms-2"></i></a></div>
+                               </div>
+                           </div>
+                       }
+                       
+                    </form>
+
+                </div>
+            </div>
+
+        </aside>
+
+
+        <!-- Left column-->
+        <div class="col-md-7 mb-md-0 mb-4 pb-md-0 pb-2">
+            <h2 class="h5 mb-4 text-light">امتیاز میانگین</h2>
+            <div class="row mb-md-5 mb-4 border-bottom">
+                <!-- Rating breakdown-->
+                <div class="col-sm-8 order-sm-1 order-2">
+
+                    <div class="d-block align-items-center mb-2 fs-sm">
+                        <div class="d-block mb-1">
+                            <div class="text-nowrap">کیفیت ادیت ویدیو :</div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="progress w-100 mx-3">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @(Model.Portfolio.EditVideoQualityTotalRate * 10)%" aria-valuenow="@Model.Portfolio.EditVideoQualityTotalRate"
+                                     aria-valuemin="0" aria-valuemax="10"></div>
+                            </div><span style="min-width: 48px;">@Model.Portfolio.EditVideoQualityTotalRate از 10</span>
+                        </div>
+                    </div>
+                    <div class="d-block align-items-center mb-2 fs-sm">
+                        <div class="d-block mb-1">
+                            <div class="text-nowrap">افکت های ویدیو :</div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="progress w-100 mx-3">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @(Model.Portfolio.UseProperVideoEffectsTotalRate * 10)%" aria-valuenow="@Model.Portfolio.UseProperVideoEffectsTotalRate"
+                                     aria-valuemin="0" aria-valuemax="10"></div>
+                            </div><span style="min-width: 48px;">@Model.Portfolio.UseProperVideoEffectsTotalRate از 10</span>
+                        </div>
+                    </div>
+                    <div class="d-block align-items-center mb-2 fs-sm">
+                        <div class="d-block mb-1">
+                            <div class="text-nowrap">کیفیت ادیت صدا :</div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="progress w-100 mx-3">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @(Model.Portfolio.EditSoundQualityTotalRate * 10)%" aria-valuenow="@Model.Portfolio.EditSoundQualityTotalRate"
+                                     aria-valuemin="0" aria-valuemax="10"></div>
+                            </div><span style="min-width: 48px;">@Model.Portfolio.EditSoundQualityTotalRate از 10</span>
+                        </div>
+                    </div>
+                    <div class="d-block align-items-center mb-2 fs-sm">
+                        <div class="d-block mb-1">
+                            <div class="text-nowrap">افکت های صدا :</div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="progress w-100 mx-3">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @(Model.Portfolio.UseProperSoundEffectsTotalRate * 10)%" aria-valuenow="@Model.Portfolio.UseProperSoundEffectsTotalRate"
+                                     aria-valuemin="0" aria-valuemax="10"></div>
+                            </div><span style="min-width: 48px;">@Model.Portfolio.UseProperSoundEffectsTotalRate از 10</span>
+                        </div>
+                    </div>
+                    <div class="d-block align-items-center mb-2 fs-sm">
+                        <div class="d-block mb-1">
+                            <div class="text-nowrap">فونت و رنگ :</div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="progress w-100 mx-3">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @(Model.Portfolio.UseProperFontAndColorsTotalRate * 10)%" aria-valuenow="@Model.Portfolio.UseProperFontAndColorsTotalRate"
+                                     aria-valuemin="0" aria-valuemax="10"></div>
+                            </div><span style="min-width: 48px;">@Model.Portfolio.UseProperFontAndColorsTotalRate از 10</span>
+                        </div>
+                    </div>
+                    <div class="d-block align-items-center mb-2 fs-sm">
+                        <div class="d-block mb-1">
+                            <div class="text-nowrap">خلاقیت :</div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="progress w-100 mx-3">
+                                <div class="progress-bar bg-warning" role="progressbar" style="width: @(Model.Portfolio.UseProperMemesTotalRate * 10)%" aria-valuenow="@Model.Portfolio.UseProperMemesTotalRate"
+                                     aria-valuemin="0" aria-valuemax="10"></div>
+                            </div><span style="min-width: 48px;">@Model.Portfolio.UseProperMemesTotalRate از 10</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Score-->
+                <div class="col-sm-4 order-sm-2 order-1 mb-sm-0 mb-3 text-center">
+                    <h5 class="display-5 mb-2 text-light font-vazir">@Model.Portfolio.ReviewsTotalRate</h5>
+                    <div>
+                        <div class="progress mb-3">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: @(Model.Portfolio.ReviewsTotalRate * 10)%" aria-valuenow="@(Model.Portfolio.ReviewsTotalRate * 10)" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div><span class="fs-sm">@Model.Portfolio.Reviews.Count() نظر ثبت شده</span>
+                </div>
+            </div>
+            @if (Model.Portfolio.Reviews.Any())
+            {
+                @foreach (var review in Model.Portfolio.Reviews)
+                {
+                    <!-- Review-->
+                    <div class="mb-4 pb-4 border-bottom">
+                        <div class="d-flex justify-content-between mb-3">
+                            <div class="d-flex align-items-center ps-2">
+                                <div class="pe-2">
+                                    <h6 class="fs-base mb-0 text-light">@review.Name</h6>
+                                </div>
+                            </div><span class="text-muted fs-sm">@review.CreationDate</span>
+                        </div>
+                        <p>@review.Message</p>
+                   @*     <div class="d-flex align-items-center">
+                            <a class="btn-like" asp-page-handler="ReviewIsHelpful" asp-route-reviewId="@review.Id" asp-route-portfolioId="@Model.Portfolio.Id" asp-route-slug="@Model.Portfolio.Slug"><i class="fi-like"></i><span>(@review.IsHelpful)</span></a>
+                            <div class="border-end me-1">&nbsp;</div>
+                            <a class="btn-dislike" asp-page-handler="ReviewIsHarmful" asp-route-reviewId="@review.Id" asp-route-portfolioId="@Model.Portfolio.Id" asp-route-slug="@Model.Portfolio.Slug"><i class="fi-dislike"></i><span>(@review.IsHarmful)</span></a>
+                        </div>*@
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="mb-4 pb-4 text-center">
+                    <div class="justify-content-between mb-3">
+                        <h3 class=" mb-0 text-light">اولین نفری باشید که نظر میدهید!</h3>
+                    </div>
+
+                </div>
+            }
+
+
+        </div>
+    </div>
+
+</section>
+<!-- Latest cars (carousel)-->
+<section class="container pt-sm-5 pt-4 pb-3">
+    <div class="d-sm-flex align-items-center justify-content-between mb-3 mb-sm-4 pb-2">
+        <h2 class="h4 text-light mb-3 mb-sm-0 font-vazir">نمونه کارها</h2>
+        <div class="d-flex align-items-center">
+            <ul class="nav nav-tabs nav-tabs-light fs-sm me-4 pe-2 mb-0">
+            </ul><a class="btn btn-link btn-light fw-normal px-0" asp-page="./SearchPortfolios">
+                مشاهده همه<i class="fi-arrow-long-left fs-sm mt-0 ps-1 ms-2"></i>
+            </a>
+        </div>
+    </div>
+    <div class="tns-carousel-wrapper tns-controls-outside-xxl tns-nav-outside tns-carousel-light">
+        <div class="tns-carousel-inner car"
+             data-carousel-options="{&quot;items&quot;: 3, &quot;responsive&quot;: {&quot;0&quot;:{&quot;items&quot;:1, &quot;gutter&quot;: 16},&quot;500&quot;:{&quot;items&quot;:2, &quot;gutter&quot;: 18},&quot;900&quot;:{&quot;items&quot;:3, &quot;gutter&quot;: 20}, &quot;1100&quot;:{&quot;gutter&quot;: 24}}}">
+
+
+            @foreach (var portfolio in Model.LatestPortfolios)
+            {
+                <div>
+                    <div class="card card-light card-hover h-100">
+                        <div class="card-img-top card-img-hover text-center">
+                            <a class="img-overlay" asp-page="./PortfolioDetails" asp-route-id="@portfolio.Slug"></a>
+                            <div class="content-overlay end-50 top-50">
+                                <a class="btn btn-icon btn-dark btn-xs text-white rounded-circle"
+                               data-bs-toggle="tooltip" data-bs-placement="right" title="پخش" asp-page="./PortfolioDetails" asp-route-id="@portfolio.Slug">
+                                    <i class="fi-play"></i>
+                                </a>
+                            </div><img style="max-height: 235px" src="~/UploadedFiles/@portfolio.Picture" alt="@portfolio.PictureAlt" title="@portfolio.PictureTitle">
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex align-items-center justify-content-between pb-1">
+                                <span class="fs-sm text-light me-3">@portfolio.Name</span>
+                            </div>
+                            <h3 class="h6 mb-1">
+                                <a class="nav-link-light" asp-page="./PortfolioDetails" asp-route-id="@portfolio.Slug">@portfolio.ShortDescription</a>
+                            </h3>
+                            <a class="pt-3 d-flex align-items-center text-decoration-none" asp-page="./EditorPage" asp-route-id="@portfolio.AccountSlug">
+                                <img class="rounded-circle"
+                                 src="~/UploadedFiles/@portfolio.PagePicture" width="44" alt="@portfolio.PagePictureAlt" title="@portfolio.PagePictureTitle">
+                                <div class="pe-2 text-white">
+                                    <h6 class="fs-sm text-white lh-base mb-1">@portfolio.AccountName</h6>
+                                    <div class="d-flex text-body fs-xs">
+                                        <span class="me-2 pe-1">
+                                            <i class="fi-calendar-alt opacity-70 ms-1"></i>@portfolio.CreationDate
+                                        </span>
+                               @*         <span>
+                                            <i class="fi-chat-circle opacity-70 ms-1"></i>@portfolio.Reviews.Count() نظر ثبت شده
+                                        </span>*@
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="card-footer border-0 pt-0">
+                            <div class="border-top border-light pt-3">
+                                <div class="row g-2">
+                                    @foreach (var portfolioCategory in portfolio.PortfolioCategories)
+                                    {
+                                        <div class="col me-sm-1">
+                                            <div class="bg-dark rounded text-center w-100 h-100 p-2">
+                                                <img class="d-block h4 text-light mb-0 text-center" src="~/UploadedFiles/@portfolioCategory.Picture" style="width: 50px; height: 50px; margin-right: 23%;"
+                                             alt="@portfolioCategory.PictureTitle" title="@portfolioCategory.PictureTitle" />
+                                                <span class="fs-xs text-light">@portfolioCategory.Name</span>
+                                            </div>
+                                        </div>
+                                    }
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+
+
+

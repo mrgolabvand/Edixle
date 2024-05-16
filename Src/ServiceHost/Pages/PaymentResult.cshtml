@@ -1,0 +1,17 @@
+﻿@page
+@model ServiceHost.Pages.PaymentResultModel
+@{
+    var isSuccess = Model.Result.IsSuccessful;
+}
+<div class="container">
+
+    <div class="row text-center bg-faded-@(isSuccess ? "success" : "danger")" style="margin-top: 20vh; border-radius: 30px">
+        <div class="col-12 icon-box text-center mb-4 mt-5 mb-sm-3 ms-sm-5">
+            <div class="icon-box-media bg-faded-success text-@(isSuccess ? "success" : "danger") mx-auto mb-3"><i class="fi-@(isSuccess ? "check" : "x")-circle"></i></div>
+            <h3 class="icon-box-title fs-base text-light">@(isSuccess ? "موفقیت آمیز" : "ناموفق")</h3>
+            <p class="fs-sm text-light opacity-60">@Model.Result.Message</p>
+            <a asp-page="./Index" class="btn btn-accent bg-gradient mt-2">بازگشت به نمونه</a>
+        </div>
+    </div>
+</div>
+

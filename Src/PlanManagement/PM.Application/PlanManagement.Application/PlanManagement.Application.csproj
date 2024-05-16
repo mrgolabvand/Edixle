@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\AccountManagement\AM.Domain\AccountManagement.Domain\AccountManagement.Domain.csproj" />
+    <ProjectReference Include="..\..\PM.Domain\PlanManagement.Domain\PlanManagement.Domain.csproj" />
+    <ProjectReference Include="..\PlanManagement.Application.Contracts\PlanManagement.Application.Contracts.csproj" />
+  </ItemGroup>
+
+</Project>

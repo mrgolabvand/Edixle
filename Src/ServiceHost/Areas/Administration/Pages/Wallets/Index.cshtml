@@ -1,0 +1,70 @@
+﻿@page
+@using CommentManagement.Infrastructure.Configuration.Permissions
+@model ServiceHost.Areas.Administration.Pages.Wallets.IndexModel
+@{
+}
+
+@{
+    ViewData["title"] = "مدیریت کیف پول ها";
+}
+
+
+<div class="row" id="ProductCategoriesDiv">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">لیست کیف پول ها</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <table id="datatable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>شناسه کاربر</th>
+                                    <th>نام کاربر</th>
+                                    <th>اعتبار جاری</th>
+                                    <th>درخواست واریز</th>
+                                    <th>عملیات</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var wallet in Model.Wallets)
+                                {
+                                    <tr>
+                                        <td>@wallet.Id</td>
+                                        <td>@wallet.AccountId</td>
+                                        <td>@wallet.AccountName</td>
+                                        <td>@wallet.CurrentCredit.ToString("N0")</td>
+                                        <td><span class="text-@(wallet.IsAskedForSettlement ? "success" : "danger")">@(wallet.IsAskedForSettlement ? "درخواست شده" : "درخواست نشده")</span></td>
+                                        <td>
+                                            <a asp-page="./Index" asp-page-handler="Settlement" asp-route-id="@wallet.Id"
+                                           class="btn btn-success">واریز کردن</a>
+                                        </td>
+                                        <td>
+                                            <a asp-page="./Transactions" asp-route-id="@wallet.Id"
+                                           class="btn btn-success">تراکنش ها</a>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/adminTheme/assets/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminTheme/assets/datatables/dataTables.bootstrap.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#datatable').dataTable();
+        });
+    </script>
+}

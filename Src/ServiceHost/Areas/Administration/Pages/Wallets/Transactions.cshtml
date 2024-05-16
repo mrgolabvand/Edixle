@@ -1,0 +1,79 @@
+﻿@page "{Id}"
+@model ServiceHost.Areas.Administration.Pages.Wallets.TransactionsModel
+
+@{
+    ViewData["title"] = "مدیریت کیف پول ها";
+}
+
+
+<div class="row" id="ProductCategoriesDiv">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">لیست تراکنش ها</h3>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <table id="datatable" class="table table-striped table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>نام کاربری دریافت کننده</th>
+                                    <th>مبلغ</th>
+                                    <th>توضیحات</th>
+                                    <th>نوع</th>
+                                    <th>نتیجه عملیات</th>
+                                    <th>تاریخ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Wallet.Transactions == null || Model.Wallet.Transactions.Count == 0)
+                                {
+                                    <tr>
+                                        <td>خالی</td>
+                                        <td>خالی</td>
+                                        <td>خالی</td>
+                                        <td>خالی</td>
+                                        <td>خالی</td>
+                                        <td>خالی</td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    @foreach (var transaction in Model.Wallet.Transactions)
+                                    {
+                                        <tr>
+                                            <td>@transaction.ReceiverAccountName</td>
+                                            <td>@transaction.Amount.ToString("N0")</td>
+                                            <td>@transaction.Description</td>
+                                            <td>
+                                                <span class="text-@(transaction.IsDeposit ? "success" : "danger")">@(transaction.IsDeposit ? "دریافت" : "برداشت")</span>
+                                            </td>
+                                            <td>
+
+                                                <span class="text-@(transaction.IsSuccess ? "success" : "danger")">@(transaction.IsSuccess ? "موفق" : "ناموفق")</span>
+                                            </td>
+                                            <td>@transaction.CreationDate</td>
+                                        </tr>
+                                    }
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/adminTheme/assets/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminTheme/assets/datatables/dataTables.bootstrap.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#datatable').dataTable();
+        });
+    </script>
+}

@@ -1,0 +1,135 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using EdixleQuery.Contracts.Portfolio
+@model ServiceHost.Pages.SearchPortfoliosModel
+@{
+    ViewData["Title"] = "جستجوی ویدیو";
+
+}
+
+<div class="container mt-5 mb-md-4 py-5">
+    <div class="row py-md-1">
+        <!-- Filers sidebar (Offcanvas on mobile)-->
+        <div class="col-lg-3 pe-xl-4">
+            <div class="offcanvas offcanvas-start offcanvas-collapse bg-dark" id="filters-sidebar">
+                <div class="offcanvas-header bg-transparent d-flex d-lg-none align-items-center">
+                    <h2 class="h5 text-light mb-0">جستجو</h2>
+                    <button class="btn-close btn-close-white" type="button" data-bs-dismiss="offcanvas"></button>
+                </div>
+                <div class="offcanvas-body py-lg-4">
+                    <form method="get">
+
+                        <div class="pb-4 mb-2">
+                            <h3 class="fs-base font-vazir text-light text-center">جستجو</h3>
+                            <input id="query" name="query" class="form-control form-control-light mb-2" placeholder="دنبال چی میگردی؟" />
+                        </div>
+                        <div class="pb-4 mb-2">
+                            <h3 class="fs-base font-vazir text-light">مرتب سازی</h3>
+                            <select id="orderId" name="orderId" class="form-select form-select-light mb-2">
+                                <option value="" disabled selected>جدیدترین</option>
+                                <option value="1">جدیدترین</option>
+                                <option value="2">برترین</option>
+                            </select>
+                        </div>
+
+
+                        <div class="pb-4 mb-2">
+                            <h3 class="fs-base font-vazir text-light">گروه ها</h3>
+                            <div class="overflow-auto" data-simplebar data-simplebar-auto-hide="false" data-simplebar-direction="rtl" data-simplebar-inverse style="height: 11rem;">
+
+                                @foreach (var category in Model.PortfolioCategories)
+                                {
+                                    <div class="form-check form-check-light">
+                                        <input class="form-check-input" type="checkbox" asp-for="SelectedCategoriesDictionary[category.Id]">
+                                        <label class="form-check-label fs-sm">@category.Name</label>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <button class="btn btn-accent bg-gradient rounded-pill" type="submit">جستجو</button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <!-- Breadcrumb-->
+            <nav class="mb-3 pt-md-2 pt-lg-4" aria-label="Breadcrumb">
+                <ol class="breadcrumb breadcrumb-light">
+                    <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">جستجو در نمونه کار ها</li>
+                </ol>
+            </nav>
+            <!-- Page title-->
+            <div class="d-flex align-items-center justify-content-between pb-4 mb-2">
+                <h1 class="text-light me-3 mb-0 font-vazir h4">نمونه کار ها</h1>
+                <div class="text-light"><i class="fi-video fs-lg me-2"></i><span class="align-middle">@Model.Portfolios.Count() نتیجه</span></div>
+            </div>
+           
+            <div class="row">
+
+
+                @foreach (var portfolio in Model.Portfolios)
+                {
+                    <div class="col-sm-6 mb-4">
+                        <div class="card card-light card-hover h-100">
+                            <div class="card-img-top card-img-hover text-center">
+                                <a class="img-overlay" asp-page="./PortfolioDetails" asp-route-id="@portfolio.Slug"></a>
+                                <div class="content-overlay end-50 top-50">
+                                    <a class="btn btn-icon btn-dark btn-xs text-white rounded-circle"
+                                       data-bs-toggle="tooltip" data-bs-placement="right" title="پخش" asp-page="./PortfolioDetails" asp-route-id="@portfolio.Slug">
+                                        <i class="fi-play"></i>
+                                    </a>
+                                </div><img style="max-height: 235px" src="~/UploadedFiles/@portfolio.Picture" alt="@portfolio.PictureAlt" title="@portfolio.PictureTitle">
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex align-items-center justify-content-between pb-1">
+                                    <span class="fs-sm text-light me-3">@portfolio.Name</span>
+                                </div>
+                                <h3 class="h6 mb-1">
+                                    <a class="nav-link-light" asp-page="./PortfolioDetails" asp-route-id="@portfolio.Slug">@portfolio.ShortDescription</a>
+                                </h3>
+                                <a class="pt-3 d-flex align-items-center text-decoration-none" asp-page="./EditorPage" asp-route-id="@portfolio.AccountSlug">
+                                    <img class="rounded-circle"
+                                         src="~/UploadedFiles/@portfolio.PagePicture" width="44" alt="@portfolio.PagePictureAlt" title="@portfolio.PagePictureTitle">
+                                    <div class="pe-2 text-white">
+                                        <h6 class="fs-sm text-white lh-base mb-1">@portfolio.AccountName</h6>
+                                        <div class="d-flex text-body fs-xs">
+                                            <span class="me-2 pe-1">
+                                                <i class="fi-calendar-alt opacity-70 ms-1"></i>@portfolio.CreationDate
+                                            </span><span>
+                                                <i class="fi-chat-circle opacity-70 ms-1"></i>@portfolio.Reviews.Count() نظر ثبت شده
+                                            </span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="card-footer border-0 pt-0">
+                                <div class="border-top border-light pt-3">
+                                    <div class="row g-2">
+                                        @foreach (var portfolioCategory in portfolio.PortfolioCategories)
+                                        {
+                                            <div class="col me-sm-1">
+                                                <div class="bg-dark rounded text-center w-100 h-100 p-2">
+                                                    <img class="d-block h4 text-light mb-0 text-center" src="~/UploadedFiles/@portfolioCategory.Picture" style="width: 50px; height: 50px; margin-right: 23%;"
+                                                         alt="@portfolioCategory.PictureTitle" title="@portfolioCategory.PictureTitle" />
+                                                    <span class="fs-xs text-light">@portfolioCategory.Name</span>
+                                                </div>
+                                            </div>
+                                        }
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+<button class="btn btn-primary btn-sm w-100 rounded-0 fixed-bottom d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#filters-sidebar"><i class="fi-filter me-2"></i>جستجو</button>

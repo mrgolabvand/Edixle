@@ -1,0 +1,200 @@
+﻿@page "{id}"
+@model ServiceHost.Pages.EditPortfolioModel
+@{
+    ViewData["Title"] = "نمونه کار";
+
+}
+@section Script
+    {
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/MainTheme/js/Uploader.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        (function() {
+            var output = document.getElementById('output');
+            document.getElementById('upload').onclick = function() {
+                var data = new FormData();
+                data.append('Picture', document.getElementById('Portfolio_Picture').files[0]);
+                data.append('Video', document.getElementById('Portfolio_Video').files[0]);
+                data.append('Name', document.getElementById('Portfolio_Name').value);
+                data.append('Tags', document.getElementById('Portfolio_Tags').value);
+                data.append('Description', document.getElementById('Portfolio_Description').value);
+                data.append('Id', document.getElementById('Portfolio_Id').value);
+                data.append('PageId', document.getElementById('Portfolio_PageId').value);
+
+                var config = {
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    onUploadProgress: function(progressEvent) {
+                        var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                        var aria = document.getElementById('uploadFileToServerDiv');
+                        document.getElementById('uploadPercent').innerHTML = percentCompleted + "%";
+                        document.getElementById('uploadProgressBar').style.width = percentCompleted + "%";
+                        if (percentCompleted < 100) {
+                            aria.style.display = 'block';
+                        } else {
+                            aria.style.display = 'none';
+                            history.go();
+                        }
+                    }
+                };
+
+                axios.post('EditPortfolio', data, config)
+                    .then(function(res) {
+                        output.className = 'container';
+                        output.innerHTML = res.data;
+                    })
+                    .catch(function(err) {
+                        output.className = 'container text-danger';
+                        output.innerHTML = err.message;
+                    });
+            };
+        })();
+    </script>
+
+}
+                    }
+    <div class="container mt-5 mb-md-4 py-5">
+        <!-- Breadcrumb-->
+        <nav class="mb-3 mb-md-4 pt-md-3" aria-label="Breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+
+                <li class="breadcrumb-item active" aria-current="page">رزومه ساز</li>
+            </ol>
+        </nav>
+        <!-- Page content-->
+        <div class="row justify-content-center pb-sm-2">
+            <div class="col-lg-11 col-xl-10">
+                <!-- Page title-->
+                <div class="text-center pb-4 mb-3">
+                    <h1 class="h4 mb-4 font-vazir">ایجاد رزومه آنلاین</h1>
+                </div>
+                <!-- Steps-->
+                <div class="bg-light rounded-3 py-4 px-md-4 mb-3">
+                    <div class="steps pt-4 pb-1">
+                        <div class="step active">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">1</span></div>
+                            <div class="step-label">اطلاعات فردی</div>
+                        </div>
+                        <div class="step active">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">2</span></div>
+                            <div class="step-label">نمونه کار ها</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">3</span></div>
+                            <div class="step-label">سوابق شغلی</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">4</span></div>
+                            <div class="step-label">مهارت های حرفه ای</div>
+                        </div>
+                        <div class="step">
+                            <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">5</span></div>
+                            <div class="step-label">مشاهده رزومه</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Portfolios-->
+                <form method="post" enctype="multipart/form-data">
+
+                    <div class="bg-light rounded-3 p-4 p-md-5 mb-3">
+
+                        <h2 class="h5 font-vazir mb-4"><i class="fi-education text-primary fs-4 mt-n1 me-2 pe-1"></i>نمونه کارها</h2>
+                        <div class="row">
+
+                            <div class="col-sm-6 mb-4">
+                                <label class="form-label" asp-for="Portfolio.Picture">تامنیل </label>
+                                <input style="display: inline" accept=".jpg, .png, .jpeg" asp-for="Portfolio.Picture" class="form-control form-control-lg" type="file" placeholder="تامنیل">
+                            </div>
+                            <div class="col-sm-6 mb-4">
+                                <label class="form-label" asp-for="Portfolio.Video">ویدیو </label>
+                                <input style="display: inline" accept=".wav, .mp4, .mkv" asp-for="Portfolio.Video" class="form-control form-control-lg" type="file" placeholder="ویدیو">
+                            </div>
+                            <div class="col-sm-12 mb-4">
+                                <label class="form-label" asp-for="Portfolio.Name">عنوان <span class='text-danger'>*</span></label>
+                                <input asp-for="Portfolio.Name" class="form-control form-control-lg" type="text" placeholder="عنوان" required>
+                            </div>
+                            <div class="col-sm-12 mb-4">
+                                <label class="form-label" asp-for="Portfolio.Tags">تگ ها </label>
+                                <input asp-for="Portfolio.Tags" class="form-control form-control-lg" type="text" placeholder="لطفا تگ های مرتبط استفاده کنید و با کاراکتر , از یکدیگر جدا کنید.">
+                            </div>
+                            <div class="col-sm-12 mb-4">
+                                <label class="form-label" asp-for="Portfolio.Description">توضیحات </label>
+                                <textarea asp-for="Portfolio.Description" class="form-control form-control-lg" type="text" rows="5" placeholder="توضیحات"></textarea>
+                            </div>
+                            @if (Model.Message != null)
+                            {
+                                <div class="col-sm-12 mb-4">
+                                    <span class='text-danger'>@Model.Message</span>
+                                </div>
+                            }
+                            <div class="text-center col-12 mt-2" id="uploadFileDiv" style="display: none">
+                                <span id="percent" class="text-dark">پردازش در سرور...</span>
+                                <div class="progress mb-1">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-accent" id="progressBar" role="progressbar" style="width: 0%" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                            <div class="text-center col-12" id="uploadFileToServerDiv" style="display: none">
+                                <span id="uploadPercent" class="text-dark"></span>
+                                <span class="text-dark">درحال اپلود...</span>
+                                <div class="progress mb-1">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" id="uploadProgressBar" role="progressbar" style="width: 0%" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" asp-for="Portfolio.Id" value="@Model.Portfolio.Id" />
+                        <input type="hidden" asp-for="Portfolio.PageId" value="@Model.Portfolio.PageId" />
+                        <button class="btn btn-link btn-lg text-primary py-2 px-0 mb-md-n2" id="upload" type="button"><i class="fi-folder fs-sm me-2"></i>ویرایش نمونه کار</button>
+                        <hr class="mt-5 mb-3" />
+                        <!-- Light table with hoverable rows -->
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>عکس </th>
+                                        <th>عنوان </th>
+                                        <th>توضیحات کوتاه</th>
+                                        <th>عملیات</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.Portfolios.Any())
+                                {
+                                    @foreach (var job in Model.Portfolios)
+                                    {
+                                        <tr>
+                                            <th scope="row">@job.Id</th>
+                                            <td><img src="~/UploadedFiles/@job.Picture" style="width: 150px; height: 100px; border-radius: 10px" /></td>
+                                            <td>@job.Name</td>
+                                            <td>@job.ShortDescription</td>
+                                            <td>
+                                                <a asp-page="./EditPortfolio" asp-route-id="@job.Id" class="btn btn-primary">ویرایش</a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <th scope="row">0</th>
+                                        <td>خالی</td>
+                                        <td>خالی</td>
+                                        <td>خالی</td>
+                                        <td>خالی</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Navigation-->
+            <div class="d-flex flex-column flex-sm-row bg-light rounded-3 p-4 px-md-5"><a class="btn btn-outline-primary btn-lg rounded-pill mb-3 mb-sm-0" asp-page="./EditPersonalInformation"><i class="fi-chevron-left fs-sm me-2"></i>مرحله قبل</a><a class="btn btn-primary btn-lg rounded-pill me-sm-auto" asp-page="./AddJobHistory">مرحله بعد<i class="fi-chevron-right fs-sm ms-2"></i></a></div>
+        </div>
+    </div>
+</div>

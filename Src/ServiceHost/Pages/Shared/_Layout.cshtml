@@ -1,0 +1,138 @@
+﻿
+
+<!DOCTYPE html>
+<html lang="fa">
+
+<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+
+<head>
+    <meta charset="utf-8">
+    <title>@ViewData["Title"] | example.com</title>
+    <!-- SEO Meta Tags-->
+    <meta name="description" content="@ViewData["MetaDescription"]">
+    <meta name="keywords"
+          content="@ViewData["Keywords"]">
+    <!-- Viewport-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Favicon and Touch Icons-->
+    <link rel="apple-touch-icon" sizes="180x180" href="~/icons/edixle_logo_200px.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="~/icons/edixle_logo_200px.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="~/icons/edixle_logo_200px.png">
+    <meta name="msapplication-TileColor" content="#766df4">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Vendor Styles-->
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/simplebar/dist/simplebar.min.css" />
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/tiny-slider/dist/tiny-slider.css" />
+    @RenderSection("Css", required:false)
+    <!-- Main Theme Styles + Bootstrap-->
+    <link rel="stylesheet" media="screen" href="~/MainTheme/css/theme.min.css">
+</head>
+<!-- Body-->
+
+<body class="bg-dark" dir="rtl">
+
+    <main class="page-wrapper">
+
+
+        @await Component.InvokeAsync("Menu")
+
+        @RenderBody()
+
+    </main>
+
+    <footer class="footer bg-faded-light">
+        <div class="container pt-4 pb-3 pt-lg-5 pb-lg-4">
+            <div class="row pt-2 pt-lg-0">
+                <div class="col-lg-3 pb-2 mb-4">
+                    <h3 class="h5 text-light mb-2 fw-500">جستجوی ویدیو</h3>
+                    <p class="fs-sm text-light opacity-70">ادیت های جدید را از دست ندهید!</p>
+                    <form class="form-group form-group-light w-100" method="get" asp-page="./SearchPortfolios">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text"> <i class="fi-search"></i></span>
+                            <input class="form-control" disabled="" placeholder="رفتن به صفحه جستجو">
+                        </div>
+                        <button class="btn btn-primary btn-icon btn-sm" type="submit"><i class="fi-send"></i></button>
+                    </form>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 offset-xl-1 mb-2 mb-sm-4">
+                    <h3 class="fs-base text-light fw-500">وبلاگ</h3>
+                    <ul class="list-unstyled fs-sm">
+                        <li><a class="nav-link-light" asp-page="./BlogList">مقاله ها</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6 mb-2 mb-sm-4">
+                    <h3 class="fs-base text-light fw-500">حساب کاربری</h3>
+                    <ul class="list-unstyled fs-sm">
+                        <li><a class="nav-link-light" asp-page="./Login">ورود</a></li>
+                        <li><a class="nav-link-light" asp-page="./Register">ثبت نام</a></li>
+                        <li><a class="nav-link-light" asp-page="./Terms">قوانین سایت</a></li>
+                    </ul>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-sm-6 col-md-3 mb-2 mb-sm-4">
+                    <a class="d-flex align-items-center text-decoration-none mb-2" href="tel:0912345678">
+                        <i class="fi-device-mobile me-2"></i><span class="text-light">0912345678</span>
+                    </a><a class="d-flex align-items-center text-decoration-none mb-2" href="mailto:example.com@gmail.com">
+                        <i class="fi-mail me-2"></i><span class="text-light">example.com@gmail.com</span>
+                    </a>
+                    <div class="d-flex flex-wrap pt-4">
+                        
+                        <a class="btn btn-icon btn-translucent-light btn-xs rounded-circle mb-2 me-2" href="https://instagram.com/">
+                            <i class="fi-instagram"></i>
+                        </a>
+                        <a class="btn btn-icon btn-translucent-light btn-xs rounded-circle mb-2 me-2"
+                           href="https://t.me/"><i class="fi-telegram"></i></a>
+                        
+                    </div>
+                </div>
+                <div class="col-xl-2 col-lg-3 col-sm-6 col-md-3 mb-2 mb-sm-4">
+                    <style>
+                        #zarinpal {
+                            margin: auto
+                        }
+
+                            #zarinpal img {
+                                width: 80px;
+                            }</style>
+                    <div id="zarinpal">
+                        <script src="https://www.zarinpal.com/webservice/TrustCode" type="text/javascript"></script>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container d-lg-flex align-items-center justify-content-between fs-sm pb-3">
+            <div class="d-flex flex-wrap justify-content-center order-lg-2 mb-3">
+                <a class="nav-link nav-link-light fw-normal" asp-page="./Terms">قوانین سایت</a>
+            </div>
+
+            <p class="text-center text-lg-start order-lg-1 mb-lg-0">
+                <span class="text-light opacity-50">
+                    © تمامی حقوق سایت محفوظ است
+                </span>
+            </p>
+        </div>
+    </footer>
+
+    <!-- Back to top button-->
+    <a class="btn-scroll-top" href="#top" data-scroll>
+        <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span><i class="btn-scroll-top-icon fi-chevron-up">
+        </i>
+    </a>
+    <!-- Vendor scrits: js libraries and plugins-->
+    <script src="~/MainTheme/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/MainTheme/vendor/simplebar/dist/simplebar.min.js"></script>
+    <script src="~/MainTheme/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="~/AdminTheme/assets/js/jquery.min.js"></script>
+    @RenderSection("Script", required:false)
+    <script src="~/MainTheme/vendor/tiny-slider/dist/min/tiny-slider.js"></script>
+    <script src="~/MainTheme/vendor/jarallax/dist/jarallax.min.js"></script>
+    <script src="~/MainTheme/vendor/jarallax/dist/jarallax-element.min.js"></script>
+
+    <!-- Main theme script-->
+    <script src="~/MainTheme/js/theme.min.js"></script>
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.11">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\RM.Application\ReviewManagement.Application.Contracts\ReviewManagement.Application.Contracts.csproj" />
+	  <ProjectReference Include="..\..\RM.Application\ReviewManagement.Application\ReviewManagement.Application.csproj" />
+	  <ProjectReference Include="..\..\RM.Domain\ReviewManagement.Domain\ReviewManagement.Domain.csproj" />
+	  <ProjectReference Include="..\ReviewManagement.Infrastructure.EFCore\ReviewManagement.Infrastructure.EFCore.csproj" />
+	</ItemGroup>
+
+</Project>

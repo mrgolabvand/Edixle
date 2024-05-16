@@ -1,0 +1,120 @@
+﻿@page "{id}"
+@model ServiceHost.Pages.EditJobHistoryModel
+@{
+    ViewData["Title"] = "سابقه کار";
+
+}
+
+<div class="container mt-5 mb-md-4 py-5">
+    <!-- Breadcrumb-->
+    <nav class="mb-3 mb-md-4 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+
+            <li class="breadcrumb-item active" aria-current="page">رزومه ساز</li>
+        </ol>
+    </nav>
+    <!-- Page content-->
+    <div class="row justify-content-center pb-sm-2">
+        <div class="col-lg-11 col-xl-10">
+            <!-- Steps-->
+            <div class="bg-light rounded-3 py-4 px-md-4 mb-3">
+                <div class="steps pt-4 pb-1">
+                    <div class="step active">
+                        <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">1</span></div>
+                        <div class="step-label">اطلاعات فردی</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">2</span></div>
+                        <div class="step-label">نمونه کار ها</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">3</span></div>
+                        <div class="step-label">سوابق شغلی</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">4</span></div>
+                        <div class="step-label">مهارت های حرفه ای</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">5</span></div>
+                        <div class="step-label">مشاهده رزومه</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-light rounded-3 p-4 p-md-5 mb-3">
+                <h2 class="h5 font-vazir mb-4"><i class="fi-briefcase text-primary fs-5 mt-n1 me-2 pe-1"></i>سوابق شغلی</h2>
+              
+                <div class="alert alert-info mb-4" role="alert">
+                    <div class="d-flex">
+                        <i class="fi-alert-circle me-2 me-sm-3"></i>
+                        <p class="fs-sm mb-1">پر کردن 2 یا چند تجربه کاری ، شانس تماس با کارفرما را دو برابر می کند.</p>
+                    </div>
+                </div>
+                <form method="post">
+                    <label class="form-label" for="pr-title">عنوان شغل (سمت) <span class='text-danger'>*</span></label>
+                    <input asp-for="JobHistory.JobTitle" class="form-control form-control-lg mb-4" type="text" placeholder="عنوان شغل (سمت)" required>
+                    <div class="row">
+                        <div class="col-sm-12 mb-4">
+                            <label class="form-label" for="pr-company">نام شرکت/فرد <span class='text-danger'>*</span></label>
+                            <input asp-for="JobHistory.EmployerName" class="form-control form-control-lg" type="text" placeholder="نام شرکت/فرد" required>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label" for="pr-description">توضیحات</label>
+                        <textarea asp-for="JobHistory.Description" class="form-control" rows="5" placeholder="موقعیت خود و هرگونه دستاورد مهم را شرح دهید"></textarea>
+                        <div class="form-text pt-1">حداکثر 1000 کاراکتر.</div>
+                    </div>
+                    <input type="hidden" asp-for="JobHistory.Id" value="@Model.JobHistory.Id"/>
+                    <input type="hidden" asp-for="JobHistory.PageId" value="@Model.JobHistory.PageId"/>
+                    <button class="btn btn-link btn-lg text-primary py-2 px-0 mb-md-n2" type="submit"><i class="fi-folder fs-sm me-2"></i>ذخیره تغییرات</button>
+                </form>
+                <hr class="mt-5 mb-3"/>
+                <!-- Light table with hoverable rows -->
+                <div class="table-responsive mb-3">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>عنوان شغلی</th>
+                            <th>کارفرما</th>
+                            <th>توضیحات</th>
+                            <th>عملیات</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @if (Model.JobHistories.Any())
+                        {
+                            @foreach (var job in Model.JobHistories)
+                            {
+                                <tr>
+                                    <th scope="row">@job.Id</th>
+                                    <td>@job.JobTitle</td>
+                                    <td>@job.EmployerName</td>
+                                    <td>@job.Description</td>
+                                    <td>
+                                        <a asp-page="./EditJobHistory" asp-route-id="@job.Id" class="btn btn-primary">ویرایش</a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <th scope="row">0</th>
+                                <td>خالی</td>
+                                <td>خالی</td>
+                                <td>خالی</td>
+                                <td>خالی</td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Navigation-->
+                <div class="d-flex flex-column flex-sm-row bg-light rounded-3 p-4 px-md-5"><a class="btn btn-outline-primary btn-lg rounded-pill mb-3 mb-sm-0" asp-page="./AddPortfolio"><i class="fi-chevron-left fs-sm me-2"></i>مرحله قبل</a><a class="btn btn-primary btn-lg rounded-pill me-sm-auto" asp-page="./AddSkill">مرحله بعد<i class="fi-chevron-right fs-sm ms-2"></i></a></div>
+            </div>
+        </div>
+
+    </div>
+</div>

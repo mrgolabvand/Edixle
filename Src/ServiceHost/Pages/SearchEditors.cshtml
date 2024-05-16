@@ -1,0 +1,201 @@
+﻿@page
+@model ServiceHost.Pages.SearchEditorsModel
+@{
+    ViewData["Title"] = "جستجوی ادیتور";
+
+}
+@section Css
+{
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/nouislider/dist/nouislider.min.css" />
+}
+@section Script
+{
+    <script src="~/MainTheme/vendor/nouislider/dist/nouislider.min.js"></script>
+}
+
+<div class="container mt-5 mb-md-4 py-5">
+    <div class="row py-md-1">
+        <!-- Filers sidebar (Offcanvas on mobile)-->
+        <div class="col-lg-3 pe-xl-4">
+            <div class="offcanvas offcanvas-start offcanvas-collapse bg-dark" id="filters-sidebar">
+                <div class="offcanvas-header bg-transparent d-flex d-lg-none align-items-center">
+                    <h2 class="h5 text-light mb-0">جستجو</h2>
+                    <button class="btn-close btn-close-white" type="button" data-bs-dismiss="offcanvas"></button>
+                </div>
+                <div class="offcanvas-body py-lg-4">
+                    <form method="get">
+
+                        <div class="pb-4 mb-2">
+                            <h3 class="fs-base font-vazir text-light text-center">جستجو</h3>
+                            <input id="searchWord" name="searchWord" class="form-control form-control-light mb-2" placeholder="دنبال چی میگردی؟" />
+                        </div>
+                        <div class="pb-4 mb-2">
+                            <h3 class="fs-base font-vazir text-light">مرتب سازی</h3>
+                            <select id="orderId" name="orderId" class="form-select form-select-light mb-2">
+                                <option value="" disabled selected>برترین ها</option>
+                                <option value="1">برترین ها</option>
+                                <option value="2">جدیدترین ها</option>
+                            </select>
+                        </div>
+                        <div class="pb-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" id="isBusy" name="isBusy"  type="checkbox">
+                                <label class="form-check-label" for="isBusy">ادیتور های آزاد</label>
+                            </div>
+                        </div>
+                        
+                        <div class="pb-4 mb-2">
+                            <h3 class="fs-base font-vazir text-light">زمان دستمزد</h3>
+                            <select id="payDate" name="payDate" class="form-select form-select-light mb-2">
+                                <option value="" disabled selected>انتخاب کنید</option>
+                                <option value="ساعتی">ساعتی</option>
+                                <option value="هفتگی"> هفتگی</option>
+                                <option value="ماهیانه"> ماهیانه</option>
+                                <option value="سالیانه"> سالیانه</option>
+                            </select>
+                        </div>
+
+                        <div class="pb-4 mb-2">
+                            <h3 class="fs-base font-vazir text-light">دستمزد</h3>
+                            <div class="range-slider-money range-slider-light-money mb-3" data-start-min="25000" data-start-max="6500000" data-min="1000" data-max="10000000" data-step="1000">
+                                <div class="range-slider-ui-money"></div>
+                                <div class="d-flex align-items-center">
+                                    <div class="w-50 pe-2">
+                                        <input id="minPay" name="minPay" class="form-control form-control-light range-slider-value-min-money" type="hidden" >
+                                    </div>
+                                    <div class="w-50 ps-2">
+                                        <input id="maxPay" name="maxPay" class="form-control form-control-light range-slider-value-max-money" type="hidden">
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="btn btn-accent bg-gradient rounded-pill" type="submit">جستجو</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9">
+            <!-- Breadcrumb-->
+            <nav class="mb-3 pt-md-2 pt-lg-4" aria-label="Breadcrumb">
+                <ol class="breadcrumb breadcrumb-light">
+                    <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">جستجو در ادیتور ها</li>
+                </ol>
+            </nav>
+            <!-- Page title-->
+            <div class="d-flex align-items-center justify-content-between pb-4 mb-2">
+                <h1 class="text-light me-3 mb-0 font-vazir h4">ادیتور ها</h1>
+                <div class="text-light"><i class="fi-video fs-lg me-2"></i><span class="align-middle">@Model.PersonalPages.Count() نتیجه</span></div>
+            </div>
+           
+            <div class="row">
+                @foreach (var editor in Model.PersonalPages)
+                {
+                    <div class="col-md-6">
+                        <div class="bg-dark h-100 p-4">
+                            <div class="card card-light  card-body pb-1 mx-auto" style="max-width: 24rem;">
+                                <div class="card-body card card-light align-items-center">
+
+                                    <img class="rounded-circle " src="~/UploadedFiles/@editor.Picture" width="70px" alt="@editor.PictureAlt"
+                                         title="@editor.PictureTitle">
+
+                                    <div class="d-flex d-md-block d-lg-flex text-center mb-4">
+                                        <div class="pt-3">
+                                            <h2 class="text-light fs-lg mb-0">@editor.FullName</h2>
+                                            <h5 class="display-5 mb-1 mt-3 text-light font-vazir border-top">@editor.ReviewsTotalRate</h5>
+                                            <div class="progress mb-3 mt-1">
+                                                <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: @(editor.ReviewsTotalRate * 10)%" aria-valuenow="@(editor.ReviewsTotalRate * 10)" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                            <ul class="list-unstyled fs-sm mt-3 mb-0 text-end">
+                                                <li>
+                                                    <h4 class="h5 mb-0 text-light"><span class="fs-5">@editor.MinPay-@editor.MaxPay تومان</span><span class="fs-base fw-normal text-warning"> / @editor.PayDate</span></h4>
+                                                </li>
+                                                <li><a class="nav-link-light fw-normal p-0"  ><i class="fi-video me-2"></i> تعداد نمونه کار ها : @editor.Portfolios.Count()</a></li>
+                                                <li><a class="nav-link-light fw-normal p-0"><i class="fi-mail me-2"></i>تعداد نظرات : @editor.Reviews.Count()</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <a class="btn btn-primary btn-lg col-5 mb-3" style="margin-left: 41px;" asp-page="./EditorPage" asp-route-id="@editor.Slug"><i class="fi-arrow-forward-up me-2"></i>رزومه</a>
+                                        <a class="btn btn-primary btn-lg col-5 mb-3" asp-page="./EditorPageChoiceOffer" asp-route-id="@editor.Slug"><i class="fi-user-plus me-2"></i>استخدام</a>
+                                    </div>
+                                </div>
+
+                                <a class="btn btn-outline-light w-100 mb-3" href="#card-light-nav-@(editor.Id)" data-bs-toggle="collapse"><i class="fi-align-justify me-2"></i>بیشتر</a>
+                                <div class="collapse mt-3" id="card-light-nav-@(editor.Id)">
+                                    <div class="card-nav">
+                                        <a class="card-nav-link text-center" href="#">
+                                            <div class="text-nowrap">کیفیت ادیت ویدیو</div>
+                                            <div class="d-flex align-items-center mb-1 mt-2 fs-sm">
+                                                <div class="progress w-100 mx-3">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @(editor.EditVideoQualityTotalRate * 10)%" aria-valuenow="@(editor.EditVideoQualityTotalRate)"
+                                                         aria-valuemin="0" aria-valuemax="10"></div>
+                                                </div>
+                                            </div>
+                                            <span style="min-width: 48px;">@(editor.EditVideoQualityTotalRate) از 10</span>
+                                        </a>
+                                        <a class="card-nav-link text-center" href="#">
+                                            <div class="text-nowrap">افکت های ویدیو</div>
+                                            <div class="d-flex align-items-center mb-1 mt-2 fs-sm">
+                                                <div class="progress w-100 mx-3">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @(editor.UseProperVideoEffectsTotalRate * 10)%" aria-valuenow="@(editor.UseProperVideoEffectsTotalRate)"
+                                                         aria-valuemin="0" aria-valuemax="10"></div>
+                                                </div>
+                                            </div>
+                                            <span style="min-width: 48px;">@(editor.UseProperVideoEffectsTotalRate) از 10</span>
+                                        </a>
+                                        <a class="card-nav-link text-center" href="#">
+                                            <div class="text-nowrap">کیفیت ادیت صدا</div>
+                                            <div class="d-flex align-items-center mb-1 mt-2 fs-sm">
+                                                <div class="progress w-100 mx-3">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @(editor.EditSoundQualityTotalRate * 10)%" aria-valuenow="@(editor.EditSoundQualityTotalRate)"
+                                                         aria-valuemin="0" aria-valuemax="10"></div>
+                                                </div>
+                                            </div>
+                                            <span style="min-width: 48px;">@(editor.EditSoundQualityTotalRate) از 10</span>
+                                        </a>
+                                        <a class="card-nav-link text-center" href="#">
+                                            <div class="text-nowrap">افکت های صدا</div>
+                                            <div class="d-flex align-items-center mb-1 mt-2 fs-sm">
+                                                <div class="progress w-100 mx-3">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @(editor.UseProperSoundEffectsTotalRate * 10)%" aria-valuenow="@(editor.UseProperSoundEffectsTotalRate)"
+                                                         aria-valuemin="0" aria-valuemax="10"></div>
+                                                </div>
+                                            </div>
+                                            <span style="min-width: 48px;">@(editor.UseProperSoundEffectsTotalRate) از 10</span>
+                                        </a>
+                                        <a class="card-nav-link text-center" href="#">
+                                            <div class="text-nowrap">فونت و رنگ</div>
+                                            <div class="d-flex align-items-center mb-1 mt-2 fs-sm">
+                                                <div class="progress w-100 mx-3">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @(editor.UseProperFontAndColorsTotalRate * 10)%" aria-valuenow="@(editor.UseProperFontAndColorsTotalRate)"
+                                                         aria-valuemin="0" aria-valuemax="10"></div>
+                                                </div>
+                                            </div>
+                                            <span style="min-width: 48px;">@(editor.UseProperFontAndColorsTotalRate) از 10</span>
+                                        </a>
+                                        <a class="card-nav-link text-center" href="#">
+                                            <div class="text-nowrap">خلاقیت</div>
+                                            <div class="d-flex align-items-center mb-1 mt-2 fs-sm">
+                                                <div class="progress w-100 mx-3">
+                                                    <div class="progress-bar bg-warning" role="progressbar" style="width: @(editor.UseProperMemesTotalRate * 10)%" aria-valuenow="@(editor.UseProperMemesTotalRate)"
+                                                         aria-valuemin="0" aria-valuemax="10"></div>
+                                                </div>
+                                            </div>
+                                            <span style="min-width: 48px;">@(editor.UseProperMemesTotalRate) از 10</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                      </div>
+                }
+                      
+
+            </div>
+            
+        </div>
+    </div>
+</div>
+<button class="btn btn-primary btn-sm w-100 rounded-0 fixed-bottom d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#filters-sidebar"><i class="fi-filter me-2"></i>جستجو</button>

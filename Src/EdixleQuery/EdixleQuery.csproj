@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Contracts\JobOffer\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AccountManagement\AM.Infrastructure\AccountManagement.Infrastructure.EFCore\AccountManagement.Infrastructure.EFCore.csproj" />
+    <ProjectReference Include="..\BlogManagement\BM.Infrastructure\BlogManagement.Infrastructure.EFCore\BlogManagement.Infrastructure.EFCore.csproj" />
+    <ProjectReference Include="..\ChatManagement\CHM.Application\ChatManagement.Application.Contracts\ChatManagement.Application.Contracts.csproj" />
+    <ProjectReference Include="..\ChatManagement\CHM.Infrastructure\ChatManagement.Infrastructure.EFCore\ChatManagement.Infrastructure.EFCore.csproj" />
+    <ProjectReference Include="..\CommentManagement\CM.Infrastructure\CommentManagement.Infrastructure.EFCore\CommentManagement.Infrastructure.EFCore.csproj" />
+    <ProjectReference Include="..\ReviewManagement\RM.Infrastructure\ReviewManagement.Infrastructure.EFCore\ReviewManagement.Infrastructure.EFCore.csproj" />
+    <ProjectReference Include="..\WalletManagement\WM.Application\WalletManagement.Application.Contracts\WalletManagement.Application.Contracts.csproj" />
+    <ProjectReference Include="..\WalletManagement\WM.Domain\WalletManagement.Domain\WalletManagement.Domain.csproj" />
+    <ProjectReference Include="..\WalletManagement\WM.Infrastructure\WalletManagement.Infrastructure.EFCore\WalletManagement.Infrastructure.EFCore.csproj" />
+  </ItemGroup>
+
+</Project>

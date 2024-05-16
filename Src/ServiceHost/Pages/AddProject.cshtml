@@ -1,0 +1,102 @@
+﻿@page
+@model ServiceHost.Pages.AddProjectModel
+@{
+    ViewData["Title"] = "ایجاد پروژه";
+
+}
+@section Css
+    {
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/flatpickr/dist/flatpickr.min.css" />
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/persain-date/persian-datepicker.min.css" />
+}
+    @section Script
+    {
+    <script src="~/MainTheme/vendor/jquery-3.6.0.js"></script>
+    <script src="~/MainTheme/vendor/flatpickr/dist/flatpickr.min.js"></script>
+    <script src="~/MainTheme/vendor/flatpickr/dist/plugins/rangePlugin.js"></script>
+    <script src="~/MainTheme/vendor/persain-date/persian-date.js"></script>
+    <script src="~/MainTheme/vendor/persain-date/persian-datepicker.min.js"></script>
+    <script>
+        $('.date').persianDatepicker({
+            responsive: false,
+            initialValue: true,
+            format: 'YYYY/MM/DD'
+        });
+        $('.datetime').persianDatepicker({
+            responsive: false,
+            initialValue: true,
+            timePicker: {
+                enabled: true,
+                meridiem: {
+                    enabled: true
+                }
+            }
+        });
+        $('.min-date').persianDatepicker({
+            responsive: false,
+            initialValue: true,
+            format: 'YYYY/MM/DD',
+            minDate: ((new persianDate()).unix()) * 1000
+        });
+    </script>
+}
+    <form method="post" enctype="multipart/form-data">
+        <div class="container mt-5 mb-md-4 py-5">
+            <div class="row">
+                <!-- Page content-->
+                <div class="col-lg-12">
+                    <!-- Breadcrumb-->
+                    <nav class="mb-3 pt-md-3" aria-label="Breadcrumb">
+                        <ol class="breadcrumb breadcrumb-light">
+                            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">ثبت پروژه</li>
+                        </ol>
+                    </nav>
+                    <!-- Basic info-->
+                    <section class="card card-light card-body border-0 shadow-sm p-4 mb-4" id="basic-info">
+                        <h2 class="h5 fw-500 font-nonBold text-light mb-4"><i class="fi-info-circle text-primary fs-5 mt-n1 me-2"></i>اطلاعات پایه</h2>
+                        <h4><i class="fi-alert-circle fs-sm text-danger ms-2"></i><a class="align-middle" target="_blank" href="http://example.com/BlogDetails/13408563211832853064">حتما قبل از تعریف پروژه این مقاله رو بخون!</a></h4>
+
+                        <div class="mb-3">
+                            <label class="form-label text-light" for="sc-title">عنوان <span class="text-danger">*</span></label>
+                            <input asp-for="Project.Title" class="form-control form-control-light" type="text" placeholder="عنوان را وارد کنید" required><span class="form-text text-light opacity-50"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-white"> تاریخ پایان</label>
+                            <div class="input-group">
+                                <input asp-for="Project.ExpireDate" class="form-control form-control-light rounded pe-5 date" type="text" placeholder="انتخاب تاریخ"><i class="fi-calendar position-absolute top-50 start-0 translate-middle-y ms-3"></i>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-light" for="input-password">تگ ها</label>
+                            <input asp-for="Project.Tags" class="form-control form-control-light" type="text" placeholder="تگ ها" aria-describedby="tagsHelpBlock">
+                            <div class="form-text text-light" id="tagsHelpBlock">
+                                تگ های مربوط استفاده کنید و آن ها را با , از یکدیگر جدا کنید.
+                            </div>
+                        </div>
+                    </section>
+                    <!-- Price-->
+                    <section class="card card-light card-body border-0 shadow-sm p-4 mb-4" id="price">
+                        <h2 class="h5 text-light mb-4 fw-500 font-nonBold"><i class="fi-cash text-primary fs-5 mt-n1 me-2"></i>بودجه</h2>
+                        <label class="form-label text-light" for="sc-price">بودجه <span class="text-danger">*</span></label>
+                        <div class="d-sm-flex mb-2">
+                            <input asp-for="Project.Budget" class="form-control form-control-light w-100 me-2 mb-2" type="number" min="200" step="50" required>
+                            <select class="form-select form-select-light w-25 me-2 mb-2">
+                                <option value="usd">تومان</option>
+                            </select>
+                        </div>
+                    </section>
+                    <!-- Vehicle information-->
+                    <section class="card card-light card-body border-0 shadow-sm p-4 mb-4" id="vehicle-info">
+                        <h2 class="h5 text-light mb-4 fw-500 font-nonBold"><i class="fi-video text-primary fs-5 mt-n1 me-2"></i>مشخصات پروژه</h2>
+                        <div class="border-top border-light mt-2 pt-4">
+                            <label class="form-label text-light" for="sc-description">توضیحات </label>
+                            <textarea asp-for="Project.Description" class="form-control form-control-light" id="sc-description" rows="5" placeholder="توضیح درباره پروژه"></textarea><span class="form-text text-light opacity-50">حداکثر 1000 کاراکتر مجاز است.</span>
+                        </div>
+                    </section>
+                    <div class="d-sm-flex justify-content-between pt-2"><button class="btn btn-primary btn-lg d-block mb-2" type="submit">ذخیره </button></div>
+                </div>
+            </div>
+        </div>
+
+    </form>

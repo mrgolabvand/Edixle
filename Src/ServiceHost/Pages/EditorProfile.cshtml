@@ -1,0 +1,234 @@
+﻿@page
+@model ServiceHost.Pages.EditorProfileModel
+@{
+    ViewData["Title"] = "پروفایل ادیتور";
+
+}
+
+<div class="position-absolute top-0 start-0 w-100 bg-dark" style="height: 398px;"></div>
+<div class="container content-overlay mt-5 mb-md-4 py-5">
+    <!-- Breadcrumb-->
+    <nav class="mb-3 mb-md-4 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb breadcrumb-light">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">تنظیمات پروفایل من</li>
+        </ol>
+    </nav>
+    <!-- Page card like wrapper-->
+    <div class="bg-light shadow-sm rounded-3 p-4 p-md-5 mb-2">
+        <!-- Account header-->
+        <div class="d-flex align-items-start justify-content-between pb-4 mb-2">
+            <div class="d-flex align-items-start">
+                <div class="position-relative flex-shrink-0">
+                    <img class="rounded-circle" src="~/UploadedFiles/@Model.PersonalPageViewModel.Picture" width="100">
+                    <a class="btn btn-icon btn-light btn-xs rounded-circle shadow-sm position-absolute start-0 bottom-0" asp-page="./ResumeReview" data-bs-toggle="tooltip" title="تغییر تصویر"><i class="fi-pencil fs-xs"></i></a>
+                </div>
+                <div class="pe-3 pe-sm-4">
+                    <h3 class="h5">@Model.PersonalPageViewModel.FullName</h3>
+                    <ul class="list-unstyled fs-sm mb-0">
+                        <li class="d-flex text-nav text-break"><i class="fi-mail opacity-60 mt-1 me-2"></i><span>@Model.AccountQueryModel.Email</span></li>
+                    </ul>
+                </div>
+            </div><a class="nav-link p-0 d-none d-md-block" asp-page="./Login" asp-page-handler="Logout"><i class="fi-logout mt-n1 me-2"></i>خروج</a>
+        </div>
+        <!-- Account menu--><a class="btn btn-outline-primary btn-lg rounded-pill w-100 d-md-none" href="#account-nav" data-bs-toggle="collapse"><i class="fi-align-justify me-2"></i>منو پروفایل من</a>
+        <div class="collapse d-md-block" id="account-nav">
+            <ul class="nav nav-pills flex-column flex-md-row pt-3 pt-md-0 pb-md-4 border-bottom-md">
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link active" asp-page="./EditorProfile" aria-current="page"><i class="fi-settings mt-n1 me-2 fs-base"></i>تنظیمات پروفایل من</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./AddPortfolio"><i class="fi-cloud-upload mt-n1 me-2 fs-base"></i>نمونه کار های من</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./AddJobHistory"><i class="fi-user-check mt-n1 me-2 fs-base"></i>سابقه کاری</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./AddSkill"><i class="fi-education mt-n1 me-2 fs-base"></i>مهارت ها</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./EditorProfileProjectOffers"><i class="fi-send mt-n1 me-2 fs-base"></i>درخواست ها</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./EditorProfileJobOffers"><i class="fi-cup mt-n1 me-2 fs-base"></i>پیشنهاد های کاری</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./BusinessChat"><i class="fi-chat-right mt-n1 me-2 fs-base"></i>پیام های کاری</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./EditorProfilePlans"><i class="fi-gift mt-n1 me-2 fs-base"></i>پلن ها</a></li>
+                <li class="nav-item mb-md-0 mt-2"><a class="nav-link" asp-page="./EditorProfileWallet"><i class="fi-wallet mt-n1 me-2 fs-base"></i>کیف پول</a></li>
+                <li class="nav-item d-md-none"><a class="nav-link" asp-page="./Login" asp-page-handler="Logout"><i class="fi-logout mt-n1 me-2 fs-base"></i>خروج</a></li>
+            </ul>
+        </div>
+        <!-- Authorization info-->
+        <div class="row pt-4 mt-3">
+            <div class="col-lg-3">
+                <h2 class="h5 font-vazir">اطلاعات ورود به اکانت</h2>
+            </div>
+            <div class="col-lg-9">
+                <div class="border rounded-3 p-3" id="auth-info">
+                    <!-- Email-->
+                    <form method="post" asp-page-handler="EditAccount">
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="ps-2">
+                                    <label class="form-label fw-bold">نام کاربری</label>
+                                    <div id="un-value">@Model.Account.UserName</div>
+                                </div>
+                                <div class="me-n3" data-bs-toggle="tooltip" title="ویرایش"><a class="nav-link py-0" href="#un-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
+                            </div>
+                            <div class="collapse" id="un-collapse" data-bs-parent="#auth-info">
+                                <input asp-for="Account.UserName" class="form-control mt-3" type="text" data-bs-binded-element="#un-value" data-bs-unset-value="مشخص نشده است">
+                            </div>
+                        </div>
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="ps-2">
+                                    <label class="form-label fw-bold">پست الکترونیکی</label>
+                                    <div id="email-value">@Model.Account.Email</div>
+                                </div>
+                                <div class="me-n3" data-bs-toggle="tooltip" title="ویرایش"><a class="nav-link py-0" href="#email-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
+                            </div>
+                            <div class="collapse" id="email-collapse" data-bs-parent="#auth-info">
+                                <input asp-for="Account.Email" class="form-control mt-3" type="email" data-bs-binded-element="#email-value" data-bs-unset-value="مشخص نشده است">
+                            </div>
+                            <button class="btn btn-primary rounded-pill px-3 px-sm-4 mt-3" type="submit">ذخیره اطلاعات ورود به اکانت</button>
+                        </div>
+                    </form>
+
+                    <!-- Password-->
+                    <form method="post" asp-page-handler="ChangePassword">
+                        <div>
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="ps-2">
+                                    <label class="form-label fw-bold">رمز عبور</label>
+                                    <div>********</div>
+                                </div>
+                                <div class="me-n3" data-bs-toggle="tooltip" title="ویرایش"><a class="nav-link py-0" href="#password-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
+                            </div>
+                            <div class="collapse" id="password-collapse" data-bs-parent="#auth-info">
+                                <div class="row gx-3 align-items-center my-3">
+                                    <label class="col-sm-4 col-md-3 col-form-label" for="account-password-new">رمز عبور جدید:</label>
+                                    <div class="col-sm-8 col-md-9">
+                                        <div class="password-toggle">
+                                            <input asp-for="Password.Password" class="form-control" type="password" id="account-password-new" placeholder="رمز عبور جدید را وارد کنید">
+                                            <label class="password-toggle-btn" aria-label="Show/hide password">
+                                                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row gx-3 align-items-center">
+                                    <label class="col-sm-4 col-md-3 col-form-label" for="account-password-confirm">تایید رمز عبور جدید:</label>
+                                    <div class="col-sm-8 col-md-9">
+                                        <div class="password-toggle">
+                                            <input asp-for="Password.RePassword" class="form-control" type="password" id="account-password-confirm" placeholder="رمز عبور جدید را مجدد وارد کنید">
+                                            <label class="password-toggle-btn" aria-label="Show/hide password">
+                                                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary rounded-pill px-3 px-sm-4 mt-3" type="submit">ذخیره رمز عبور</button>
+
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <form method="post" asp-page-handler="EditPersonalPage">
+
+            <!-- Personal details-->
+            <div class="row pt-4 mt-2">
+                <div class="col-lg-3">
+                    <h2 class="h5 font-vazir">اطلاعات فردی</h2>
+                </div>
+
+                <div class="col-lg-9">
+                    <div class="border rounded-3 p-3" id="personal-details">
+
+                        <!-- Full name-->
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="ps-2">
+                                    <label class="form-label fw-bold">نام</label>
+                                    <div id="fn-value">@Model.PersonalPage.FullName</div>
+                                </div>
+                                <div class="me-n3" data-bs-toggle="tooltip" title="ویرایش"><a class="nav-link py-0" href="#fn-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
+                            </div>
+                            <div class="collapse" id="fn-collapse" data-bs-parent="#personal-details">
+                                <input asp-for="PersonalPage.FullName" class="form-control mt-3" type="text" data-bs-binded-element="#fn-value" data-bs-unset-value="مشخص نشده است">
+                            </div>
+                        </div>
+                        <!-- Age-->
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="ps-2">
+                                    <label class="form-label fw-bold">سن</label>
+                                    <div id="ag-value">@Model.PersonalPage.Age</div>
+                                </div>
+                                <div class="me-n3" data-bs-toggle="tooltip" title="ویرایش"><a class="nav-link py-0" href="#ag-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
+                            </div>
+                            <div class="collapse" id="ag-collapse" data-bs-parent="#personal-details">
+                                <input asp-for="PersonalPage.Age" class="form-control mt-3" type="number" data-bs-binded-element="#ag-value" data-bs-unset-value="مشخص نشده است">
+                            </div>
+                        </div>
+
+                        <!-- About-->
+                        <div class="border-bottom pb-3 mb-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div class="ps-2">
+                                    <label class="form-label fw-bold">درباره</label>
+                                    <div id="ds-value">@Model.PersonalPage.About</div>
+                                </div>
+                                <div class="me-n3" data-bs-toggle="tooltip" title="ویرایش"><a class="nav-link py-0" href="#ds-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
+                            </div>
+                            <div class="collapse" id="ds-collapse" data-bs-parent="#personal-details">
+                                <input asp-for="PersonalPage.About" class="form-control mt-3" type="text" data-bs-binded-element="#ds-value" data-bs-unset-value="مشخص نشده است">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- Account settings-->
+            <div class="row pt-4 mt-2">
+                <div class="col-lg-3">
+                    <h2 class="h5 font-vazir">حقوق درخواستی</h2>
+                </div>
+                <div class="col-lg-9">
+                    <div class="border rounded-3 p-3" id="account-settings">
+                        <div class="row gx-2 gx-lg-3 gx-xl-4">
+                            <!-- Card number-->
+                            <div class="col-12 border-bottom pb-3 mb-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="ps-2">
+                                        <label class="form-label fw-bold">کارت بانکی</label>
+                                        <div id="card-value">@Model.PersonalPage.Card</div>
+                                    </div>
+                                    <div class="me-n3" data-bs-toggle="tooltip" title="ویرایش"><a class="nav-link py-0" href="#card-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
+                                </div>
+                                <div class="collapse" id="card-collapse" data-bs-parent="#personal-details">
+                                    <input asp-for="PersonalPage.Card" class="form-control mt-3" type="number" data-bs-binded-element="#card-value" data-bs-unset-value="مشخص نشده است">
+                                </div>
+                            </div>
+                            <div class="col-md-9 mb-3 mb-md-0">
+                                <div class="d-flex align-items-center">
+                                    <input asp-for="PersonalPage.MinPay" class="form-control form-control-lg" type="number" step="100" min="300" placeholder="از">
+                                    <div class="mx-2">&mdash;</div>
+                                    <input asp-for="PersonalPage.MaxPay" class="form-control form-control-lg" type="number" step="100" min="500" placeholder="تا">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select asp-for="PersonalPage.PayDate" class="form-select form-select-lg">
+                                    <option value="ماهیانه">ماهیانه</option>
+                                    <option value="ساعتی">ساعتی</option>
+                                    <option value="هفتگی">هفتگی</option>
+                                    <option value="سالیانه">سالیانه</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Action buttons-->
+            <div class="row pt-4 mt-2">
+                <div class="col-lg-9 offset-lg-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <button class="btn btn-primary rounded-pill px-3 px-sm-4" type="submit"> ذخیره اطلاعات فردی</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>

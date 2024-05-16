@@ -1,0 +1,76 @@
+﻿@page
+@model ServiceHost.Pages.AddSkillModel
+@{
+    ViewData["Title"] = "مهارت";
+
+}
+<div class="container mt-5 mb-md-4 py-5">
+    <!-- Breadcrumb-->
+    <nav class="mb-3 mb-md-4 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+
+            <li class="breadcrumb-item active" aria-current="page">رزومه ساز</li>
+        </ol>
+    </nav>
+    <!-- Page content-->
+    <div class="row justify-content-center pb-sm-2">
+        <div class="col-lg-11 col-xl-10">
+            <!-- Page title-->
+            <!-- Steps-->
+            <div class="bg-light rounded-3 py-4 px-md-4 mb-3">
+                <div class="steps pt-4 pb-1">
+                    <div class="step active">
+                        <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">1</span></div>
+                        <div class="step-label">اطلاعات فردی</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">2</span></div>
+                        <div class="step-label">نمونه کار ها</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">3</span></div>
+                        <div class="step-label">سوابق شغلی</div>
+                    </div>
+                    <div class="step active">
+                        <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">4</span></div>
+                        <div class="step-label">مهارت های حرفه ای</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-progress"><span class="step-progress-start"></span><span class="step-progress-end"></span><span class="step-number">5</span></div>
+                        <div class="step-label">مشاهده رزومه</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Step 4: Skills-->
+            <div class="bg-light rounded-3 p-4 p-md-5 mb-3">
+                <h2 class="h5 font-vazir mb-4"><i class="fi-star text-primary fs-5 mt-n1 me-2 pe-1"></i>مهارت های حرفه ای</h2>
+                <form method="post">
+                    <div class="mb-4">
+                        <label class="form-label" for="pr-add-skill">افزودن مهارت شما</label>
+                        <div class="d-flex flex-column flex-sm-row">
+                            <input asp-for="Skill.Name" class="form-control form-control-lg w-75 ms-sm-3 ms-md-4 mb-3 mb-sm-0" type="text" id="pr-add-skill" placeholder="مهارت شما">
+                            <input asp-for="Skill.Value" class="form-control form-control-lg w-25 ms-sm-3 ms-md-4 mb-3 mb-sm-0" type="number" step="5" min="0" max="100" placeholder="درصد">
+                            <button class="btn btn-primary btn-lg rounded-pill" type="submit">افزودن</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="d-flex flex-wrap mb-4">
+                    @if (Model.Skills.Any())
+                    {
+                        @foreach (var skill in Model.Skills)
+                        {
+                            <a asp-page="./EditSkill" asp-route-id="@skill.Id"><span class="bg-success text-light fs-sm btn btn-xs disabled opacity-100 rounded-pill me-2 mb-2 ms-1 mt-1"><i class="fi-edit fs-xs me-2"></i>@skill.Name : %@skill.Value</span></a>
+                        }
+                    }
+                    else
+                    {
+                        <p>مهارتی وارد نشده.</p>
+                    }
+                </div>
+            </div>
+            <!-- Navigation-->
+            <div class="d-flex flex-column flex-sm-row bg-light rounded-3 p-4 px-md-5"><a class="btn btn-outline-primary btn-lg rounded-pill mb-3 mb-sm-0" asp-page="./AddJobHistory"><i class="fi-chevron-left fs-sm me-2"></i>مرحله قبل</a><a class="btn btn-primary btn-lg rounded-pill me-sm-auto" asp-page="./ResumeReview">مرحله بعد<i class="fi-chevron-right fs-sm ms-2"></i></a></div>
+        </div>
+    </div>
+</div>

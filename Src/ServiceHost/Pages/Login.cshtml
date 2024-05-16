@@ -1,0 +1,45 @@
+﻿@page
+@model ServiceHost.Pages.LoginModel
+@{
+    ViewData["Title"] = "ورود";
+}
+
+<div class="container-fluid d-flex h-100 align-items-center justify-content-center py-4 py-sm-5 mt-3">
+    <div class="card card-light card-body mt-3" style="max-width: 940px">
+        <a class="position-absolute top-0 end-0 nav-link-light fs-sm py-1 px-2 mt-3 me-3" href="#"><i class="fi-arrow-long-right fs-base me-2"></i>برگشت</a>
+        <div class="row mx-0 align-items-center">
+            <div class="col-md-6 border-end-md p-4 p-sm-5">
+                <h2 class="h3 text-light mb-4 mb-sm-5">سلام!<br>به سایت ما خوش آمدید.</h2>
+                <div class="text-light mt-4 mt-sm-5"><span class="opacity-60">هنوز ثبت نام نکرده اید؟ </span><a asp-page="./Register" class="text-light">ثبت نام</a></div>
+            </div>
+            <div class="col-md-6 px-4 pt-2 pb-4 px-sm-5 pb-sm-5 pt-md-5">
+                @if (!string.IsNullOrWhiteSpace(Model.Message))
+                {
+                    <div class="mb-3">
+                        <span class="alert alert-danger ">@Model.Message</span>
+                    </div>
+                }
+
+                <form class="needs-validation" method="post" novalidate>
+                    <div class="mb-4">
+                        <label class="form-label text-light" for="signup-name">نام کاربری</label>
+                        <input asp-for="Login.UserName" class="form-control form-control-light" type="text" id="signup-name" placeholder="نام کاربری خود را وارد کنید" required>
+                        <span asp-validation-for="Login.UserName"></span>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <label class="form-label text-light mb-0" for="signin-password">رمز عبور</label>
+                        </div>
+                        <div class="password-toggle">
+                            <input asp-for="Login.Password" class="form-control form-control-light" type="password" id="signin-password" placeholder="پسوورد خود را وارد کنید" required>
+                            <label class="password-toggle-btn" aria-label="Show/hide password">
+                                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-lg w-100" type="submit">ورود به حساب کاربری</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

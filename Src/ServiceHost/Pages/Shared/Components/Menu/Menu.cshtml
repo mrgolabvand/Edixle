@@ -1,0 +1,226 @@
+﻿@model EdixleQuery.Contracts.Category.CategoryQueryModel
+@using _0_Framework.Application
+@using _0_Framework.Infrastructure
+@using AccountManagement.Application.Contracts.Account
+@using EdixleQuery.Contracts.PersonalPage
+@inject IAuthHelper authHelper
+@inject IAccountApplication accountApplication
+@inject IPersonalPageQuery personalPageQuery
+
+<!--Choice Modal-->
+<div class=" modal fade" id="choice-modal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class=" modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content bg-dark border-light">
+            <div class="modal-header">
+                <h4 class="modal-title text-white">نوع کاربر</h4>
+                <button type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <a class="btn btn-accent bg-gradient" asp-page="./AddPersonalInformation" asp-page-handler="Validate">ادیتور</a>
+                <a class="btn btn-accent bg-gradient" asp-page="./AddEmployerPage" asp-page-handler="Validate">کارفرما</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Login Modal-->
+<div class="modal fade" id="login-modal" tabindex="-1" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <ul class="nav nav-tabs mb-0" role="tablist">
+                    <li class="nav-item"><a class="nav-link active" href="#" data-bs-toggle="tab" role="tab" aria-selected="true"><i class="fi-login fs-sm ms-2 me-n1"></i> ورود به حساب کاربری</a></li>
+                </ul>
+                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body tab-content py-4">
+                <form class="tab-pane fade show active" method="post" autocomplete="off" asp-page="./Login" asp-page-handler="Login">
+                    <div class="mb-3">
+                        <label class="form-label" for="UserName">نام کاربری</label>
+                        <input class="form-control" type="text" id="UserName" name="UserName">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="Password">رمزعبور</label>
+                        <div class="password-toggle">
+                            <input class="form-control" type="password" id="Password" name="Password">
+                            <label class="password-toggle-btn">
+                                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3 d-flex flex-wrap justify-content-between">
+                        <a class="fs-sm" asp-page="./Register">حساب ندارید؟ ثبت نام کنید!</a>
+                    </div>
+                    <button class="btn btn-primary d-block w-100" type="submit">ورود</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<header class="navbar navbar-expand-lg navbar-dark fixed-top" data-scroll-header>
+    <div class="container">
+        <a class="navbar-brand me-3 me-xl-4" asp-page="./Index">
+            <img class="d-block"
+                 src="~/icons/edixle_logo_200px.png" width="60" alt="example.com" title="example.com">
+        </a>
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        @if (Model.IsAuth)
+        {
+            <div class="dropdown d-none d-lg-block order-lg-3 my-n2 me-3">
+                @if (Model.IsEditor)
+                {
+                    <a class="d-block py-2" asp-page="./EditorProfile">
+                        <img class="rounded-circle" src="~/UploadedFiles/@Model.PersonalPage.Picture" width="40" alt="@Model.PersonalPage.PictureAlt" title="@Model.PersonalPage.PictureTitle" />
+                    </a>
+                }
+                @if (Model.IsEmployer)
+                {
+                    <a class="d-block py-2" asp-page="./EmployerPage">
+                        <img class="rounded-circle" src="~/UploadedFiles/@Model.EmployerPage.Picture" width="40" />
+                    </a>
+                }
+                <div class="dropdown-menu dropdown-menu-dark dropdown-menu-end">
+                    <div class="d-flex align-items-start border-bottom border-light px-3 py-1 mb-2" style="width: 16rem;">
+                        @if (Model.IsEditor)
+                        {
+                            <img class="rounded-circle" src="~/UploadedFiles/@Model.PersonalPage.Picture" width="48" alt="@Model.PersonalPage.PictureAlt" title="@Model.PersonalPage.PictureTitle" />
+                        }
+                        @if (Model.IsEmployer)
+                        {
+                            <img class="rounded-circle" src="~/UploadedFiles/@Model.EmployerPage.Picture" width="48" />
+                        }
+                        <div class="pe-3 text-right">
+                            @if (Model.IsEditor)
+                            {
+                                <h6 class="fs-base text-light mb-0">@Model.PersonalPage.FullName</h6>
+                                <div class="progress mb-1 mt-2" style="height: 10px">
+                                    <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" role="progressbar" style="width: @(Model.PersonalPage.ReviewsTotalRate * 10)%; height: 10px" aria-valuenow="@(Model.PersonalPage.ReviewsTotalRate * 10)" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            }
+                            @if (Model.IsEmployer)
+                            {
+                                <h6 class="fs-base text-light mb-0">@Model.EmployerPage.FullName</h6>
+                            }
+                        </div>
+                    </div>
+                    @if (Model.IsEditor)
+                    {
+                        <a class="dropdown-item" asp-page="./EditorProfile"><i class="fi-user me-2"></i>اطلاعات فردی</a>
+                        <a class="dropdown-item" asp-page="./BusinessChat"><i class="fi-chat-right me-2"></i>پیام های کاری</a>
+                        <a class="dropdown-item" asp-page="./EditorProfileProjectOffers"><i class="fi-cup me-2"></i>پیشنهاد های ارسال شده</a>
+                        <a class="dropdown-item" asp-page="./EditorProfileJobOffers"><i class="fi-file me-2"></i>پیشنهاد های کاری</a>
+                        <a class="dropdown-item" asp-page="./EditorProfileWallet"><i class="fi-wallet me-2"></i>کیف پول</a>
+                        <a class="dropdown-item" asp-page="./EditorPage" asp-route-id="@Model.PersonalPage.Slug"><i class="fi-user me-2"></i>صفحه رزومه</a>
+                    }
+                    @if (Model.IsEmployer)
+                    {
+                        <a class="dropdown-item" asp-page="./EmployerPage"><i class="fi-user me-2"></i>صفحه کارفرما</a>
+                        <a class="dropdown-item" asp-page="./BusinessChat"><i class="fi-chat-right me-2"></i>پیام های کاری</a>
+                        <a class="dropdown-item" asp-page="./EmployerPageJobOffers"><i class="fi-cup me-2"></i>پیشنهاد های ارسال شده</a>
+                        <a class="dropdown-item" asp-page="./EmployerPageWallet"><i class="fi-wallet me-2"></i>کیف پول</a>
+                        <a class="dropdown-item" asp-page="./EmployerPageProjects"><i class="fi-file me-2"></i>پروژه ها</a>
+                    }
+                    <a class="dropdown-item" asp-page="./Login" asp-page-handler="Logout">خروج</a>
+                </div>
+            </div>
+        }
+        @if (!Model.IsAuth)
+        {
+            <a class="btn btn-link btn-light btn-sm d-none d-lg-block order-lg-3" href="#login-modal" data-bs-toggle="modal"><i class="fi-user me-2"></i>ورود به حساب کاربری</a>
+        }
+        @if (!Model.IsEditor && !Model.IsAuth && !Model.IsEmployer)
+        {
+            <a class="btn btn-primary btn-sm ms-2 order-lg-3" href="#login-modal" data-bs-toggle="modal">
+                <i class="fi-plus me-2"></i>ثبت
+                پروژه
+            </a>
+        }
+        @if (Model.IsAuth && !Model.IsEditor && Model.IsEmployer)
+        {
+            <a class="btn btn-primary btn-sm ms-2 order-lg-3" asp-page="./EmployerPage" asp-page-handler="Validate">
+                <i class="fi-plus me-2"></i>ثبت
+                پروژه
+            </a>
+        }
+        @if (Model.IsAuth && !Model.IsEditor && !Model.IsEmployer)
+        {
+            <a class="btn btn-primary btn-sm ms-2 order-lg-3" href="#choice-modal" data-bs-toggle="modal">
+                <i class="fi-plus me-2"></i>ثبت
+                پروژه
+            </a>
+        }
+        @if (Model.IsEditor)
+        {
+            <a class="btn btn-primary btn-sm ms-2 order-lg-3" asp-page="./SearchProjects">
+                <i class="fi-search me-2"></i>جستجو در پروژه ها
+            </a>
+        }
+
+        <div class="collapse navbar-collapse order-lg-2" id="navbarNav">
+
+            <ul class="navbar-nav navbar-nav-scroll" style="max-height: 35rem;">
+                <!-- Menu items-->
+                <div class="d-lg-none d-sm-block mt-2">
+
+                    @if (Model.IsAuth)
+                    {
+                        @if (Model.IsEditor)
+                        {
+                            <a class="d-block py-2" style="text-decoration: none;" asp-page="./EditorProfile">
+                                <img class="rounded-circle" src="~/UploadedFiles/@Model.PersonalPage.Picture" width="50" height="50" alt="@Model.PersonalPage.PictureAlt" title="@Model.PersonalPage.PictureTitle">
+                                <span class="text-danger"> پروفایل </span>
+                            </a>
+                        }
+                        @if (Model.IsEmployer)
+                        {
+                            <a class="d-block py-2" style="text-decoration: none;" asp-page="./EmployerPage">
+                                <img class="rounded-circle" src="~/UploadedFiles/@Model.EmployerPage.Picture" width="50" height="50">
+                                <span class="text-danger"> پروفایل </span>
+                            </a>
+                        }
+                    }
+                </div>
+                <li class="nav-item active"><a class="nav-link" asp-page="./Index">خانه</a></li>
+
+                @if (Model.IsAuth && !Model.IsEditor && !Model.IsEmployer)
+                {
+                    <li class="nav-item"><a class="nav-link" href="#choice-modal" data-bs-toggle="modal">ادیتور / کارفرما</a></li>
+                }
+                <form style="display: flex" method="get" asp-page="./SearchPortfolios">
+
+                    @foreach (var baseCategory in Model.BaseCategories)
+                    {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">@baseCategory.BaseCategoryName</a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+
+                                @foreach (var portfolioCategory in baseCategory.PortfolioCategory)
+                                {
+                                <input type="hidden" id="bc-@portfolioCategory.Id" name="SelectedCategoriesDictionary[@portfolioCategory.Id]" value="false" />
+                                <li><button class="dropdown-item" type="submit" onclick="document.getElementById('bc-@portfolioCategory.Id').value = true">@portfolioCategory.Name</button></li>
+
+                                }
+                        </ul>
+                    </li>
+                    }
+                </form>
+                <li class="nav-item"><a class="nav-link" asp-page="./BlogList">وبلاگ</a></li>
+
+                @if (!Model.IsAuth)
+                {
+                    <li class="nav-item d-lg-none">
+                        <a class="nav-link" href="#login-modal" data-bs-toggle="modal">
+                            <i class="fi-user me-2"></i>ورود به حساب کاربری
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</header>

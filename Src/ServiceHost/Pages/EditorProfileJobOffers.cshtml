@@ -1,0 +1,93 @@
+﻿@page
+@model ServiceHost.Pages.EditorProfileJobOffersModel
+@{
+    ViewData["Title"] = "پیشنهاد کاری";
+
+}
+
+<div class="position-absolute top-0 start-0 w-100 bg-dark" style="height: 398px;"></div>
+<div class="container content-overlay mt-5 mb-md-4 py-5">
+    <!-- Breadcrumb-->
+    <nav class="mb-3 mb-md-4 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb breadcrumb-light">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">تنظیمات پروفایل من</li>
+        </ol>
+    </nav>
+    <!-- Page card like wrapper-->
+    <div class="bg-light shadow-sm rounded-3 p-4 p-md-5 mb-2">
+        <!-- Account header-->
+        <div class="d-flex align-items-start justify-content-between pb-4 mb-2">
+            <div class="d-flex align-items-start">
+                <div class="position-relative flex-shrink-0">
+                    <img class="rounded-circle" src="~/UploadedFiles/@Model.PersonalPageViewModel.Picture" width="100">
+                    <a class="btn btn-icon btn-light btn-xs rounded-circle shadow-sm position-absolute start-0 bottom-0" asp-page="./ResumeReview" data-bs-toggle="tooltip" title="تغییر تصویر"><i class="fi-pencil fs-xs"></i></a>
+                </div>
+                <div class="pe-3 pe-sm-4">
+                    <h3 class="h5">@Model.PersonalPageViewModel.FullName</h3>
+                    <ul class="list-unstyled fs-sm mb-0">
+                        <li class="d-flex text-nav text-break"><i class="fi-mail opacity-60 mt-1 me-2"></i><span>@Model.AccountQueryModel.Email</span></li>
+                    </ul>
+                </div>
+            </div><a class="nav-link p-0 d-none d-md-block" asp-page="./Login" asp-page-handler="Logout"><i class="fi-logout mt-n1 me-2"></i>خروج</a>
+        </div>
+        <!-- Account menu--><a class="btn btn-outline-primary btn-lg rounded-pill w-100 d-md-none" href="#account-nav" data-bs-toggle="collapse"><i class="fi-align-justify me-2"></i>منو پروفایل من</a>
+        <div class="collapse d-md-block" id="account-nav">
+            <ul class="nav nav-pills flex-column flex-md-row pt-3 pt-md-0 pb-md-4 border-bottom-md">
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./EditorProfile" aria-current="page"><i class="fi-settings mt-n1 me-2 fs-base"></i>تنظیمات پروفایل من</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./AddPortfolio"><i class="fi-cloud-upload mt-n1 me-2 fs-base"></i>نمونه کار های من</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./AddJobHistory"><i class="fi-user-check mt-n1 me-2 fs-base"></i>سابقه کاری</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./AddSkill"><i class="fi-education mt-n1 me-2 fs-base"></i>مهارت ها</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./EditorProfileProjectOffers"><i class="fi-send mt-n1 me-2 fs-base"></i>درخواست ها</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link active" asp-page="./EditorProfileJobOffers"><i class="fi-cup mt-n1 me-2 fs-base"></i>پیشنهاد های کاری</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./BusinessChat"><i class="fi-chat-right mt-n1 me-2 fs-base"></i>پیام های کاری</a></li>
+                <li class="nav-item mb-md-0 ms-md-2 ps-md-1"><a class="nav-link" asp-page="./EditorProfilePlans"><i class="fi-gift mt-n1 me-2 fs-base"></i>پلن ها</a></li>
+                <li class="nav-item mb-md-0 mt-2"><a class="nav-link" asp-page="./EditorProfileWallet"><i class="fi-wallet mt-n1 me-2 fs-base"></i>کیف پول</a></li>
+                <li class="nav-item d-md-none"><a class="nav-link" asp-page="./Login" asp-page-handler="Logout"><i class="fi-logout mt-n1 me-2 fs-base"></i>خروج</a></li>
+            </ul>
+        </div>
+
+        <!-- Page title-->
+        <div class="d-flex align-items-center justify-content-between py-4 mt-3 mb-2">
+            <h1 class="h4 mb-0 font-vazir">پیشنهاد های کاری</h1><a class="fw-bold text-decoration-none" href="#"></a>
+        </div>
+        <!-- Grid-->
+        <div class="row g-2 g-md-4">
+
+            <!-- Item-->
+            @foreach (var offer in Model.JobOffers)
+            {
+                <div class="col-lg-6 pt-2">
+                    <div class="card bg-secondary card-hover mb-2">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <div class="d-flex align-items-center"><img class="me-2 rounded" src="~/UploadedFiles/@offer.EmployerPicture" width="24"><span class="fs-sm text-dark opacity-80 px-1">@offer.EmployerName</span></div>
+                                @if (offer.IsAccept)
+                                {
+                                    <a asp-page="./BusinessChat" class="btn btn-warning shadow-sm content-overlay">
+                                        <span>پیام های کاری <i class="fi-arrow-left"></i></span>
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-page-handler="AcceptOffer" asp-route-offerId="@offer.Id" asp-route-receiverId="@offer.EmployerAccountId" class="btn btn-light-primary shadow-sm content-overlay">
+                                        <span>پذیرفتن<i class="fi-check"></i></span>
+                                    </a>
+                                }
+                            </div>
+
+                            <h3 class="h6 card-title pt-1 mb-3"><a class="text-nav stretched-link text-decoration-none">@offer.Title</a></h3>
+                            <div><a class="text-nav stretched-link text-decoration-none"><p>@offer.Description</p></a></div>
+                            <div class="fs-sm">
+                                <span class="text-nowrap me-3"><i class="fi-cash fs-base text-muted ms-1"></i>@offer.Price تومان</span>
+                                <span class="text-nowrap me-3"><i class="fi-info-circle fs-base text-muted ms-1"></i>@(offer.IsAccept ? "پذیرفته شده" : (offer.IsCancel ? "رد شده" : "در انتظار"))</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>

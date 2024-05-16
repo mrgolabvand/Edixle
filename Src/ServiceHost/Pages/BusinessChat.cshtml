@@ -1,0 +1,341 @@
+﻿@page "{id?}"
+@using _0_Framework.Application
+@model ServiceHost.Pages.BusinessChatModel
+@inject IAuthHelper AuthHelper
+@{
+    ViewData["Title"] = "پیام ها";
+
+}
+@section Css
+    {
+    <link rel="stylesheet" media="screen" href="~/MainTheme/css/BusinessChat.css" />
+}
+    @section Script
+    {
+    <script>
+        $(document).ready(function() {
+            $('#action_menu_btn').click(function() {
+                $('.action_menu').toggle();
+            });
+        });
+
+        function setFile() {
+            document.getElementById("AddChat_File").click();
+        }
+    </script>
+    <script src="~/lib/signalr/dist/browser/signalr.min.js"></script>
+    <script src="~/MainTheme/js/Uploader.js"></script>
+    <script src="~/MainTheme/js/Chat.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/MainTheme/js/axios.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js" integrity="sha512-odNmoc1XJy5x1TMVMdC7EMs3IVdItLPlCeL5vSUPN2llYKMJ2eByTTAIiiuqLg+GdNr9hF6z81p27DArRFKT7A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>*@
+    <script>
+        (function() {
+            var output = document.getElementById('output');
+            document.getElementById('upload').onclick = function() {
+                var data = new FormData();
+                data.append('File', document.getElementById('AddChat_File').files[0]);
+                data.append('ChatRoomId', document.getElementById('AddChat_ChatRoomId').value);
+                data.append('Message', document.getElementById('AddChat_Message').value);
+
+                var config = {
+                    headers: { "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val() },
+                    onUploadProgress: function(progressEvent) {
+                        var percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+                        var aria = document.getElementById('uploadFileToServerDiv');
+                        document.getElementById('uploadPercent').innerHTML = percentCompleted + "%";
+                        document.getElementById('uploadProgressBar').style.width = percentCompleted + "%";
+                        if (percentCompleted < 100) {
+                            aria.style.display = 'block';
+                        } else {
+                            aria.style.display = 'none';
+                            history.go();
+                        }
+                    }
+                };
+
+                axios.post('BusinessChat', data, config)
+                    .then(function(res) {
+                        output.className = 'container';
+                        output.innerHTML = res.data;
+                    })
+                    .catch(function(err) {
+                        output.className = 'container text-danger';
+                        output.innerHTML = err.message;
+                    });
+
+            };
+        })();
+    </script>
+    <script>
+        function copyFilePath(Id) {
+            /* Get the text field */
+            var id = "filePath-" + Id;
+            var copyText = document.getElementById(id);
+
+            /* Select the text field */
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+            /* Copy the text inside the text field */
+            navigator.clipboard.writeText(copyText.value);
+
+            /* Alert the copied text */
+            alert("لینک فایل کپی شد.");
+        }
+
+        function downloadFile(Id) {
+            var id = "filePath-" + Id;
+            var copyText = document.getElementById(id);
+            location.href = copyText.value;
+        }
+    </script>
+}
+    <div class="container-fluid h-100" style="margin-top: 100px; margin-bottom: 50px">
+        <div class="row justify-content-center h-100">
+            <div class="col-md-4 col-xl-3 chat">
+                <div class="card mb-sm-3 mb-md-0 contacts_card">
+                    <div class="card-header border-bottom">
+
+
+                        <div class="text-center text-light">
+                            <i class="fi-alert-circle text-accent"></i>قوانین
+                        </div>
+
+                  
+                       
+
+                        @*  <div class="input-group" dir="ltr">
+                    <input type="text" dir="rtl" placeholder="جستجو..." name="" class="form-control search">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text search_btn"><i class="fi-search"></i></span>
+                    </div>
+                    </div>*@
+                    </div>
+                    <div class="card-body contacts_body">
+                        <ui class="contacts">
+                            @foreach (var chatRoom in Model.ChatRooms)
+                        {
+                            <a asp-route-id="@chatRoom.Id" style="text-decoration: none">
+
+                            <li class="active">
+                                <div class="d-flex bd-highlight">
+                                    <div class="img_cont">
+                                        <img src="~/UploadedFiles/@(Model.IsSender ? chatRoom.ReceiverPicture : chatRoom.SenderPicture)" class="rounded-circle user_img">
+                                        <span class="online_icon"></span>
+                                    </div>
+                                    <div class="user_info">
+                                        <span>@(Model.IsSender ? chatRoom.ReceiverName : chatRoom.SenderName)</span>
+                                        <p>@chatRoom.Title</p>
+                                    </div>
+
+
+                                </div>
+                                    @if (chatRoom.IsPayed)
+                                    {
+                                    <div class="ml-2 mt-0 text-center mb-3">
+                                        <button class="btn btn-success btn-xs rounded-pill" type="button">پرداخت شده <i class="fi-check"></i></button>
+                                    </div>
+                                    }
+                                    else
+                                    {
+                                    <form asp-page-handler="Pay">
+                                        <input type="hidden" id="chatRoomId" name="chatRoomId" value="@chatRoom.Id" />
+                                        <div class="ml-2 mt-0 text-center mb-3">
+                                            <button class="btn btn-danger btn-xs rounded-pill" type="submit">پرداخت نشده <i class="fi-x"></i></button>
+                                        </div>
+                                    </form>
+                                    }
+
+                            </li>
+                            </a>
+                        }
+                    </ui>
+                </div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
+        <div class="col-md-8 col-xl-6 chat mb-5">
+            <div class="card">
+
+                @if (Model.ChatRoom == null)
+                {
+                    <h6 class="text-white-50 text-center" style="margin-top: 30vh">یک چت را برای پیام دادن انتخاب کنید...</h6>
+                }
+                else
+                {
+                    <div class="card-header msg_head">
+                        <div class="d-flex bd-highlight">
+                            <div class="img_cont">
+                                <img src="~/UploadedFiles/@(Model.IsSender ? Model.ChatRoom.ReceiverPicture : Model.ChatRoom.SenderPicture)" class="rounded-circle user_img">
+                                <span class="online_icon"></span>
+                            </div>
+                            <div class="user_info">
+                                <span>@(Model.IsSender ? Model.ChatRoom.ReceiverName : Model.ChatRoom.SenderName)</span>
+                                @if (@Model.ChatRoom.Chats != null)
+                                {
+                                    <p>@Model.ChatRoom.Chats.Count() پیام</p>
+                                }
+                            </div>
+                            <div class="video_cam">
+                                <a class="btn btn-translucent-accent rounded-pill" asp-page-handler="AskForJudgment" asp-route-chatRoomId="@Model.ChatRoom.Id">درخواست داوری</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body msg_card_body">
+                        @if (Model.ChatRoom.Chats != null)
+                        {
+                            @foreach (var chat in Model.ChatRoom.Chats)
+                            {
+                                <div class="d-flex justify-content-@(chat.OwnerId == AuthHelper.CurrentAccountId() ? "start" : "end") mb-4">
+                                @*    @if (chat.OwnerId == AuthHelper.CurrentAccountId())
+                                    {
+                                        <div class="img_cont_msg">
+                                            <img src="~/UploadedFiles/@(Model.IsSender ? Model.ChatRoom.SenderPicture : Model.ChatRoom.ReceiverPicture)" class="rounded-circle user_img_msg">
+                                        </div>
+                                    }*@
+                                    <div class="msg_cotainer
+                                        @(chat.FileIsProject ? (chat.ProjectIsAccepted ? "bg-success" : (chat.ProjectIsNotAccepted ? "bg-danger" : "bg-warning")) : chat.OwnerId == AuthHelper.CurrentAccountId() ? "bg-secondary" : "bg-primary text-light")">
+
+                                        @if (!string.IsNullOrWhiteSpace(chat.File))
+                                        {
+                                            @if (chat.File.Contains(".mp4") || chat.File.Contains(".mkv") || chat.File.Contains(".wav") || chat.File.Contains(".zip") || chat.File.Contains(".rar")|| chat.File.Contains(".7z"))
+                                            {
+                                                @*<video controls="" class="rounded-2" src="~/UploadedFiles/@chat.File" style="height: 200px; width: 100%; display: block"></video>*@
+                                                <input type="text" hidden id="filePath-@chat.Id" value="http://dl.example.com/UploadedFiles/@chat.File"/>
+                                                <button onclick="copyFilePath(@chat.Id)" class="btn btn-outline-info btn-icon rounded-circle">
+                                                    <i class="fi-link"></i>
+                                                </button>
+                                                <button onclick="downloadFile(@chat.Id)" class="btn btn-outline-warning btn-icon rounded-circle">
+                                                    <i class="fi-download"></i>
+                                                </button>
+                                                @chat.File.Substring(chat.File.Length - 15)
+                                                <button type="button" class="btn btn-primary btn-icon">
+                                                    <i class="fi-file"></i>
+                                                </button>
+                                            }
+                                            @if (chat.File.Contains(".jpg") || chat.File.Contains(".png") || chat.File.Contains(".jpeg"))
+                                            {
+                                                <img class="rounded-2" src="~/UploadedFiles/@chat.File" style="height: 200px; width: 100%; display: block" />
+                                            }
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(chat.Message))
+                                        {
+                                            if (chat.Message.StartsWith("http") || chat.Message.StartsWith("https"))
+                                            {
+                                                <a target="_blank" href="@chat.Message">@chat.Message</a>
+                                            }
+                                            else
+                                            {
+                                                @chat.Message
+                                            }
+                                        }
+                                        @if (chat.FileIsProject)
+                                        {
+                                            <hr class="mt-2 mb-1" />
+                                        }
+                                        @(chat.FileIsProject ? "وضعیت تایید پروژه توسط کارفرما : " + (chat.ProjectIsAccepted ? "تایید شده" : (chat.ProjectIsNotAccepted ? "رد شده" : "در انتظار")) : "")
+                                        <span class="msg_time">@chat.CreationDate</span>
+                                    </div>
+                                    @if (Model.IsSender && chat.OwnerId == AuthHelper.CurrentAccountId())
+                                    {
+                                        <div class="dropdown content-overlay">
+                                            <button class="btn btn-icon btn-light btn-xs rounded-lg-pill mt-1 shadow-sm" type="button" id="contextMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fi-dots-vertical"></i></button>
+                                            <ul class="dropdown-menu my-1" aria-labelledby="contextMenu">
+                                                <li>
+                                                    <a asp-page-handler="MakeFileProject" asp-route-chatId="@chat.Id" asp-route-chatRoomId="@chat.ChatRoomId" class="dropdown-item">
+                                                        <i class="fi-check opacity-60 me-2"></i>ثبت به عنوان پروژه انجام شده
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        if (chat.FileIsProject)
+                                        {
+                                            <div class="dropdown content-overlay">
+                                                <button class="btn btn-icon btn-light btn-xs rounded-lg-pill mt-1 shadow-sm" type="button" id="contextMenu" data-bs-toggle="dropdown" aria-expanded="false"><i class="fi-dots-vertical"></i></button>
+                                                <ul class="dropdown-menu my-1" aria-labelledby="contextMenu">
+                                                    <li>
+                                                        <a asp-page-handler="AcceptProject" asp-route-chatId="@chat.Id" asp-route-chatRoomId="@chat.ChatRoomId" class="dropdown-item">
+                                                            <i class="fi-check opacity-60 me-2"></i>تایید پروژه
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a asp-page-handler="RejectProject" asp-route-chatId="@chat.Id" asp-route-chatRoomId="@chat.ChatRoomId" class="dropdown-item">
+                                                            <i class="fi-x opacity-60 me-2"></i>رد پروژه
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        }
+                                    }
+
+                                @*    @if (chat.OwnerId != AuthHelper.CurrentAccountId())
+                                    {
+                                        <div class="img_cont_msg" style="margin-right: 10px">
+                                            <img src="~/UploadedFiles/@(Model.IsSender ? Model.ChatRoom.ReceiverPicture : Model.ChatRoom.SenderPicture)" class="rounded-circle user_img_msg">
+                                        </div>
+                                    }*@
+                                </div>
+                            }
+                        }
+
+
+                    </div>
+                    @if (Model.ChatRoom.Chats.Any(v => v.ProjectIsAccepted) || Model.ChatRoom.IsAskedForJudgment)
+                    {
+                        <div class="card-footer">
+                            <div class="text-center" dir="rtl">
+                                <h6 class="text-light">به دلیل اتمام پروژه، امکان ارسال پیام وجود ندارد.</h6>
+                            </div>
+                        </div>
+
+                    }
+                    else
+                    {
+
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="card-footer">
+                                <div class="text-center" id="uploadFileDiv" style="display: none">
+                                    <span id="percent" class="text-light">پردازش در سرور...</span>
+                                    <div class="progress progress-light mb-1">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-accent" id="progressBar" role="progressbar" style="width: 0%" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="text-center col-12" id="uploadFileToServerDiv" style="display: none">
+                                    <span id="uploadPercent" class="text-light"></span>
+                                    <span class="text-light">درحال اپلود...</span>
+                                    <div class="progress mb-1">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-warning" id="uploadProgressBar" role="progressbar" style="width: 0%" aria-valuenow="00" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div class="input-group" dir="ltr">
+                                    <div class="input-group-append">
+                                        <input type="file" asp-for="AddChat.File" class=" inputfile" />
+                                        <label asp-for="AddChat.File" class="input-group-text attach_btn" style="height: 60px !important"><i class="fi-folder"></i></label>
+                                        <span asp-validation-for="AddChat.File" class="error"></span>
+
+                                    </div>
+                                    <textarea asp-for="AddChat.Message" dir="rtl" class="form-control type_msg" placeholder="پیام خود را بنویسید ..." style="height: 60px !important"></textarea>
+                                    <div class="input-group-append">
+                                        <button type="button" id="upload" class="input-group-text send_btn" style="height: 60px !important"><i class="fi-send"></i></button>
+                                    </div>
+                                    <input type="hidden" asp-for="AddChat.ChatRoomId" value="@Model.ChatRoom.Id" />
+                                </div>
+                            </div>
+                        </form>
+                    }
+                    @if (Model.ChatRoom.IsAskedForJudgment)
+                    {
+                        <span class="alert-danger bg-dark rounded-pill text-center"><i class="fi-alert-triange danger"></i>درخواست داوری ثبت شده است، تیم داوری نتیجه را حداکثر طی 12 ساعت اینده اعلام میکند. <span class="d-block text-light"> نتیجه داوری برابر است با : <span class="text-warning">@(Model.ChatRoom.AdminJudgmentIsAcceptProject ? "قبول پروژه و واریز مبلف به حساب ادیتور" : (Model.ChatRoom.AdminJudgmentIsRejectProject ? "رد پروژه و واریز مبلغ به حساب کارفرما" : "در انتظار"))</span></span></span>
+                    }
+
+                }
+            </div>
+
+        </div>
+    </div>
+</div>

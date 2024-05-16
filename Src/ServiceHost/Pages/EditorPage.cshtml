@@ -1,0 +1,166 @@
+﻿@page "{id}"
+@model ServiceHost.Pages.EditorPageModel
+@{
+    Layout = "Shared/_EditorPageLayout";
+    ViewData["Title"] = "ادیتور";
+    ViewData["MetaDescription"] = Model.PersonalPage.FullName;
+    ViewData["Keywords"] = Model.PersonalPage.FullName;
+}
+
+@if (Model.PersonalPage != null)
+{
+    <div class="row sticky-parent">
+
+        <aside class="col-12 col-md-12 col-xl-3">
+            <div class="sidebar box-outer sticky-column">
+
+                <div class="sidebar__base-info">
+                    <figure class="avatar-box">
+                        <img src="~/UploadedFiles/@Model.PersonalPage.Picture" alt="@Model.PersonalPage.PictureAlt" title="@Model.PersonalPage.PictureTitle">
+                    </figure>
+                    <div class="text-xl-center">
+                        <h3 class="title title--h3 sidebar__name">@Model.PersonalPage.FullName</h3>
+                        <div class="badge"> @Model.PersonalPage.ReviewsTotalRate از 10</div>
+                    </div>
+                    <button class="btn btn--small btn--icon-right sidebar__btn js-btn-toggle"><span>نمایش اطلاعات بیشتر</span><i class="fi-arrow-down" style="color: #ffd36a;"></i></button>
+                </div>
+                <div class="sidebar__additional-info js-show">
+                    <div class="separation"></div>
+                    <ul class="details-info">
+
+                        <li class="details-info__item">
+                            <span class="box box--s2 icon-box"><i style="color: #ffd36a;" class="fi-briefcase"></i></span>
+                            <div class="contacts-block__info">
+                                <span class="overhead">وضعیت کار</span>
+                                <a class="text-overflow" title="@(Model.PersonalPage.IsBusy ? "مشغول" : "آزاد")">@(Model.PersonalPage.IsBusy ? "مشغول" : "آزاد")</a>
+                            </div>
+                        </li>
+                        @if (!string.IsNullOrWhiteSpace(Model.PersonalPage.MinPay) && !string.IsNullOrWhiteSpace(Model.PersonalPage.MaxPay))
+                        {
+                            <li class="details-info__item">
+                                <span class="box box--s2 icon-box"><i style="color: #ffd36a;" class="fi-accounting"></i></span>
+                                <div class="contacts-block__info">
+                                    <span class="overhead">حقوق درخواستی (تومان)</span>
+                                    <span class="" title="@Model.PersonalPage.MinPay - @Model.PersonalPage.MaxPay">@Model.PersonalPage.MinPay - @Model.PersonalPage.MaxPay</span>
+                                </div>
+                            </li>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(Model.PersonalPage.PayDate))
+                        {
+
+                            <li class="details-info__item">
+                                <span class="box box--s2 icon-box"><i style="color: #ffd36a;" class="fi-calendar"></i></span>
+                                <div class="contacts-block__info">
+                                    <span class="overhead">زمان پرداخت حقوق</span>
+                                    <span class="text-overflow" title="@Model.PersonalPage.PayDate">@Model.PersonalPage.PayDate</span>
+                                </div>
+                            </li>
+                        }
+
+                        @if (!string.IsNullOrWhiteSpace(Model.PersonalPage.Age))
+                        {
+                            <li class="details-info__item">
+                                <span class="box box--s2 icon-box"><i style="color: #ffd36a;" class="fi-user"></i></span>
+                                <div class="contacts-block__info">
+                                    <span class="overhead">سن</span>
+                                    <span class="text-overflow" title="@Model.PersonalPage.Age">@Model.PersonalPage.Age</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                    <div class="separation d-xl-none"></div>
+                </div>
+            </div>
+        </aside>
+
+        <div class="col-12 col-md-12 col-xl-9">
+            <div class="box-outer">
+
+                <div class="nav-container">
+                    <ul class="nav">
+                        <li class="nav__item"><a class="active" asp-page="./EditorPage" asp-route-id="@Model.PersonalPage.Slug">درباره من</a></li>
+                        <li class="nav__item"><a asp-page="./EditorPagePortfolios" asp-route-id="@Model.PersonalPage.Slug">نمونه کار ها</a></li>
+                        <li class="nav__item"><a asp-page="./EditorPageChoiceOffer" asp-route-id="@Model.PersonalPage.Slug">ارسال پیشنهاد</a></li>
+                        <li class="nav__item"><a asp-page="./Index">example.com</a></li>
+                    </ul>
+                </div>
+
+                <div class="pb-0 pb-sm-2">
+                    <h1 class="title title--h1 title__separate">درباره من</h1>
+                    <p>@Model.PersonalPage.About</p>
+                </div>
+
+     
+                <h2 class="title title--h2 mt-3">امتیاز ها</h2>
+                <div class="row box box--s2 box-inner mb-0">
+                    <div class="col-md-12 progress mb-5">
+                        <div class="progress-text text-center"><span>امتیاز کل بین @Model.PersonalPage.Reviews.Count() نظر ثبت شده</span> @Model.PersonalPage.ReviewsTotalRate از 10</div>
+                        <div class="progress-bar"><span role="progressbar" aria-valuenow="@(Model.PersonalPage.ReviewsTotalRate * 10)" aria-valuemin="0" aria-valuemax="100"></span></div>
+                    </div>
+
+                    <div class="col-md-6 progress">
+                        <div class="progress-text"><span>کیفیت ادیت ویدیو</span> @Model.PersonalPage.EditVideoQualityTotalRate از 10</div>
+                        <div class="progress-bar"><span role="progressbar" aria-valuenow="@(Model.PersonalPage.EditVideoQualityTotalRate * 10)" aria-valuemin="0" aria-valuemax="100"></span></div>
+                    </div>
+                    <div class="col-md-6 progress">
+                        <div class="progress-text"><span>افکت های ویدیو</span> @Model.PersonalPage.UseProperVideoEffectsTotalRate از 10</div>
+                        <div class="progress-bar"><span role="progressbar" aria-valuenow="@(Model.PersonalPage.UseProperVideoEffectsTotalRate * 10)" aria-valuemin="0" aria-valuemax="100"></span></div>
+                    </div>
+                    <div class="col-md-6 progress">
+                        <div class="progress-text"><span>کیفیت ادیت صدا</span> @Model.PersonalPage.EditSoundQualityTotalRate از 10</div>
+                        <div class="progress-bar"><span role="progressbar" aria-valuenow="@(Model.PersonalPage.EditVideoQualityTotalRate * 10)" aria-valuemin="0" aria-valuemax="100"></span></div>
+                    </div>
+                    <div class="col-md-6 progress">
+                        <div class="progress-text"><span>افکت های صدا</span> @Model.PersonalPage.UseProperSoundEffectsTotalRate از 10</div>
+                        <div class="progress-bar"><span role="progressbar" aria-valuenow="@(Model.PersonalPage.UseProperSoundEffectsTotalRate * 10)" aria-valuemin="0" aria-valuemax="100"></span></div>
+                    </div>
+                    <div class="col-md-6 progress">
+                        <div class="progress-text"><span>فونت و رنگ</span> @Model.PersonalPage.UseProperFontAndColorsTotalRate از 10</div>
+                        <div class="progress-bar"><span role="progressbar" aria-valuenow="@(Model.PersonalPage.UseProperFontAndColorsTotalRate * 10)" aria-valuemin="0" aria-valuemax="100"></span></div>
+                    </div>
+                    <div class="col-md-6 progress">
+                        <div class="progress-text"><span>خلاقیت</span> @Model.PersonalPage.UseProperMemesTotalRate از 10</div>
+                        <div class="progress-bar"><span role="progressbar" aria-valuenow="@(Model.PersonalPage.UseProperMemesTotalRate * 10)" aria-valuemin="0" aria-valuemax="100"></span></div>
+                    </div>
+                </div>
+                <h2 class="title title--h2 mt-3">
+                    <span class="box box--s2 icon-box">
+                        <i style="color: #ffd36a;" class="fi-device-desktop"></i>
+                    </span>
+                    سابقه کاری
+                </h2>
+                <div class="timeline">
+                    @foreach (var jobHistory in Model.PersonalPage.JobHistories)
+                    {
+                        <article class="timeline__item">
+                            <h5 class="title title--h5 timeline__title">@jobHistory.EmployerName</h5>
+                            <span class="timeline__period">@jobHistory.JobTitle</span>
+                            <p class="timeline__description">@jobHistory.Description</p>
+                        </article>
+                    }
+                </div>
+                <h2 class="title title--h2 mt-3">مهارت ها</h2>
+                <div class="box box--s2 box-inner mb-0">
+                    @foreach (var skill in Model.PersonalPage.Skills)
+                    {
+                        <div class="progress">
+                            <div class="progress-text"><span>@skill.Name</span> @skill.Value%</div>
+                            <div class="progress-bar"><span role="progressbar" aria-valuenow="@skill.Value" aria-valuemin="0" aria-valuemax="100"></span></div>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}
+else
+{
+    <div class="container">
+        <div class="text-center">
+            <h2>صفحه در دسترس نمی باشد!</h2>
+        </div>
+    </div>
+}

@@ -1,0 +1,82 @@
+﻿@page
+@model ServiceHost.Pages.RegisterModel
+@{
+    ViewData["Title"] = "ثبت نام";
+}
+
+<div class="container-fluid d-flex h-100 align-items-center justify-content-center py-4 py-sm-5 mt-4">
+    <div class="card card-light card-body mt-4" style="max-width: 940px">
+        <a class="position-absolute top-0 end-0 nav-link-light fs-sm py-1 px-2 mt-3 me-3" href="#" onclick="window.history.go(-1); return false;"><i class="fi-arrow-long-right fs-base me-2"></i>برگشت</a>
+        <div class="row mx-0 align-items-center mt-4">
+            <div class="col-md-6 border-end-md border-light p-2 p-sm-5">
+                <h2 class="h3 text-light mb-4 mb-sm-5">در سایت ما با اطمینان ثبت نام کنید.</h2>
+                <ul class="list-unstyled mb-4 mb-sm-5">
+                    <li class="d-flex mb-2"><i class="fi-check-circle text-primary mt-1 me-2"></i><span class="text-light">ثبت پروژه</span></li>
+                    <li class="d-flex mb-2"><i class="fi-check-circle text-primary mt-1 me-2"></i><span class="text-light">استخدام ادیتور</span></li>
+                    <li class="d-flex mb-0"><i class="fi-check-circle text-primary mt-1 me-2"></i><span class="text-light">ثبت دیدگاه</span></li>
+                </ul>
+                <div class="text-light mt-sm-4 pt-md-3"><span class="opacity-60">ثبت نام کرده اید؟ </span><a class="text-light" asp-page="./Login">ورود به حساب کاربری</a></div>
+            </div>
+            <div class="col-md-6 px-4 pt-2 pb-4 px-sm-5 pb-sm-5 pt-md-5">
+                @if (!string.IsNullOrWhiteSpace(Model.Message))
+                {
+                    <div class="mb-3">
+                        <span class="alert alert-danger ">@Model.Message</span>
+                    </div>
+                }
+                <form method="post" asp-page-handler="SendVerificationCode">
+                    <label class="form-label text-light" for="signup-phoneNumber">شماره تلفن</label>
+                    <div class="d-flex">
+                        <input asp-for="RegisterAccount.PhoneNumber" class="form-control form-control-light" type="number" id="signup-phoneNumber" placeholder="شماره تلفن" required>
+                        <button class="btn btn-primary btn-sm" type="submit">ارسال کد</button>
+                    </div>
+                    <span asp-validation-for="RegisterAccount.PhoneNumber"></span>
+                </form>
+
+                <form class="needs-validation" method="post" novalidate>
+                    <input type="hidden" asp-for="RegisterAccount.PhoneNumber" />
+                    <div class="mb-4 mt-2">
+                        <input asp-for="RegisterAccount.VerificationCode" class="form-control form-control-light" type="number" id="signup-code" placeholder="کد تایید 4 رقمی" required>
+                        <span asp-validation-for="RegisterAccount.VerificationCode"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-light" for="signup-name">نام کاربری</label>
+                        <input asp-for="RegisterAccount.UserName" class="form-control form-control-light" type="text" id="signup-name" placeholder="نام کاربری خود را وارد کنید" required>
+                        <span asp-validation-for="RegisterAccount.UserName"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-light" for="signup-email">پست الکترونیکی</label>
+                        <input asp-for="RegisterAccount.Email" class="form-control form-control-light" type="email" id="signup-email" placeholder="ایمیل خود را وارد کنید" required>
+                        <span asp-validation-for="RegisterAccount.Email"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label text-light" for="signup-password">رمز عبور <span class='fs-sm opacity-50'>حداقل 8 کاراکتر</span></label>
+                        <div class="password-toggle">
+                            <input asp-for="RegisterAccount.Password" class="form-control form-control-light" type="password" id="signup-password" minlength="8" required>
+                            <label class="password-toggle-btn" aria-label="Show/hide password">
+                                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                            </label>
+                        </div>
+                        <span asp-validation-for="RegisterAccount.Password"></span>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-light" for="signup-password-confirm">تایید رمز عبور</label>
+                        <div class="password-toggle">
+                            <input asp-for="RegisterAccount.RepeatPassword" class="form-control form-control-light" type="password" id="signup-password-confirm" minlength="8" required>
+                            <label class="password-toggle-btn" aria-label="Show/hide password">
+                                <input class="password-toggle-check" type="checkbox"><span class="password-toggle-indicator"></span>
+                            </label>
+                            <span asp-validation-for="RegisterAccount.RepeatPassword"></span>
+                        </div>
+                    </div>
+                    <div class="form-check form-check-light mb-4">
+                        <input class="form-check-input" type="checkbox" id="agree-to-terms" required>
+                        <label class="form-check-label" for="agree-to-terms"><span class='opacity-70'>با ثبت نام در این سایت</span> <a asp-page="./Terms" class='text-light'>شرایط و قوانین</a> سایت را قبول دارم.</label>
+                    </div>
+                    <button class="btn btn-primary btn-lg w-100" type="submit">ثبت نام </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+﻿@page
+@model ServiceHost.Areas.Administration.Pages.Portfolio.PortfolioPreviewModel
+@{
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h4>نام</h4>
+            <h5>@Model.Portfolio.PortfolioName</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h4>Alt</h4>
+            <h5>@Model.Portfolio.PictureAlt</h5>
+        </div>
+        <div class="col-4">
+            <h4>عنوان عکس</h4>
+            <h5>@Model.Portfolio.PictureTitle</h5>
+        </div>
+        <div class="col-4">
+            <h4>اسلاگ</h4>
+            <h5>@Model.Portfolio.Slug</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+            <h4>کلمات کلیدی</h4>
+            <h5>@Model.Portfolio.Keywords</h5>
+        </div>
+        <div class="col-4">
+            <h4>توضیحات متا</h4>
+            <h5>@Model.Portfolio.MetaDescription</h5>
+        </div>
+        <div class="col-4">
+            <h4>تگ ها</h4>
+            <h5>@Model.Portfolio.Tags</h5>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6">
+            <h4>توضیح کوتاه</h4>
+            <h5>@Model.Portfolio.ShortDescription</h5>
+        </div>
+        <div class="col-6">
+            <h4>توضیح</h4>
+            <h5>@Model.Portfolio.Description</h5>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-12">
+            <video src="~/UploadedFiles/@Model.Portfolio.File" controls></video>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,59 @@
+﻿@using BlogManagement.Infrastructure.Configuration.Permissions
+@using AccountManagement.Infrastructure.Configuration.Permissions
+@using CommentManagement.Infrastructure.Configuration.Permissions
+<div id="sidebar-menu">
+    <ul>
+        <li>
+            <a asp-page="/Index" class="waves-effect active"><i class="md md-home"></i><span> داشبورد </span></a>
+        </li>
+
+        <li>
+            <a permission="@CommentPermissions.ConfirmAndCancelComment" asp-page="/Comments/Index" class="waves-effect"><i class="md md-home"></i><span> سیستم کامنت </span></a>
+        </li>
+        <li>
+            <a asp-page="/EditorPlan/Index" class="waves-effect"><i class="md md-cached"></i><span> سیستم پلن </span></a>
+        </li>
+
+        <li class="has_sub">
+            <a class="waves-effect"><i class="md md-mail"></i><span> حساب های کاربری </span><span class="pull-right"><i class="md md-add"></i></span></a>
+            <ul class="list-unstyled">
+                <li><a permission="@AccountPermissions.CreateAndEditAccount" asp-page="/Accounts/Index">حساب ها</a></li>
+                <li><a permission="@AccountPermissions.ConfirmAndCancelPage" asp-page="/PersonalPages/Index">صفحه های ادیتور ها</a></li>
+                <li><a permission="@AccountPermissions.ConfirmAndCancelPage" asp-page="/EmployerPages/Index">صفحه های کارفرما ها</a></li>
+                <li><a permission="@AccountPermissions.ConfirmAndCancelPortfolio" asp-page="/Portfolio/Index">نمونه کار ها</a></li>
+                <li><a permission="@AccountPermissions.CreateAndEditCategory" asp-page="/PortfolioBaseCategory/Index">گروه های پایه</a></li>
+                <li><a permission="@AccountPermissions.CreateAndEditCategory" asp-page="/PortfolioCategory/Index">گروه ها</a></li>
+                <li><a permission="@AccountPermissions.CreateAndEditSlider" asp-page="/TextSlider/Index">اسلایدر</a></li>
+                <li><a permission="@AccountPermissions.CreateAndEditFeature" asp-page="/Feature/Index">ویژگی ها</a></li>
+                <li><a permission="@AccountPermissions.CreateAndEditRole" asp-page="/Role/Index">نقش ها</a></li>
+            </ul>
+        </li>
+        <li class="has_sub">
+            <a class="waves-effect"><i class="md md-mail"></i><span> سیستم ارسال نظر </span><span class="pull-right"><i class="md md-add"></i></span></a>
+            <ul class="list-unstyled">
+                <li><a permission="@CommentPermissions.ConfirmAndCancelComment" asp-page="/Comments/Index"> کامنت ها</a></li>
+                <li><a permission="@CommentPermissions.ConfirmAndCancelComment" asp-page="/Reviews/Index"> نظر ها</a></li>
+            </ul>
+        </li>
+        <li class="has_sub">
+            <a class="waves-effect"><i class="md md-mail"></i><span> سیستم پروژه </span><span class="pull-right"><i class="md md-add"></i></span></a>
+            <ul class="list-unstyled">
+                <li><a permission="@CommentPermissions.ConfirmAndCancelComment" asp-page="/Projects/Index"> پروژه ها</a></li>
+                <li><a permission="@CommentPermissions.ConfirmAndCancelComment" asp-page="/Wallets/Index"> کیف پول ها</a></li>
+                <li><a permission="@CommentPermissions.ConfirmAndCancelComment" asp-page="/Chats/Index"> پیام های کاری</a></li>
+                <li><a permission="@CommentPermissions.ConfirmAndCancelComment" asp-page="/ProjectOffers/Index"> پیشنهاد های پروژه ها</a></li>
+                <li><a permission="@CommentPermissions.ConfirmAndCancelComment" asp-page="/JobOffers/Index"> پیشنهاد های کاری</a></li>
+            </ul>
+        </li>
+
+        <li permission="@BlogPermissions.CreateAndEditArticle" class="has_sub">
+            <a class="waves-effect"><i class="md md-mail"></i><span> سیستم بلاگینگ</span><span class="pull-right"><i class="md md-add"></i></span></a>
+            <ul class="list-unstyled">
+                <li><a permission="@BlogPermissions.CreateAndEditArticle" asp-page="/Blog/Articles/Index">مقاله</a></li>
+                <li><a permission="@BlogPermissions.CreateAndEditArticleCategory" asp-page="/Blog/ArticleCategories/Index">گروه مقاله</a></li>
+            </ul>
+        </li>
+
+    </ul>
+    <div class="clearfix"></div>
+</div>

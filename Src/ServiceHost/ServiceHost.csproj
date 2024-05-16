@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="FluentFTP" Version="34.0.2" />
+		<PackageReference Include="Hangfire.AspNetCore" Version="1.7.30" />
+		<PackageReference Include="Hangfire.Core" Version="1.7.30" />
+		<PackageReference Include="Hangfire.SqlServer" Version="1.7.30" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.11" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.11">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Nancy" Version="2.0.0" />
+	</ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\0_Framework\0_Framework.csproj" />
+    <ProjectReference Include="..\AccountManagement\AM.Application\AccountManagement.Application.Contracts\AccountManagement.Application.Contracts.csproj" />
+    <ProjectReference Include="..\AccountManagement\AM.Infrastructure\AccountManagement.Infrastructure.Configuration\AccountManagement.Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\BlogManagement\BM.Infrastructure\BlogManagement.Infrastructure.Configuration\BlogManagement.Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\ChatManagement\CHM.Application\ChatManagement.Application.Contracts\ChatManagement.Application.Contracts.csproj" />
+    <ProjectReference Include="..\ChatManagement\CHM.Infrastructure\ChatManagement.Infrastructure.Configuration\ChatManagement.Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\CommentManagement\CM.Infrastructure\CommentManagement.Infrastructure.Configuration\CommentManagement.Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\EdixleQuery\EdixleQuery.csproj" />
+    <ProjectReference Include="..\PlanManagement\PM.Infrastructure\PlanManagement.Infrastructure.Configuration\PlanManagement.Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\ReviewManagement\RM.Infrastructure\ReviewManagement.Infrastructure.Configuration\ReviewManagement.Infrastructure.Configuration.csproj" />
+    <ProjectReference Include="..\WalletManagement\WM.Infrastructure\WalletManagement.Infrastructure.Configuration\WalletManagement.Infrastructure.Configuration.csproj" />
+  </ItemGroup>
+
+</Project>

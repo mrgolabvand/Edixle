@@ -1,0 +1,69 @@
+﻿@page
+@model ServiceHost.Pages.AddEmployerPageModel
+@{
+    ViewData["Title"] = "عضویت کارفرما";
+}      
+<!-- Page content-->
+<div class="container pt-5 pb-lg-4 mt-5 mb-sm-2">
+    <!-- Breadcrumb-->
+    <nav class="mb-4 pt-md-3" aria-label="Breadcrumb">
+        <ol class="breadcrumb breadcrumb-light">
+            <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+            <li class="breadcrumb-item active" aria-current="page">اطلاعات فردی</li>
+        </ol>
+    </nav>
+    <form method="post" enctype="multipart/form-data">
+
+        <div class="row">
+            <!-- Content-->
+            <div class="col-12 mb-5">
+                <h1 class="h4 font-vazir text-light">اطلاعات فردی</h1>
+                <div class="row pt-2">
+                    <div class="col-lg-9 col-md-12 col-sm-8 mb-2 mb-m-4">
+                        <div class="border border-light rounded-3 p-3 mb-4" id="personal-info">
+                            <!-- Name-->
+                            <div class="border-bottom border-light pb-3 mb-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="pe-2 opacity-70">
+                                        <label class="form-label fw-bold text-light">نام کامل</label>
+                                        <div class="text-light" id="name-value">وارد نشده است.</div>
+                                    </div>
+                                    <div class="me-n3" data-bs-toggle="tooltip" title="افزودن"><a class="nav-link nav-link-light py-0" href="#name-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
+                                </div>
+                                <div class="collapse" id="name-collapse" data-bs-parent="#personal-info">
+                                    <input asp-for="EmployerPage.FullName" class="form-control form-control-light mt-3" type="text" data-bs-binded-element="#name-value" placeholder="نام خود را وارد کنید.">
+                                </div>
+                            </div>
+                            <div class="border-bottom border-light pb-3 mb-3">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="pe-2 opacity-70">
+                                        <label class="form-label fw-bold text-light">کارت بانکی</label>
+                                        <div class="text-light" id="card-value">وارد نشده است.</div>
+                                    </div>
+                                    <div class="me-n3" data-bs-toggle="tooltip" title="افزودن"><a class="nav-link nav-link-light py-0" href="#card-collapse" data-bs-toggle="collapse"><i class="fi-edit"></i></a></div>
+                                </div>
+                                <div class="collapse" id="card-collapse" data-bs-parent="#personal-info">
+                                    <input asp-for="EmployerPage.Card" class="form-control form-control-light mt-3" type="number" data-bs-binded-element="#card-value" placeholder="شماره کارت بانکی خود را وارد کنید.">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-12 col-sm-4 mb-4">
+                        @*<input class="file-uploader border-light bg-faded-light" type="file" accept="image/png, image/jpeg" data-label-idle="&lt;i class=&quot;d-inline-block fi-camera-plus fs-2 text-light text-muted mb-2&quot;&gt;&lt;/i&gt;&lt;br&gt;&lt;span class=&quot;text-light opacity-70&quot;&gt;تغییر تصویر&lt;/span&gt;" data-style-panel-layout="compact" data-image-preview-height="160" data-image-crop-aspect-ratio="1:1" data-image-resize-target-width="200" data-image-resize-target-height="200">*@
+                        <label asp-for="EmployerPage.Picture" class="text-light">عکس پروفایل</label>
+                        <input asp-for="EmployerPage.Picture" class="form-control-light" type="file" style="display: inline" />
+                    </div>
+                </div>
+                <!-- Action buttons-->
+                <div class="row">
+                    <div class="col-lg-9">
+                        <div class="d-flex align-items-center justify-content-between pb-1">
+                            <button class="btn btn-primary" type="submit">ذخیره </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

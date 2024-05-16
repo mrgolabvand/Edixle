@@ -1,0 +1,125 @@
+﻿@page
+@model ServiceHost.Pages.SearchProjectsModel
+@{
+    ViewData["Title"] = "جستجوی پروژه";
+
+}
+
+@section Css
+    {
+    <link rel="stylesheet" media="screen" href="~/MainTheme/vendor/nouislider/dist/nouislider.min.css" />
+}
+    @section Script
+    {
+        <script src="~/MainTheme/vendor/nouislider/dist/nouislider.min.js"></script>
+}
+    <div class="container mt-5 mb-md-4 py-5">
+        <div class="row py-md-1">
+
+            <!-- Filers sidebar (Offcanvas on mobile)-->
+            <div class="col-lg-3 pe-xl-4">
+                <div class="offcanvas offcanvas-start offcanvas-collapse bg-dark" id="filters-sidebar">
+                    <div class="offcanvas-header bg-transparent d-flex d-lg-none align-items-center">
+                        <h2 class="h5 text-light mb-0">جستجو</h2>
+                        <button class="btn-close btn-close-white" type="button" data-bs-dismiss="offcanvas"></button>
+                    </div>
+                    <div class="offcanvas-body py-lg-4">
+                        <form method="get">
+                            <div class="pb-4 mb-2">
+                                <h3 class="fs-base font-vazir text-light text-center">جستجو</h3>
+                                <input id="searchWord" name="searchWord" class="form-control form-control-light mb-2" placeholder="دنبال چی میگردی؟" />
+                            </div>
+                            <div class="pb-4 mb-2">
+                                <h3 class="fs-base font-vazir text-light">مرتب سازی</h3>
+                                <select id="orderId" name="orderId" class="form-select form-select-light mb-2">
+                                    <option value="" disabled selected>جدیدترین</option>
+                                    <option value="1">جدیدترین</option>
+                                    <option value="2">بیشترین بودجه</option>
+                                </select>
+                            </div>
+                            <div class="pb-4 mb-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" id="isOpen" name="isOpen"  type="checkbox">
+                                    <label class="form-check-label" for="isOpen">پروژه های باز</label>
+                                </div>
+                            </div>
+
+                            <div class="pb-4 mb-2">
+                                <h3 class="fs-base font-vazir text-light">بودجه</h3>
+                                <div class="range-slider-money range-slider-light-money mb-3" data-start-min="25000" data-start-max="6500000" data-min="1000" data-max="10000000" data-step="1000">
+                                    <div class="range-slider-ui-money"></div>
+                                    <div class="d-flex align-items-center">
+                                          <div class="w-50 pe-2">
+                                            <input id="minPay" name="minPay" class="form-control form-control-light range-slider-value-min-money" type="hidden" >
+                                        </div>
+                                        <div class="w-50 ps-2">
+                                            <input id="maxPay" name="maxPay" class="form-control form-control-light range-slider-value-max-money" type="hidden">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-accent bg-gradient rounded-pill" type="submit">جستجو</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-9">
+                <!-- Breadcrumb-->
+                <nav class="mb-3 pt-md-2 pt-lg-4" aria-label="Breadcrumb">
+                    <ol class="breadcrumb breadcrumb-light">
+                        <li class="breadcrumb-item"><a asp-page="./Index">خانه</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">جستجوی پروژه</li>
+                    </ol>
+                </nav>
+                <!-- Page title-->
+                <div class="d-flex align-items-center justify-content-between pb-4 mb-2">
+                    <h1 class="text-light me-3 mb-0 font-vazir h4">پروژه ها</h1>
+                    <div class="text-light"><i class="fi-device-desktop fs-lg me-2"></i><span class="align-middle">@Model.Projects.Count() نتیجه</span></div>
+                </div>
+                
+                <div class="row">
+
+                    @foreach (var project in Model.Projects)
+                    {
+                        <div class="col-12 mt-3">
+                        <div class="row bg-gradient card-hover h-100 text-white" style="border-radius: 20px">
+                            <div class="col-12">
+                                <div class="card-body">
+                                   
+                                    <div class="d-flex align-items-center mb-3">
+                                        <img class="me-2 rounded-2" src="~/UploadedFiles/@project.EmployerPicture" width="40px" >
+                                        <span class="fs-sm text-dark opacity-80 px-1">@project.EmployerName</span>
+                                    </div>
+                                    <h3 class="h6 card-title mb-2">
+                                        <a class="text-nav text-decoration-none" asp-page="./ProjectDetails" asp-route-id="@project.Id">@project.Title</a>
+                                    </h3>
+                                    <p class="fs-sm mb-0">
+                                     @project.Description
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="card-footer d-flex align-items-center justify-content-between border-0 pt-0">
+                                <div class="fs-sm">
+                                    <span class="text-nowrap me-3"><i class="fi-info-circle text-muted ms-1"> </i>وضعیت پروژه : @(project.IsOpened ? "باز" : "بسته")</span>
+                                    <span class="text-nowrap me-3"><i class="fi-cash fs-base text-muted ms-1"></i>بودجه پروژه : @project.Budget</span>
+                                    <span class="text-nowrap me-3"><i class="fi-calendar fs-base text-muted ms-1"></i>تاریخ پایان : @project.ExpireDate</span>
+                                    <span class="text-nowrap me-3"><i class="fi-users fs-base text-muted ms-1"></i>تعداد پیشنهاد ها : @project.ProjectOffers.Count()</span>
+
+
+                                </div>
+                                <a class="btn btn-primary text-light shadow-sm content-overlay" asp-page="./ProjectDetails" asp-route-id="@project.Id">نمایش پروژه <i class="fi-arrow-left"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    }
+                    
+
+                </div>
+              
+            </div>
+        </div>
+    </div>
+<button class="btn btn-primary btn-sm w-100 rounded-0 fixed-bottom d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#filters-sidebar"><i class="fi-filter me-2"></i>جستجو</button>
