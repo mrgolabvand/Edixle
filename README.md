@@ -8,14 +8,14 @@
 
 <h2>Project Screenshots:</h2>
 
-<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s1.png" alt="project-screenshot" width="200">
+<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s1.png" alt="project-screenshot">
 
-<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s2.png" alt="project-screenshot" width="200" >
+<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s2.png" alt="project-screenshot">
 
-<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s3.png" alt="project-screenshot" width="200" >
+<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s3.png" alt="project-screenshot">
 
-<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s4.png" alt="project-screenshot" width="200" >
+<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s4.png" alt="project-screenshot">
 
-<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s5.png" alt="project-screenshot" width="200" >
+<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s5.png" alt="project-screenshot">
 
-<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s6.png" alt="project-screenshot" width="200" >
+<img src="https://raw.githubusercontent.com/mrgolabvand/Edixle/master/s6.png" alt="project-screenshot">
